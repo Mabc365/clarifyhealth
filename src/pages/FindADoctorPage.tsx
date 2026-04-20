@@ -31,6 +31,8 @@ interface SearchResult {
   urgency_note: string;
   doctors: Doctor[];
   fallback: boolean;
+  searchLinks?: { name: string; description: string; url: string }[];
+  zipCode?: string;
 }
 
 const QUICK_PILLS = [
@@ -293,31 +295,60 @@ const FindADoctorPage = () => {
                   </p>
                 </div>
 
-                {/* Fallback message */}
-                {(result.fallback || sortedDoctors.length === 0) ? (
+                {/* Curated directory links (when no live doctor data) */}
+                {result.searchLinks && result.searchLinks.length > 0 && sortedDoctors.length === 0 ? (
+                  <div>
+                    <p
+                      className="text-[13px] text-muted-foreground mb-4"
+                      style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    >
+                      Search trusted directories for a {result.specialty}
+                      {result.zipCode ? ` near ${result.zipCode}` : ""}:
+                    </p>
+                    <div className="space-y-3">
+                      {result.searchLinks.map((link) => (
+                        <a
+                          key={link.name}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block p-4 rounded-md transition-colors hover:shadow-sm group"
+                          style={{
+                            border: "0.5px solid hsl(var(--border))",
+                            background: "hsl(var(--card))",
+                          }}
+                        >
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1 min-w-0">
+                              <h3
+                                className="text-[16px] font-medium text-foreground group-hover:text-primary transition-colors"
+                                style={{ fontFamily: "'Playfair Display', serif" }}
+                              >
+                                {link.name}
+                              </h3>
+                              <p
+                                className="text-[13px] text-muted-foreground mt-1"
+                                style={{ fontFamily: "'DM Sans', sans-serif" }}
+                              >
+                                {link.description}
+                              </p>
+                            </div>
+                            <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary shrink-0 mt-1" />
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                ) : sortedDoctors.length === 0 ? (
                   <div className="text-center py-12">
                     <p className="text-[15px] text-muted-foreground mb-4">
                       We couldn't find doctors in our system for your area.
                     </p>
                     <p className="text-[14px] text-muted-foreground">
                       Try searching on{" "}
-                      <a
-                        href="https://www.healthgrades.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary font-medium hover:underline"
-                      >
-                        Healthgrades.com
-                      </a>
+                      <a href="https://www.healthgrades.com" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">Healthgrades.com</a>
                       {" "}or{" "}
-                      <a
-                        href="https://www.zocdoc.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-primary font-medium hover:underline"
-                      >
-                        Zocdoc.com
-                      </a>
+                      <a href="https://www.zocdoc.com" target="_blank" rel="noopener noreferrer" className="text-primary font-medium hover:underline">Zocdoc.com</a>
                     </p>
                   </div>
                 ) : (

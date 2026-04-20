@@ -92,77 +92,40 @@ serve(async (req) => {
       };
     }
 
-    // Step 2: Google Places API — fetch real nearby doctors
-    const GOOGLE_PLACES_API_KEY = Deno.env.get("GOOGLE_PLACES_API_KEY");
-    if (!GOOGLE_PLACES_API_KEY) {
-      // Return AI triage results with empty doctors and fallback flag
-      return new Response(
-        JSON.stringify({
-          specialty: triage.specialty,
-          reason: triage.reason,
-          urgency: triage.urgency,
-          urgency_note: triage.urgency_note,
-          doctors: [],
-          fallback: true,
-        }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
+    // Step 2: Build curated search links to trusted directories (no Google Places API needed)
+    const safeZip = zipCode ? zipCode.trim().slice(0, 5) : "";
+    const locationSuffix = safeZip ? ` near ${safeZip}` : "";
+    const queryText = `${triage.specialty}${locationSuffix}`;
+    const enc = encodeURIComponent;
 
-    const locationQuery = zipCode ? ` near ${zipCode.trim().slice(0, 5)}` : "";
-    const searchQuery = `${triage.specialty} doctor${locationQuery}`;
-
-    const placesResponse = await fetch(
-      "https://places.googleapis.com/v1/places:searchText",
+    const searchLinks = [
       {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-Goog-Api-Key": GOOGLE_PLACES_API_KEY,
-          "X-Goog-FieldMask":
-            "places.id,places.displayName,places.formattedAddress,places.rating,places.userRatingCount,places.nationalPhoneNumber,places.currentOpeningHours,places.googleMapsUri",
-        },
-        body: JSON.stringify({
-          textQuery: searchQuery,
-          maxResultCount: 10,
-        }),
-      }
-    );
-
-    if (!placesResponse.ok) {
-      console.error("Google Places API error:", placesResponse.status);
-      return new Response(
-        JSON.stringify({
-          specialty: triage.specialty,
-          reason: triage.reason,
-          urgency: triage.urgency,
-          urgency_note: triage.urgency_note,
-          doctors: [],
-          fallback: true,
-        }),
-        { headers: { ...corsHeaders, "Content-Type": "application/json" } }
-      );
-    }
-
-    const placesData = await placesResponse.json();
-    const places = placesData.places || [];
-
-    const doctors = places.map((place: any) => {
-      const name = place.displayName?.text || "Unknown";
-      return {
-        placeId: place.id || "",
-        name,
-        address: place.formattedAddress || "",
-        rating: place.rating ?? null,
-        reviewCount: place.userRatingCount ?? 0,
-        phone: place.nationalPhoneNumber || "",
-        googleMapsUrl:
-          place.googleMapsUri ||
-          `https://www.google.com/maps/place/?q=place_id:${place.id}`,
-        healthgradesUrl: `https://www.healthgrades.com/search?what=${encodeURIComponent(name)}`,
-        openNow: place.currentOpeningHours?.openNow ?? null,
-      };
-    });
+        name: "Healthgrades",
+        description: "Browse doctors with detailed patient reviews, credentials, and ratings.",
+        url: safeZip
+          ? `https://www.healthgrades.com/usearch?what=${enc(triage.specialty)}&where=${enc(safeZip)}`
+          : `https://www.healthgrades.com/usearch?what=${enc(triage.specialty)}`,
+      },
+      {
+        name: "Zocdoc",
+        description: "Book in-person or video appointments online and filter by insurance.",
+        url: safeZip
+          ? `https://www.zocdoc.com/search?address=${enc(safeZip)}&search_query=${enc(triage.specialty)}`
+          : `https://www.zocdoc.com/search?search_query=${enc(triage.specialty)}`,
+      },
+      {
+        name: "Google Maps",
+        description: "See nearby offices with hours, phone numbers, and directions.",
+        url: `https://www.google.com/maps/search/${enc(queryText)}`,
+      },
+      {
+        name: "Vitals",
+        description: "Compare doctors by experience, education, and patient ratings.",
+        url: safeZip
+          ? `https://www.vitals.com/search?type=Specialty&query=${enc(triage.specialty)}&geo=${enc(safeZip)}`
+          : `https://www.vitals.com/search?type=Specialty&query=${enc(triage.specialty)}`,
+      },
+    ];
 
     return new Response(
       JSON.stringify({
@@ -170,7 +133,9 @@ serve(async (req) => {
         reason: triage.reason,
         urgency: triage.urgency,
         urgency_note: triage.urgency_note,
-        doctors,
+        doctors: [],
+        searchLinks,
+        zipCode: safeZip,
         fallback: false,
       }),
       { headers: { ...corsHeaders, "Content-Type": "application/json" } }
