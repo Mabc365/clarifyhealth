@@ -15,6 +15,7 @@ import { Plus, CalendarIcon, Upload, FileAudio, Loader2, Trash2 } from "lucide-r
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import PageMeta from "@/components/PageMeta";
+import MarkdownAnswer from "@/components/MarkdownAnswer";
 
 const SPECIALTIES = [
   "Primary Care", "Cardiology", "Dermatology", "Endocrinology",
@@ -90,6 +91,8 @@ const MyNotesPage = () => {
     setSubmitting(true);
 
     let recordingUrl: string | null = null;
+    let audioBase64: string | null = null;
+    let audioMimeType: string | null = null;
     if (audioFile) {
       const ext = audioFile.name.split(".").pop();
       const path = `${user.id}/${crypto.randomUUID()}.${ext}`;
@@ -100,9 +103,26 @@ const MyNotesPage = () => {
         const { data: urlData } = supabase.storage.from("recordings").getPublicUrl(path);
         recordingUrl = urlData.publicUrl;
       }
+      // Read audio for transcription
+      try {
+        const arrayBuffer = await audioFile.arrayBuffer();
+        const bytes = new Uint8Array(arrayBuffer);
+        let binary = "";
+        const CHUNK = 8192;
+        for (let i = 0; i < bytes.length; i += CHUNK) {
+          binary += String.fromCharCode.apply(
+            null,
+            Array.from(bytes.subarray(i, Math.min(i + CHUNK, bytes.length)))
+          );
+        }
+        audioBase64 = btoa(binary);
+        audioMimeType = audioFile.type || "audio/mpeg";
+      } catch (err) {
+        console.error("Audio read error:", err);
+      }
     }
 
-    const { error } = await supabase.from("visit_notes").insert({
+    const { data: inserted, error } = await supabase.from("visit_notes").insert({
       user_id: user.id,
       doctor_name: doctorName.trim(),
       visit_date: format(visitDate, "yyyy-MM-dd"),
@@ -110,14 +130,45 @@ const MyNotesPage = () => {
       raw_notes: rawNotes || null,
       recording_url: recordingUrl,
       language: lang,
-    });
+    }).select().single();
 
     setSubmitting(false);
     if (!error) {
       setModalOpen(false);
       resetForm();
       fetchNotes();
+
+      // Kick off transcription in background if we have audio
+      if (audioBase64 && inserted?.id) {
+        transcribeInBackground(inserted.id, audioBase64, audioMimeType || "audio/mpeg");
+      }
     }
+  };
+
+  const transcribeInBackground = async (
+    noteId: string,
+    audioBase64: string,
+    mimeType: string
+  ) => {
+    setProcessing(noteId);
+    try {
+      const { data, error } = await supabase.functions.invoke("transcribe-audio", {
+        body: { audioBase64, mimeType, language: lang },
+      });
+      if (!error && data?.answer) {
+        await supabase
+          .from("visit_notes")
+          .update({
+            ai_summary: data.answer.slice(0, 300),
+            ai_plain_english: data.answer,
+          })
+          .eq("id", noteId);
+        fetchNotes();
+      }
+    } catch (err) {
+      console.error("Transcription error:", err);
+    }
+    setProcessing(null);
   };
 
   const handleProcess = async (note: VisitNote) => {
@@ -349,7 +400,14 @@ const MyNotesPage = () => {
                       {note.ai_plain_english && (
                         <div className="mb-4 p-4 rounded-md" style={{ background: "hsl(var(--section-bg))" }}>
                           <p className="text-[11px] uppercase tracking-[1.2px] text-muted-foreground mb-2">AI Summary</p>
-                          <p className="text-[14px] text-foreground whitespace-pre-wrap">{note.ai_plain_english}</p>
+                          <MarkdownAnswer text={note.ai_plain_english} />
+                        </div>
+                      )}
+
+                      {processing === note.id && !note.ai_plain_english && (
+                        <div className="mb-4 flex items-center gap-2 text-[13px] text-muted-foreground">
+                          <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                          Transcribing and summarizing recording…
                         </div>
                       )}
 
