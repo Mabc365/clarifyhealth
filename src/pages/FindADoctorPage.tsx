@@ -31,6 +31,8 @@ interface SearchResult {
   urgency_note: string;
   doctors: Doctor[];
   fallback: boolean;
+  searchLinks?: { name: string; description: string; url: string }[];
+  zipCode?: string;
 }
 
 const QUICK_PILLS = [
