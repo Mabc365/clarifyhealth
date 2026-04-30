@@ -6,10 +6,16 @@ const corsHeaders = {
     "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
-const TRIAGE_SYSTEM_PROMPT = `You are a medical triage assistant at Clarify Health. A patient has described their symptoms or situation. Your job is to identify what type of doctor or specialist they most likely need. Return a JSON object only, no explanation:
+const TRIAGE_SYSTEM_PROMPT = `You are a medical triage assistant at Clarify Health. A patient has described their symptoms or situation. Your job is to identify what ONE type of doctor or specialist they most likely need.
+
+Return a JSON object only, no explanation. Rules:
+- "specialty" MUST be a SINGLE clean specialty name with NO slashes, NO "or", NO parentheses. Examples: "Cardiologist", "Primary Care Physician", "Endocrinologist", "Psychiatrist", "Dermatologist", "Emergency Medicine".
+- For life-threatening situations (chest pain + shortness of breath, stroke symptoms, severe bleeding, suicidal thoughts, anaphylaxis), set urgency to "urgent" and specialty to "Emergency Medicine".
+- "search_query" should be a short 2-4 word phrase optimized for directory search, e.g. "cardiologist", "primary care doctor", "endocrinologist".
+
 {
-  "specialty": "<e.g. Cardiologist, Primary Care, Endocrinologist>",
-  "specialty_code": "<Google Places API type, e.g. doctor, hospital>",
+  "specialty": "<single specialty>",
+  "search_query": "<short search phrase>",
   "reason": "<one plain-English sentence explaining why this specialty>",
   "urgency": "<routine | soon | urgent>",
   "urgency_note": "<one sentence on timing>"
@@ -74,7 +80,7 @@ serve(async (req) => {
 
     let triage: {
       specialty: string;
-      specialty_code: string;
+      search_query: string;
       reason: string;
       urgency: string;
       urgency_note: string;
@@ -85,17 +91,24 @@ serve(async (req) => {
     } catch {
       triage = {
         specialty: "Primary Care",
-        specialty_code: "doctor",
+        search_query: "primary care doctor",
         reason: "A primary care doctor can evaluate your symptoms and refer you to a specialist if needed.",
         urgency: "routine",
         urgency_note: "Schedule an appointment at your convenience.",
       };
     }
 
+    // Sanitize specialty: strip slashes, parens, "or" — Healthgrades/Zocdoc choke on compound terms
+    const cleanSpecialty = (triage.specialty || "Primary Care")
+      .split(/[\/\(]| or /i)[0]
+      .trim()
+      .slice(0, 60) || "Primary Care";
+    const searchQuery = (triage.search_query || cleanSpecialty).trim().slice(0, 60);
+
     // Step 2: Build curated search links to trusted directories (no Google Places API needed)
     const safeZip = zipCode ? zipCode.trim().slice(0, 5) : "";
     const locationSuffix = safeZip ? ` near ${safeZip}` : "";
-    const queryText = `${triage.specialty}${locationSuffix}`;
+    const queryText = `${searchQuery}${locationSuffix}`;
     const enc = encodeURIComponent;
 
     const searchLinks = [
@@ -103,15 +116,15 @@ serve(async (req) => {
         name: "Healthgrades",
         description: "Browse doctors with detailed patient reviews, credentials, and ratings.",
         url: safeZip
-          ? `https://www.healthgrades.com/usearch?what=${enc(triage.specialty)}&where=${enc(safeZip)}`
-          : `https://www.healthgrades.com/usearch?what=${enc(triage.specialty)}`,
+          ? `https://www.healthgrades.com/usearch?what=${enc(cleanSpecialty)}&where=${enc(safeZip)}`
+          : `https://www.healthgrades.com/usearch?what=${enc(cleanSpecialty)}`,
       },
       {
         name: "Zocdoc",
         description: "Book in-person or video appointments online and filter by insurance.",
         url: safeZip
-          ? `https://www.zocdoc.com/search?address=${enc(safeZip)}&search_query=${enc(triage.specialty)}`
-          : `https://www.zocdoc.com/search?search_query=${enc(triage.specialty)}`,
+          ? `https://www.zocdoc.com/search?address=${enc(safeZip)}&search_query=${enc(searchQuery)}`
+          : `https://www.zocdoc.com/search?search_query=${enc(searchQuery)}`,
       },
       {
         name: "Google Maps",
@@ -122,14 +135,14 @@ serve(async (req) => {
         name: "Vitals",
         description: "Compare doctors by experience, education, and patient ratings.",
         url: safeZip
-          ? `https://www.vitals.com/search?type=Specialty&query=${enc(triage.specialty)}&geo=${enc(safeZip)}`
-          : `https://www.vitals.com/search?type=Specialty&query=${enc(triage.specialty)}`,
+          ? `https://www.vitals.com/search?type=Specialty&query=${enc(cleanSpecialty)}&geo=${enc(safeZip)}`
+          : `https://www.vitals.com/search?type=Specialty&query=${enc(cleanSpecialty)}`,
       },
     ];
 
     return new Response(
       JSON.stringify({
-        specialty: triage.specialty,
+        specialty: cleanSpecialty,
         reason: triage.reason,
         urgency: triage.urgency,
         urgency_note: triage.urgency_note,
