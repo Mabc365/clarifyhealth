@@ -8,7 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import {
   MapPin, Search, Loader2, Phone, Star, ChevronDown, ChevronUp,
-  ExternalLink, LocateFixed, Clock, AlertTriangle,
+  ExternalLink, LocateFixed, Clock, AlertTriangle, PhoneCall,
 } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 
@@ -255,16 +255,34 @@ const FindADoctorPage = () => {
 
                 {/* Urgency banner */}
                 {result.urgency === "urgent" && (
-                  <div className="mb-6 p-4 rounded-md bg-red-50 border border-red-200">
+                  <div className="mb-6 p-5 rounded-md bg-red-50 border-2 border-red-300">
                     <div className="flex items-start gap-3">
-                      <AlertTriangle className="h-5 w-5 text-red-600 shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-[14px] font-semibold text-red-800">
-                          This may need prompt attention
+                      <AlertTriangle className="h-6 w-6 text-red-600 shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <p className="text-[15px] font-semibold text-red-900">
+                          This sounds urgent — get help now
                         </p>
-                        <p className="text-[13px] text-red-700 mt-1">
-                          {result.urgency_note} Please call your doctor or visit urgent care soon.
+                        <p className="text-[13px] text-red-800 mt-1 leading-relaxed">
+                          {result.urgency_note}
                         </p>
+                        <div className="mt-3 flex flex-wrap gap-2">
+                          <a
+                            href="tel:911"
+                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md bg-red-600 text-white text-[13px] font-semibold hover:bg-red-700 transition-colors"
+                          >
+                            <PhoneCall className="h-3.5 w-3.5" />
+                            Call 911
+                          </a>
+                          <a
+                            href="https://www.google.com/maps/search/emergency+room+near+me"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-md bg-white border border-red-300 text-red-800 text-[13px] font-semibold hover:bg-red-100 transition-colors"
+                          >
+                            <MapPin className="h-3.5 w-3.5" />
+                            Find nearest ER
+                          </a>
+                        </div>
                       </div>
                     </div>
                   </div>
