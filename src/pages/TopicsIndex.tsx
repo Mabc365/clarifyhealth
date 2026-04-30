@@ -30,49 +30,55 @@ const TopicsIndex = () => {
           },
         }}
       />
-      <div className="mx-auto max-w-[1100px]">
+      <div className="mx-auto max-w-[760px]">
         <div className="stagger-reveal">
-          <h1 className="text-[36px] font-semibold text-foreground md:text-[48px]">{t("topics.title")}</h1>
+          <div className="w-[60px] h-[3px] bg-primary mb-6" />
+          <h1
+            className="text-[36px] md:text-[48px] font-medium leading-[1.1] text-foreground"
+            style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.5px" }}
+          >
+            {t("topics.title")}
+          </h1>
           <p
-            className="mt-4 max-w-[680px] text-[16px] leading-relaxed text-muted-foreground md:text-[18px]"
+            className="mt-4 text-[16px] leading-relaxed text-muted-foreground"
             style={{ fontFamily: "'DM Sans', sans-serif" }}
           >
             {t("topics.sub")}
           </p>
         </div>
 
-        <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 stagger-reveal" style={{ gap: "16px" }}>
-          {topics.map((topic) => (
-            <Link
-              key={topic.id}
-              to={`/topics/${topic.id}`}
-              className="group flex flex-col justify-between p-8 transition-all hover:border-primary/60"
-              style={{
-                border: "0.5px solid hsl(var(--border))",
-                borderRadius: "12px",
-              }}
-            >
-              <div>
-                <h2
-                  className="text-[22px] font-medium text-foreground"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  {topic.title}
-                </h2>
-                <p
-                  className="mt-2 text-[14px] leading-relaxed text-muted-foreground"
+        <ul className="mt-12 stagger-reveal" style={{ borderTop: "0.5px solid hsl(var(--border))" }}>
+          {topics.map((topic, i) => (
+            <li key={topic.id} style={{ borderBottom: "0.5px solid hsl(var(--border))" }}>
+              <Link
+                to={`/topics/${topic.id}`}
+                className="group flex items-center gap-6 py-6 transition-colors hover:bg-[hsl(var(--section-bg))] -mx-4 px-4 rounded-md"
+              >
+                <span
+                  className="text-[12px] tabular-nums text-muted-foreground w-6 shrink-0"
                   style={{ fontFamily: "'DM Sans', sans-serif" }}
                 >
-                  {topic.description}
-                </p>
-              </div>
-              <div className="mt-6 flex items-center text-[13px] text-muted-foreground group-hover:text-primary transition-colors" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-                <span className="mr-2">{t("home.readMore")}</span>
-                <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
-              </div>
-            </Link>
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div className="flex-1 min-w-0">
+                  <h2
+                    className="text-[20px] md:text-[22px] font-medium text-foreground group-hover:text-primary transition-colors"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    {topic.title}
+                  </h2>
+                  <p
+                    className="mt-1 text-[14px] leading-relaxed text-muted-foreground line-clamp-2"
+                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  >
+                    {topic.description}
+                  </p>
+                </div>
+                <ArrowRight className="h-4 w-4 text-muted-foreground shrink-0 transition-all duration-200 group-hover:text-primary group-hover:translate-x-1" />
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </main>
   );
