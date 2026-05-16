@@ -235,6 +235,9 @@ const Header = () => {
 
   const navLinks = [
     { to: "/topics", label: t("nav.topics") },
+    { to: "/translate", label: "Translate" },
+    { to: "/symptoms", label: "Symptoms" },
+    { to: "/glossary", label: "Glossary" },
     { to: "/find-a-doctor", label: t("nav.findDoctor") },
     { to: "/ask", label: t("nav.ask") },
     { to: "/about", label: t("nav.about") },
