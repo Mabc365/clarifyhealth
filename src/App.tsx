@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, Navigate } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -10,24 +10,26 @@ import Footer from "@/components/Footer";
 
 import FloatingAskButton from "@/components/FloatingAskButton";
 import Index from "./pages/Index";
-import TopicsIndex from "./pages/TopicsIndex";
-import TopicPage from "./pages/TopicPage";
-import AskPage from "./pages/AskPage";
-import AboutPage from "./pages/AboutPage";
-import HolisticTopicPage from "./pages/HolisticTopicPage";
-import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
-import MyNotesPage from "./pages/MyNotesPage";
-import FindADoctorPage from "./pages/FindADoctorPage";
-import WellnessPlanPage from "./pages/WellnessPlanPage";
-import PrivacyPage from "./pages/PrivacyPage";
-import TermsPage from "./pages/TermsPage";
-import DisclaimerPage from "./pages/DisclaimerPage";
-import NotFound from "./pages/NotFound";
-import JargonTranslatorPage from "./pages/JargonTranslatorPage";
-import SymptomExplainerPage from "./pages/SymptomExplainerPage";
-import GlossaryPage from "./pages/GlossaryPage";
-import ArticlePage from "./pages/ArticlePage";
+const TopicsIndex = lazy(() => import("./pages/TopicsIndex"));
+const TopicPage = lazy(() => import("./pages/TopicPage"));
+const AskPage = lazy(() => import("./pages/AskPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
+const HolisticTopicPage = lazy(() => import("./pages/HolisticTopicPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const SignupPage = lazy(() => import("./pages/SignupPage"));
+const MyNotesPage = lazy(() => import("./pages/MyNotesPage"));
+const FindADoctorPage = lazy(() => import("./pages/FindADoctorPage"));
+const WellnessPlanPage = lazy(() => import("./pages/WellnessPlanPage"));
+const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
+const TermsPage = lazy(() => import("./pages/TermsPage"));
+const DisclaimerPage = lazy(() => import("./pages/DisclaimerPage"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const JargonTranslatorPage = lazy(() => import("./pages/JargonTranslatorPage"));
+const SymptomExplainerPage = lazy(() => import("./pages/SymptomExplainerPage"));
+const GlossaryPage = lazy(() => import("./pages/GlossaryPage"));
+const ArticlePage = lazy(() => import("./pages/ArticlePage"));
+const EmbedArticlePage = lazy(() => import("./pages/EmbedArticlePage"));
+const NewsletterConfirmPage = lazy(() => import("./pages/NewsletterConfirmPage"));
 
 const queryClient = new QueryClient();
 
@@ -39,6 +41,33 @@ const ScrollToTop = () => {
   return null;
 };
 
+const SUPABASE_PROJECT = import.meta.env.VITE_SUPABASE_PROJECT_ID;
+const RssRedirect = () => {
+  useEffect(() => {
+    window.location.replace(`https://${SUPABASE_PROJECT}.functions.supabase.co/rss-feed`);
+  }, []);
+  return <p className="pt-32 text-center text-sm text-muted-foreground">Redirecting to RSS feed…</p>;
+};
+
+const Chrome = ({ children }: { children: React.ReactNode }) => {
+  const { pathname } = useLocation();
+  const isEmbed = pathname.startsWith("/embed/");
+  if (isEmbed) return <>{children}</>;
+  return (
+    <>
+      <a href="#main-content" className="skip-link">Skip to content</a>
+      <Header />
+      <div id="main-content" className="animate-page-enter">{children}</div>
+      <Footer />
+      <FloatingAskButton />
+    </>
+  );
+};
+
+const PageFallback = () => (
+  <div className="min-h-[60vh] flex items-center justify-center text-sm text-muted-foreground" aria-busy="true">Loading…</div>
+);
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <LanguageProvider>
@@ -47,10 +76,9 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
-          <a href="#main-content" className="skip-link">Skip to content</a>
-          <Header />
-          <div id="main-content" className="animate-page-enter">
-            <Routes>
+          <Chrome>
+            <Suspense fallback={<PageFallback />}>
+              <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/topics" element={<TopicsIndex />} />
               <Route path="/topics/:id" element={<TopicPage />} />
@@ -69,11 +97,13 @@ const App = () => (
               <Route path="/symptoms" element={<SymptomExplainerPage />} />
               <Route path="/glossary" element={<GlossaryPage />} />
               <Route path="/article/:slug" element={<ArticlePage />} />
+              <Route path="/embed/article/:slug" element={<EmbedArticlePage />} />
+              <Route path="/newsletter/confirm" element={<NewsletterConfirmPage />} />
+              <Route path="/rss" element={<RssRedirect />} />
               <Route path="*" element={<NotFound />} />
-            </Routes>
-          </div>
-          <Footer />
-          <FloatingAskButton />
+              </Routes>
+            </Suspense>
+          </Chrome>
         </BrowserRouter>
       </TooltipProvider>
     </LanguageProvider>
