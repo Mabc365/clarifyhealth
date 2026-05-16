@@ -379,47 +379,65 @@ export type Database = {
       }
       visit_notes: {
         Row: {
+          ai_follow_up_questions: Json | null
           ai_holistic: string | null
           ai_plain_english: string | null
           ai_questions: Json | null
+          ai_structured: Json | null
           ai_summary: string | null
+          ai_transcript: Json | null
           created_at: string
           doctor_name: string
+          duration_seconds: number | null
           id: string
           language: string | null
+          processing_status: string | null
           raw_notes: string | null
           recording_url: string | null
           specialty: string | null
+          tags: string[]
           user_id: string
           visit_date: string
         }
         Insert: {
+          ai_follow_up_questions?: Json | null
           ai_holistic?: string | null
           ai_plain_english?: string | null
           ai_questions?: Json | null
+          ai_structured?: Json | null
           ai_summary?: string | null
+          ai_transcript?: Json | null
           created_at?: string
           doctor_name: string
+          duration_seconds?: number | null
           id?: string
           language?: string | null
+          processing_status?: string | null
           raw_notes?: string | null
           recording_url?: string | null
           specialty?: string | null
+          tags?: string[]
           user_id: string
           visit_date?: string
         }
         Update: {
+          ai_follow_up_questions?: Json | null
           ai_holistic?: string | null
           ai_plain_english?: string | null
           ai_questions?: Json | null
+          ai_structured?: Json | null
           ai_summary?: string | null
+          ai_transcript?: Json | null
           created_at?: string
           doctor_name?: string
+          duration_seconds?: number | null
           id?: string
           language?: string | null
+          processing_status?: string | null
           raw_notes?: string | null
           recording_url?: string | null
           specialty?: string | null
+          tags?: string[]
           user_id?: string
           visit_date?: string
         }
