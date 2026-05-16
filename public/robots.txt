@@ -14,4 +14,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://clarifyhealth.lovable.app/sitemap.xml
+Sitemap: https://clarifyhealth.co/sitemap.xml

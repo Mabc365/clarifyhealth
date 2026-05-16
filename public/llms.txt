@@ -1,0 +1,57 @@
+# Clarify Health
+
+> Clear, trustworthy health education written in plain English. No jargon, no confusion — just answers about conditions, symptoms, and treatments.
+
+Clarify Health rewrites complex medical information so anyone can understand it. Each topic includes a plain-English definition, what to ask your doctor, and cited sources. AI tools help users ask follow-up questions, decode diagnoses, build wellness plans, find doctors, and transcribe medical notes. This is educational information only, not medical advice.
+
+## Pages
+
+- [Home](/): Overview, search, and featured health topics.
+- [Topics](/topics): Browse all health conditions explained in plain English.
+- [Ask](/ask): AI Q&A for health questions and diagnosis decoding.
+- [Find a Doctor](/find-a-doctor): AI-triaged specialist recommendations and directory links.
+- [My Notes](/my-notes): Upload audio or text from a visit and get a clear summary.
+- [Wellness Plan](/wellness-plan): Personalized lifestyle plans grounded in evidence.
+- [About](/about): Mission and the team behind Clarify Health.
+
+## Topics
+
+- [Type 2 Diabetes](/topics/type-2-diabetes)
+- [High Blood Pressure](/topics/high-blood-pressure)
+- [High Cholesterol](/topics/high-cholesterol)
+- [Asthma](/topics/asthma)
+- [Anxiety](/topics/anxiety)
+- [Depression](/topics/depression)
+- [Heart Disease](/topics/heart-disease)
+- [Kidney Disease](/topics/kidney-disease)
+- [Thyroid Disease](/topics/thyroid-disease)
+- [Acid Reflux](/topics/acid-reflux)
+- [Stroke](/topics/stroke)
+- [COPD](/topics/copd)
+- [Arthritis](/topics/arthritis)
+- [Osteoporosis](/topics/osteoporosis)
+- [Sleep Apnea](/topics/sleep-apnea)
+- [IBS](/topics/ibs)
+- [Eczema & Psoriasis](/topics/eczema-psoriasis)
+- [Migraines](/topics/migraines)
+- [Anemia](/topics/anemia)
+- [ADHD](/topics/adhd)
+- [Chronic Kidney Disease](/topics/chronic-kidney-disease)
+- [Pre-Diabetes](/topics/pre-diabetes)
+
+## Holistic
+
+- [Anti-Inflammatory Foods](/holistic/anti-inflammatory-foods)
+- [Stress Reduction](/holistic/stress-reduction)
+- [Sleep Hygiene](/holistic/sleep-hygiene)
+- [Herbal Supplements](/holistic/herbal-supplements)
+- [Exercise as Medicine](/holistic/exercise-as-medicine)
+- [Gut Health](/holistic/gut-health)
+
+## Optional
+
+- [Privacy Policy](/privacy)
+- [Terms of Use](/terms)
+- [Medical Disclaimer](/disclaimer)
+- [Sign In](/login)
+- [Sign Up](/signup)
