@@ -76,6 +76,23 @@ const MyNotesPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const pollRef = useRef<number | null>(null);
+  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
+
+  // Extract storage path from either a stored path or a legacy public URL
+  const extractRecordingPath = (val: string | null): string | null => {
+    if (!val) return null;
+    const marker = "/recordings/";
+    const idx = val.indexOf(marker);
+    if (idx >= 0) return val.substring(idx + marker.length);
+    return val;
+  };
+
+  const getSignedRecordingUrl = async (val: string | null): Promise<string | null> => {
+    const path = extractRecordingPath(val);
+    if (!path) return null;
+    const { data } = await supabase.storage.from("recordings").createSignedUrl(path, 3600);
+    return data?.signedUrl ?? null;
+  };
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/login");
@@ -101,7 +118,19 @@ const MyNotesPage = () => {
     const { data } = await supabase
       .from("visit_notes").select("*")
       .order("visit_date", { ascending: false });
-    setNotes((data as unknown as VisitNote[]) || []);
+    const list = (data as unknown as VisitNote[]) || [];
+    setNotes(list);
+    // Generate signed URLs for any recordings we don't yet have a fresh URL for
+    const next: Record<string, string> = { ...signedUrls };
+    await Promise.all(
+      list.map(async (n) => {
+        if (n.recording_url && !next[n.id]) {
+          const url = await getSignedRecordingUrl(n.recording_url);
+          if (url) next[n.id] = url;
+        }
+      })
+    );
+    setSignedUrls(next);
     setLoadingNotes(false);
   };
 
@@ -143,8 +172,8 @@ const MyNotesPage = () => {
       const path = `${user.id}/${crypto.randomUUID()}.${ext}`;
       const { error: uploadError } = await supabase.storage.from("recordings").upload(path, audioFile);
       if (!uploadError) {
-        const { data: urlData } = supabase.storage.from("recordings").getPublicUrl(path);
-        recordingUrl = urlData.publicUrl;
+        // Store the path; we generate short-lived signed URLs at read time
+        recordingUrl = path;
       }
       try {
         const buf = await audioFile.arrayBuffer();
