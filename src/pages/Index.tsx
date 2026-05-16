@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Search, Leaf } from "lucide-react";
+import { ArrowRight, Search, Leaf, ShieldCheck, Stethoscope, Sparkles } from "lucide-react";
 import { getTopics } from "@/data/topics";
 import { getHolisticTopics } from "@/data/holistic-topics";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useReveal } from "@/hooks/use-reveal";
 import PageMeta from "@/components/PageMeta";
+import HeroIllustration from "@/components/HeroIllustration";
 
 const Index = () => {
   const [query, setQuery] = useState("");
@@ -82,87 +83,132 @@ const Index = () => {
         }}
       />
 
-      {/* Hero — full viewport */}
-      <section className="flex min-h-screen flex-col justify-center px-6">
+      {/* Hero — full viewport, two-column on desktop */}
+      <section className="relative flex min-h-[100vh] items-center overflow-hidden px-6 pt-28 pb-20 md:pt-32">
+        {/* Organic blob backdrops */}
+        <div className="blob" style={{ background: "hsl(var(--secondary))", width: 520, height: 520, top: -120, left: -120 }} />
+        <div className="blob" style={{ background: "hsl(var(--accent) / 0.28)", width: 380, height: 380, bottom: -100, right: -80, animationDelay: "-9s" }} />
+
         <div
           ref={heroReveal.ref}
-          className={`mx-auto w-full max-w-[1100px] pr-8 md:pr-[200px] ${heroReveal.visible ? "stagger-reveal" : ""}`}
+          className={`relative z-10 mx-auto grid w-full max-w-[1180px] grid-cols-1 items-center gap-12 md:grid-cols-[1.05fr,0.95fr] md:gap-16 ${heroReveal.visible ? "stagger-reveal" : ""}`}
           style={{ opacity: heroReveal.visible ? undefined : 0 }}
         >
-          {/* Editorial rule */}
-          <div className="w-[60px] h-[1px] bg-primary mb-8" />
+          <div>
+            <span
+              className="inline-flex items-center gap-2 rounded-full bg-secondary px-3.5 py-1.5 text-[12px] font-medium text-foreground"
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
+              <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+              Plain-English health, for real humans
+            </span>
 
-          <h1
-            className="text-[44px] leading-[1.1] font-semibold text-foreground md:text-[72px]"
-            style={{ letterSpacing: "-1px" }}
-          >
-            {t("home.hero.line1")}
-            <br />
-            {t("home.hero.line2")}
-            <br />
-            {t("home.hero.line3")}
-          </h1>
-          <p
-            className="mt-6 max-w-[560px] text-[16px] leading-relaxed text-muted-foreground md:text-[18px]"
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
-          >
-            {t("home.hero.sub")}
-          </p>
+            <h1
+              className="mt-6 text-[44px] font-semibold text-foreground md:text-[72px]"
+              style={{ fontFamily: "Fraunces, serif", letterSpacing: "-0.025em", lineHeight: 1.05 }}
+            >
+              Your health.{" "}
+              <span className="hand-underline text-primary">Finally,</span>
+              <br />
+              in plain English.
+            </h1>
 
-          {/* Search bar */}
-          <form onSubmit={handleSearch} className="mt-10 max-w-[560px]">
-            <div className="flex gap-0" style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "4px" }}>
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <p
+              className="mt-7 max-w-[560px] text-[18px] text-foreground/80 md:text-[19px]"
+              style={{ fontFamily: "Inter, sans-serif", lineHeight: 1.65 }}
+            >
+              Skip the jargon. Get clear, doctor-reviewed answers to the
+              questions you'd actually ask — in language a real human uses.
+            </p>
+
+            {/* CTAs */}
+            <div className="mt-9 flex flex-wrap items-center gap-3">
+              <button
+                onClick={() => navigate("/ask")}
+                className="group inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3.5 text-[15px] font-semibold text-primary-foreground shadow-card transition-all hover:bg-primary/90 hover:shadow-lg press-scale"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                Ask a health question
+                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </button>
+              <Link
+                to="/topics"
+                className="inline-flex items-center gap-2 rounded-full border border-foreground/15 bg-background/60 px-6 py-3.5 text-[15px] font-semibold text-foreground backdrop-blur transition-all hover:bg-background hover:border-foreground/30 press-scale"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                Browse topics
+              </Link>
+            </div>
+
+            {/* Inline secondary search */}
+            <form onSubmit={handleSearch} className="mt-7 max-w-[520px]" role="search" aria-label="Search health topics">
+              <label htmlFor="hero-search" className="sr-only">Search a condition or ask a question</label>
+              <div
+                className="flex items-center gap-2 bg-background/80 backdrop-blur px-3 py-2 transition-all focus-within:border-primary"
+                style={{ border: "1px solid hsl(var(--border))", borderRadius: "999px", boxShadow: "var(--shadow-soft)" }}
+              >
+                <Search className="ml-2 h-4 w-4 text-muted-foreground" aria-hidden="true" />
                 <input
+                  id="hero-search"
                   type="text"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder={t("home.search.placeholder")}
-                  className="h-12 w-full bg-transparent pl-11 pr-4 text-[15px] placeholder:text-muted-foreground focus:outline-none focus-glow transition-shadow"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  placeholder="Try “What does high LDL mean?”"
+                  className="h-10 w-full bg-transparent text-[15px] text-foreground placeholder:text-muted-foreground focus:outline-none"
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 />
+                <button
+                  type="submit"
+                  className="rounded-full bg-foreground px-4 py-2 text-[13px] font-semibold text-background hover:opacity-90 transition-all press-scale"
+                  style={{ fontFamily: "Inter, sans-serif" }}
+                >
+                  Search
+                </button>
               </div>
-              <button
-                type="submit"
-                className="h-12 px-6 text-[14px] font-medium text-primary-foreground bg-primary hover:bg-primary/90 transition-all press-scale"
-                style={{ fontFamily: "'DM Sans', sans-serif", borderRadius: "0 3px 3px 0" }}
-              >
-                {t("home.search.button")}
-              </button>
-            </div>
-          </form>
+            </form>
+
+            {/* Trust strip */}
+            <ul
+              className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-muted-foreground"
+              style={{ fontFamily: "Inter, sans-serif" }}
+              aria-label="Trust indicators"
+            >
+              <li className="flex items-center gap-1.5"><Stethoscope className="h-3.5 w-3.5 text-primary" aria-hidden="true" /> Reviewed by clinicians</li>
+              <li className="flex items-center gap-1.5"><ShieldCheck className="h-3.5 w-3.5 text-primary" aria-hidden="true" /> Plain-English certified</li>
+              <li className="flex items-center gap-1.5"><Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden="true" /> No ads, no data selling</li>
+            </ul>
+          </div>
+
+          {/* Illustration column */}
+          <div className="flex items-center justify-center md:justify-end">
+            <HeroIllustration />
+          </div>
         </div>
       </section>
 
       {/* Stats strip */}
-      <section className="grain-bg px-6 py-[80px] md:py-[144px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
+      <section className="relative grain-bg px-6 py-[80px] md:py-[120px] overflow-hidden" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
+        <div className="blob" style={{ background: "hsl(var(--accent) / 0.18)", width: 340, height: 340, top: -60, right: -80 }} />
         <div
           ref={statsReveal.ref}
           className="mx-auto max-w-[1100px]"
           style={{ opacity: statsReveal.visible ? undefined : 0 }}
         >
-          <div className={`grid grid-cols-1 md:grid-cols-3 ${statsReveal.visible ? "stagger-reveal" : ""}`}>
+          <div className={`relative grid grid-cols-1 md:grid-cols-3 gap-6 ${statsReveal.visible ? "stagger-reveal" : ""}`}>
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className={`flex flex-col items-center py-10 md:py-0 ${
-                  i < stats.length - 1 ? "md:border-r" : ""
-                }`}
-                style={{
-                  borderColor: "hsl(var(--border))",
-                  borderWidth: i < stats.length - 1 ? "0 0.5px 0 0" : "0",
-                }}
+                className="card-soft flex flex-col items-center px-6 py-10 text-center"
               >
                 <span
                   className={`${stat.size} font-semibold text-primary`}
-                  style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-1px" }}
+                  style={{ fontFamily: "Fraunces, serif", letterSpacing: "-0.03em" }}
                 >
                   {stat.value}
                 </span>
                 <span
-                  className="mt-3 max-w-[240px] text-center text-[14px] leading-snug text-foreground"
-                  style={{ fontFamily: "'DM Sans', sans-serif" }}
+                  className="mt-3 max-w-[260px] text-[15px] leading-relaxed text-foreground/80"
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   {stat.label}
                 </span>
@@ -179,45 +225,46 @@ const Index = () => {
       </section>
 
       {/* Topics grid */}
-      <section className="px-6 py-[80px] md:py-[144px]">
+      <section className="relative px-6 py-[80px] md:py-[120px] overflow-hidden">
+        <div className="blob" style={{ background: "hsl(var(--secondary))", width: 420, height: 420, top: 40, left: -160 }} />
         <div
           ref={topicsReveal.ref}
-          className="mx-auto max-w-[1100px]"
+          className="relative mx-auto max-w-[1180px]"
           style={{ opacity: topicsReveal.visible ? undefined : 0 }}
         >
           <h2
-            className={`mb-14 text-[32px] font-semibold text-foreground md:text-[40px] ${topicsReveal.visible ? "animate-fade-in" : ""}`}
+            className={`mb-3 text-[34px] font-semibold text-foreground md:text-[44px] ${topicsReveal.visible ? "animate-fade-in" : ""}`}
+            style={{ fontFamily: "Fraunces, serif" }}
           >
             {t("home.explore")}
           </h2>
-          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-start ${topicsReveal.visible ? "stagger-reveal" : ""}`} style={{ gap: "16px" }}>
+          <p className="mb-12 max-w-[560px] text-[17px] text-muted-foreground" style={{ fontFamily: "Inter, sans-serif" }}>
+            Common conditions, decoded. Each one written like a friend who happens to have a medical degree.
+          </p>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-stretch gap-5 ${topicsReveal.visible ? "stagger-reveal" : ""}`}>
             {topics.map((topic) => (
               <Link
                 key={topic.id}
                 to={`/topics/${topic.id}`}
-                className="group flex flex-col p-8 transition-all hover:border-primary/60"
-                style={{
-                  border: "0.5px solid hsl(var(--border))",
-                  borderRadius: "12px",
-                }}
+                className="card-soft group flex flex-col p-7"
               >
                 <div>
                   <h3
-                    className="text-[22px] font-medium text-foreground"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="text-[22px] font-semibold text-foreground"
+                    style={{ fontFamily: "Fraunces, serif", letterSpacing: "-0.015em" }}
                   >
                     {topic.title}
                   </h3>
                   <p
-                    className="mt-2 text-[14px] leading-relaxed text-muted-foreground"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    className="mt-2 text-[15px] leading-relaxed text-muted-foreground"
+                    style={{ fontFamily: "Inter, sans-serif" }}
                   >
                     {topic.description}
                   </p>
                 </div>
                 <div
-                  className="mt-6 flex items-center text-muted-foreground group-hover:text-primary transition-colors"
-                  style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px", textTransform: "uppercase" }}
+                  className="mt-auto pt-6 flex items-center text-primary"
+                  style={{ fontFamily: "Inter, sans-serif", letterSpacing: "0.04em", fontSize: "13px", fontWeight: 600 }}
                 >
                   <span className="mr-2">{t("home.readMore")}</span>
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
@@ -229,61 +276,58 @@ const Index = () => {
       </section>
 
       {/* Holistic & Natural Health section */}
-      <section className="grain-bg px-6 py-[80px] md:py-[144px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
+      <section className="relative grain-bg px-6 py-[80px] md:py-[120px] overflow-hidden" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
+        <div className="blob" style={{ background: "hsl(var(--accent) / 0.22)", width: 360, height: 360, bottom: -80, right: -100 }} />
         <div
           ref={holisticReveal.ref}
-          className="mx-auto max-w-[1100px]"
+          className="relative mx-auto max-w-[1180px]"
           style={{ opacity: holisticReveal.visible ? undefined : 0 }}
         >
           <div className={`flex items-center gap-3 mb-4 ${holisticReveal.visible ? "animate-fade-in" : ""}`}>
             <Leaf className="h-5 w-5 text-primary" />
             <span
               className="font-semibold uppercase text-primary"
-              style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px" }}
+              style={{ fontFamily: "Inter, sans-serif", letterSpacing: "0.14em", fontSize: "11px" }}
             >
               {t("home.holistic.label")}
             </span>
           </div>
           <h2
-            className={`mb-4 text-[32px] font-semibold text-foreground md:text-[40px] ${holisticReveal.visible ? "animate-fade-in" : ""}`}
+            className={`mb-4 text-[34px] font-semibold text-foreground md:text-[44px] ${holisticReveal.visible ? "animate-fade-in" : ""}`}
+            style={{ fontFamily: "Fraunces, serif" }}
           >
             {t("home.holistic.title")}
           </h2>
           <p
-            className={`mb-14 max-w-[600px] text-[16px] leading-relaxed text-muted-foreground ${holisticReveal.visible ? "animate-fade-in" : ""}`}
-            style={{ fontFamily: "'DM Sans', sans-serif" }}
+            className={`mb-12 max-w-[600px] text-[17px] leading-relaxed text-muted-foreground ${holisticReveal.visible ? "animate-fade-in" : ""}`}
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             {t("home.holistic.sub")}
           </p>
-          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-start ${holisticReveal.visible ? "stagger-reveal" : ""}`} style={{ gap: "16px" }}>
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 items-stretch gap-5 ${holisticReveal.visible ? "stagger-reveal" : ""}`}>
             {holisticTopics.map((topic) => (
               <Link
                 key={topic.id}
                 to={`/holistic/${topic.id}`}
-                className="group flex flex-col p-8 transition-all hover:border-primary/60"
-                style={{
-                  border: "0.5px solid hsl(var(--border))",
-                  borderRadius: "12px",
-                  backgroundColor: "hsl(var(--background))",
-                }}
+                className="card-soft group flex flex-col p-7"
               >
                 <div>
                   <h3
-                    className="text-[22px] font-medium text-foreground"
-                    style={{ fontFamily: "'Playfair Display', serif" }}
+                    className="text-[22px] font-semibold text-foreground"
+                    style={{ fontFamily: "Fraunces, serif", letterSpacing: "-0.015em" }}
                   >
                     {topic.title}
                   </h3>
                   <p
-                    className="mt-2 text-[14px] leading-relaxed text-muted-foreground"
-                    style={{ fontFamily: "'DM Sans', sans-serif" }}
+                    className="mt-2 text-[15px] leading-relaxed text-muted-foreground"
+                    style={{ fontFamily: "Inter, sans-serif" }}
                   >
                     {topic.description}
                   </p>
                 </div>
                 <div
-                  className="mt-6 flex items-center text-muted-foreground group-hover:text-primary transition-colors"
-                  style={{ fontFamily: "'DM Sans', sans-serif", letterSpacing: "1.2px", fontSize: "11px", textTransform: "uppercase" }}
+                  className="mt-auto pt-6 flex items-center text-primary"
+                  style={{ fontFamily: "Inter, sans-serif", letterSpacing: "0.04em", fontSize: "13px", fontWeight: 600 }}
                 >
                   <span className="mr-2">{t("home.readMore")}</span>
                   <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />

@@ -43,8 +43,9 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <ScrollToTop />
+          <a href="#main-content" className="skip-link">Skip to content</a>
           <Header />
-          <div className="animate-page-enter">
+          <div id="main-content" className="animate-page-enter">
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/topics" element={<TopicsIndex />} />

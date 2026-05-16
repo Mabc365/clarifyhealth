@@ -48,6 +48,7 @@ export default {
           foreground: "hsl(var(--card-foreground))",
         },
         "section-bg": "hsl(var(--section-bg))",
+        "card-surface": "hsl(var(--card-surface))",
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -60,9 +61,19 @@ export default {
         },
       },
       borderRadius: {
+        "2xl": "calc(var(--radius) + 4px)",
+        xl: "var(--radius)",
         lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        md: "calc(var(--radius) - 6px)",
+        sm: "calc(var(--radius) - 10px)",
+      },
+      fontFamily: {
+        serif: ["Fraunces", "Playfair Display", "Georgia", "serif"],
+        sans: ["Inter", "DM Sans", "ui-sans-serif", "system-ui"],
+      },
+      boxShadow: {
+        soft: "var(--shadow-soft)",
+        card: "var(--shadow-card)",
       },
       keyframes: {
         "accordion-down": {
