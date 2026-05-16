@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
+import HeroIllustration from "@/components/HeroIllustration";
 
 const Index = () => {
   return (
@@ -11,30 +12,35 @@ const Index = () => {
         canonical="/"
       />
 
-      {/* 1. Hero — headline + subhead + ONE button */}
-      <section className="px-6 pt-40 pb-24 md:pt-48 md:pb-32">
-        <div className="mx-auto max-w-[680px] text-center">
-          <h1
-            className="text-[44px] md:text-[64px] font-medium text-foreground"
-            style={{ fontFamily: "Fraunces, serif", letterSpacing: "-0.02em", lineHeight: 1.1 }}
-          >
-            Health information, in plain English.
-          </h1>
-          <p
-            className="mx-auto mt-6 max-w-[520px] text-[17px] text-foreground/75"
-            style={{ fontFamily: "Inter, sans-serif", lineHeight: 1.7 }}
-          >
-            Skip the jargon. Get clear answers to common health questions, reviewed by clinicians.
-          </p>
-          <div className="mt-10">
-            <Link
-              to="/ask"
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-[15px] font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-              style={{ fontFamily: "Inter, sans-serif" }}
+      {/* 1. Hero — headline + subhead + ONE button + illustration */}
+      <section className="px-6 pt-32 pb-20 md:pt-40 md:pb-28">
+        <div className="mx-auto grid max-w-[1100px] grid-cols-1 items-center gap-12 md:grid-cols-2">
+          <div className="text-center md:text-left">
+            <h1
+              className="text-[44px] md:text-[60px] font-medium text-foreground"
+              style={{ fontFamily: "Fraunces, serif", letterSpacing: "-0.02em", lineHeight: 1.1 }}
             >
-              Ask a health question
-              <ArrowRight className="h-4 w-4" />
-            </Link>
+              Health information, in plain English.
+            </h1>
+            <p
+              className="mx-auto md:mx-0 mt-6 max-w-[520px] text-[17px] text-foreground/75"
+              style={{ fontFamily: "Inter, sans-serif", lineHeight: 1.7 }}
+            >
+              Skip the jargon. Get clear answers to common health questions, reviewed by clinicians.
+            </p>
+            <div className="mt-10">
+              <Link
+                to="/ask"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-7 py-3.5 text-[15px] font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                Ask a health question
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+          <div className="flex justify-center md:justify-end">
+            <HeroIllustration />
           </div>
         </div>
       </section>
