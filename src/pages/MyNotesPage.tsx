@@ -546,7 +546,7 @@ function NoteCard({
         <div className="mt-4 pt-4" style={{ borderTop: "0.5px solid hsl(var(--border))" }}>
           <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
             <span className="text-[10px] uppercase tracking-[1px] px-2 py-1 rounded-full bg-amber-100 text-amber-900 font-medium">Not clinician-approved</span>
-            {note.recording_url && <audio controls src={note.recording_url} className="h-9 max-w-full" />}
+            {note.recording_url && signedUrls[note.id] && <audio controls src={signedUrls[note.id]} className="h-9 max-w-full" />}
           </div>
 
           <Tabs defaultValue="summary" className="w-full">
