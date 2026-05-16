@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  Menu, X, ChevronDown, LogOut, FileText, Leaf,
-  Sun, Moon, Contrast, Search, Type,
+  Menu, X, ChevronDown, LogOut, FileText, Leaf, Search,
 } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
-import { useA11yPrefs } from "@/hooks/useA11yPrefs";
 
 const LANGUAGE_OPTIONS: { code: Language; flag: string; name: string }[] = [
   { code: "en", flag: "\u{1F1FA}\u{1F1F8}", name: "English" },
@@ -84,76 +82,7 @@ const LanguageDropdown = ({ mobile = false }: { mobile?: boolean }) => {
   );
 };
 
-const A11yMenu = () => {
-  const { scale, setScale, highContrast, setHighContrast, dark, setDark } = useA11yPrefs();
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handle = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
-    };
-    document.addEventListener("mousedown", handle);
-    return () => document.removeEventListener("mousedown", handle);
-  }, []);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        onClick={() => setOpen((o) => !o)}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        aria-label="Accessibility options"
-        className="flex items-center justify-center h-9 w-9 rounded-full text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-      >
-        <Type className="h-4 w-4" />
-      </button>
-      {open && (
-        <div
-          role="menu"
-          className="absolute right-0 z-[60] mt-2 w-[220px] p-3 bg-popover shadow-card"
-          style={{ border: "1px solid hsl(var(--border))", borderRadius: "14px" }}
-        >
-          <div className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-1">Text size</div>
-          <div className="flex gap-1 mb-3">
-            {(["sm","md","lg"] as const).map((s) => (
-              <button
-                key={s}
-                onClick={() => setScale(s)}
-                aria-pressed={scale === s}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  scale === s ? "bg-primary text-primary-foreground" : "bg-secondary text-foreground hover:bg-secondary/70"
-                }`}
-              >
-                {s === "sm" ? "A−" : s === "md" ? "A" : "A+"}
-              </button>
-            ))}
-          </div>
-          <button
-            onClick={() => setHighContrast(!highContrast)}
-            aria-pressed={highContrast}
-            className="flex w-full items-center justify-between px-3 py-2.5 rounded-lg text-sm hover:bg-secondary transition-colors"
-          >
-            <span className="flex items-center gap-2"><Contrast className="h-4 w-4" /> High contrast</span>
-            <span className={`h-4 w-7 rounded-full transition-colors ${highContrast ? "bg-primary" : "bg-muted"} relative`}>
-              <span className={`absolute top-0.5 h-3 w-3 rounded-full bg-background transition-all ${highContrast ? "left-3.5" : "left-0.5"}`} />
-            </span>
-          </button>
-          <button
-            onClick={() => setDark(!dark)}
-            aria-pressed={dark}
-            className="flex w-full items-center justify-between px-3 py-2.5 rounded-lg text-sm hover:bg-secondary transition-colors"
-          >
-            <span className="flex items-center gap-2">{dark ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />} Dark mode</span>
-            <span className={`h-4 w-7 rounded-full transition-colors ${dark ? "bg-primary" : "bg-muted"} relative`}>
-              <span className={`absolute top-0.5 h-3 w-3 rounded-full bg-background transition-all ${dark ? "left-3.5" : "left-0.5"}`} />
-            </span>
-          </button>
-        </div>
-      )}
-    </div>
-  );
-};
+// (Accessibility prefs moved to the dedicated /accessibility page to keep the nav slim.)
 
 const UserMenu = () => {
   const { user, signOut } = useAuth();
@@ -235,11 +164,7 @@ const Header = () => {
 
   const navLinks = [
     { to: "/topics", label: t("nav.topics") },
-    { to: "/translate", label: "Translate" },
-    { to: "/symptoms", label: "Symptoms" },
-    { to: "/glossary", label: "Glossary" },
-    { to: "/find-a-doctor", label: t("nav.findDoctor") },
-    { to: "/ask", label: t("nav.ask") },
+    { to: "/tools", label: "Tools" },
     { to: "/about", label: t("nav.about") },
   ];
 
@@ -278,7 +203,7 @@ const Header = () => {
         style={{ borderBottom: scrolled && !mobileOpen ? "1px solid hsl(var(--border) / 0.6)" : "1px solid transparent" }}
         role="banner"
       >
-        <div className="mx-auto flex h-[68px] max-w-[1180px] items-center justify-between gap-4 px-6">
+        <div className="mx-auto flex h-[56px] max-w-[1180px] items-center justify-between gap-4 px-6">
           <Link
             to="/"
             aria-label="Clarify Health — home"
@@ -309,8 +234,8 @@ const Header = () => {
             ))}
           </nav>
 
-          <div className="hidden md:flex items-center gap-2">
-            {/* Search */}
+          <div className="hidden md:flex items-center gap-3">
+            {/* Search (icon only — expands to input) */}
             <form
               onSubmit={handleSearch}
               role="search"
@@ -344,36 +269,25 @@ const Header = () => {
               )}
             </form>
 
-            <A11yMenu />
             <LanguageDropdown />
 
             {!loading && (
               user ? (
                 <UserMenu />
               ) : (
-                <div className="flex items-center gap-2 ml-1">
-                  <Link
-                    to="/login"
-                    className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors px-2"
-                    style={{ fontFamily: "Inter, sans-serif" }}
-                  >
-                    {t("auth.login")}
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="text-[13px] font-semibold px-4 py-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-all press-scale shadow-sm"
-                    style={{ fontFamily: "Inter, sans-serif" }}
-                  >
-                    {t("auth.signup")}
-                  </Link>
-                </div>
+                <Link
+                  to="/ask"
+                  className="text-[13px] font-medium px-4 py-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                  style={{ fontFamily: "Inter, sans-serif" }}
+                >
+                  {t("nav.ask")}
+                </Link>
               )
             )}
           </div>
 
           {/* Mobile toggle */}
           <div className="flex items-center gap-1 md:hidden">
-            <A11yMenu />
             <button
               className="relative z-50 p-2 -mr-2 press-scale transition-transform"
               onClick={() => setMobileOpen(!mobileOpen)}
