@@ -37,7 +37,7 @@ const HolisticTopicPage = () => {
   return (
     <main className="pt-28 pb-0 px-6">
       <PageMeta
-        title={`${topic.title} — ${lang === "es" ? "Lo Que Dice la Ciencia" : "What the Science Says"} | Clarify Health`}
+        title={`${topic.title} | Clarify Health`}
         description={lang === "es"
           ? `Aprende sobre ${topic.title.toLowerCase()} con fuentes científicas revisadas por pares. Sin blogs de bienestar, solo evidencia.`
           : `Learn about ${topic.title.toLowerCase()} backed by peer-reviewed research. No wellness blogs, just evidence.`}
