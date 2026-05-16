@@ -1,5 +1,7 @@
 import { writeFileSync } from "fs";
 import { resolve } from "path";
+import { topics } from "../src/data/topics";
+import { holisticTopics } from "../src/data/holistic-topics";
 
 const BASE_URL = "https://clarifyhealth.co";
 const SUPABASE_URL = process.env.VITE_SUPABASE_URL || "https://dojcuaoydegwqrzldtmp.supabase.co";
@@ -23,6 +25,10 @@ const staticEntries = [
   { path: "/privacy", changefreq: "yearly", priority: "0.3" },
   { path: "/terms", changefreq: "yearly", priority: "0.3" },
   { path: "/disclaimer", changefreq: "yearly", priority: "0.3" },
+  { path: "/tools", changefreq: "monthly", priority: "0.6" },
+  { path: "/login", changefreq: "yearly", priority: "0.3" },
+  { path: "/signup", changefreq: "yearly", priority: "0.4" },
+  { path: "/my-notes", changefreq: "monthly", priority: "0.4" },
 ];
 
 type Entry = { path: string; lastmod?: string; changefreq?: string; priority?: string };
@@ -60,7 +66,13 @@ function buildXml(entries: Entry[]) {
 
 (async () => {
   const articles = await fetchArticles();
-  const all = [...staticEntries, ...articles];
+  const topicEntries: Entry[] = topics.map((t) => ({
+    path: `/topics/${t.id}`, changefreq: "monthly", priority: "0.8",
+  }));
+  const holisticEntries: Entry[] = holisticTopics.map((t) => ({
+    path: `/holistic/${t.id}`, changefreq: "monthly", priority: "0.7",
+  }));
+  const all = [...staticEntries, ...topicEntries, ...holisticEntries, ...articles];
   writeFileSync(resolve("public/sitemap.xml"), buildXml(all));
   console.log(`sitemap.xml written (${all.length} entries)`);
 })();
