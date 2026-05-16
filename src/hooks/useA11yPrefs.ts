@@ -7,11 +7,7 @@ const SCALE_VALUE: Record<Scale, number> = { sm: 0.9, md: 1, lg: 1.15 };
 export function useA11yPrefs() {
   const [scale, setScale] = useState<Scale>(() => (localStorage.getItem("clarify_font_scale") as Scale) || "md");
   const [highContrast, setHighContrast] = useState<boolean>(() => localStorage.getItem("clarify_high_contrast") === "1");
-  const [dark, setDark] = useState<boolean>(() => {
-    const v = localStorage.getItem("clarify_dark");
-    if (v) return v === "1";
-    return window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
+  const [dark, setDark] = useState<boolean>(() => localStorage.getItem("clarify_dark") === "1");
 
   useEffect(() => {
     document.documentElement.style.setProperty("--font-scale", String(SCALE_VALUE[scale]));
