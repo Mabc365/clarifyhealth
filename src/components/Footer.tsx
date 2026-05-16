@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ShieldCheck, Stethoscope, Heart } from "lucide-react";
+import NewsletterSignup from "@/components/NewsletterSignup";
 
 const Footer = () => {
   const { t } = useLanguage();
@@ -12,6 +13,10 @@ const Footer = () => {
       role="contentinfo"
     >
       <div className="blob" style={{ background: "hsl(var(--primary) / 0.18)", width: 320, height: 320, bottom: -120, left: -100 }} />
+
+      <div className="relative mx-auto mb-12 max-w-[720px]">
+        <NewsletterSignup />
+      </div>
 
       <div
         className="relative mx-auto grid max-w-[1180px] grid-cols-1 gap-12 md:grid-cols-[1.3fr,1fr,1fr,1fr]"
@@ -48,6 +53,7 @@ const Footer = () => {
           { to: "/privacy", label: "Privacy" },
           { to: "/terms", label: "Terms" },
           { to: "/disclaimer", label: "Medical disclaimer" },
+          { to: "/rss", label: "RSS feed" },
         ]} />
       </div>
 

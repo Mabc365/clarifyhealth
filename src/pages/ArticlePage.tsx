@@ -4,6 +4,8 @@ import { Play, Pause, Printer, Loader2, Sparkles, AlertTriangle, MessageSquare, 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import PageMeta from "@/components/PageMeta";
+import ShareButton from "@/components/ShareButton";
+import ArticleFeedback from "@/components/ArticleFeedback";
 import { useToast } from "@/hooks/use-toast";
 
 type Article = {
@@ -90,7 +92,32 @@ const ArticlePage = () => {
 
   return (
     <main className="min-h-screen pt-24 pb-20 px-6 bg-background">
-      <PageMeta title={`${article.title} — Clarify Health`} description={article.summary ?? article.tldr?.[0] ?? ""} canonical={`/article/${article.slug}`} />
+      <PageMeta
+        title={`${article.title} — Clarify Health`}
+        description={article.summary ?? article.tldr?.[0] ?? ""}
+        canonical={`/article/${article.slug}`}
+        jsonLd={{
+          "@type": ["MedicalWebPage", "Article"],
+          headline: article.title,
+          description: article.summary ?? article.tldr?.[0] ?? "",
+          datePublished: article.last_reviewed,
+          dateModified: article.last_reviewed,
+          author: { "@type": "Organization", name: "Clarify Health" },
+          reviewedBy: { "@type": "Person", name: article.reviewer_name, jobTitle: article.reviewer_credentials },
+          lastReviewed: article.last_reviewed,
+          mainContentOfPage: { "@type": "WebPageElement" },
+          ...(article.questions_to_ask?.length ? {
+            mainEntity: {
+              "@type": "FAQPage",
+              mainEntity: article.sections.slice(0, 5).map((s) => ({
+                "@type": "Question",
+                name: s.title,
+                acceptedAnswer: { "@type": "Answer", text: s.content },
+              })),
+            },
+          } : {}),
+        }}
+      />
       <article className="mx-auto max-w-3xl print-area">
         <Link to="/topics" className="text-sm text-muted-foreground hover:text-primary inline-block mb-6 no-print">← All topics</Link>
 
@@ -124,6 +151,7 @@ const ArticlePage = () => {
             </select>
           )}
           <Button onClick={() => window.print()} variant="outline" size="sm" className="rounded-full"><Printer className="h-4 w-4 mr-1.5" /> Print / PDF</Button>
+          <ShareButton title={article.title} url={`https://clarifyhealth.co/article/${article.slug}`} text={article.summary ?? undefined} />
         </div>
 
         {article.tldr?.length > 0 && (
@@ -191,6 +219,8 @@ const ArticlePage = () => {
           <p>Reviewed by {article.reviewer_name} — {article.reviewer_credentials}.</p>
           <p className="mt-2 italic">This is general health information, not medical advice. Talk to your doctor about your situation.</p>
         </footer>
+
+        <ArticleFeedback slug={article.slug} />
       </article>
     </main>
   );
