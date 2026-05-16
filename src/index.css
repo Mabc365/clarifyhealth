@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* OpenDyslexic — loaded only when the user opts in via DyslexicFontToggle */
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/woff/OpenDyslexic-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "OpenDyslexic";
+  src: url("https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/woff/OpenDyslexic-Bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+html.dyslexic-font,
+html.dyslexic-font body,
+html.dyslexic-font * {
+  font-family: "OpenDyslexic", "Comic Sans MS", system-ui, sans-serif !important;
+  letter-spacing: 0.02em;
+}
+
 @layer base {
   :root {
     /* Clarify Health — warm, editorial palette */

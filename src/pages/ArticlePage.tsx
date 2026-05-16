@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import PageMeta from "@/components/PageMeta";
 import ShareButton from "@/components/ShareButton";
 import ArticleFeedback from "@/components/ArticleFeedback";
+import ReportProblemButton from "@/components/ReportProblemButton";
+import DyslexicFontToggle from "@/components/DyslexicFontToggle";
 import { useToast } from "@/hooks/use-toast";
 
 type Article = {
@@ -129,6 +131,8 @@ const ArticlePage = () => {
             <span>Grade {article.reading_grade} reading level</span>
             <span>·</span>
             <span>Reviewed {new Date(article.last_reviewed).toLocaleDateString()}</span>
+            <span>·</span>
+            <span>Next review {new Date(new Date(article.last_reviewed).setMonth(new Date(article.last_reviewed).getMonth() + 12)).toLocaleDateString()}</span>
           </div>
         </header>
 
@@ -152,6 +156,8 @@ const ArticlePage = () => {
           )}
           <Button onClick={() => window.print()} variant="outline" size="sm" className="rounded-full"><Printer className="h-4 w-4 mr-1.5" /> Print / PDF</Button>
           <ShareButton title={article.title} url={`https://clarifyhealth.co/article/${article.slug}`} text={article.summary ?? undefined} />
+          <DyslexicFontToggle />
+          <ReportProblemButton slug={article.slug} />
         </div>
 
         {article.tldr?.length > 0 && (
