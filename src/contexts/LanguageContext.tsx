@@ -48,7 +48,7 @@ const strings: Record<Language, Record<string, string>> = {
     "home.holistic.label": "Evidence-Based Wellness",
     "home.holistic.title": "Holistic & Natural Health",
     "home.holistic.sub": "What does the research actually say? Each topic cites only peer-reviewed sources — PubMed, NIH, Harvard Health, and Mayo Clinic.",
-    "home.meta.title": "Clarify Health \u2014 Plain-English Guides to Diabetes, Blood Pressure "Clarify Health — Your Health, in Plain English" More",
+    "home.meta.title": "Clarify Health — Plain-English Guides to Diabetes, Blood Pressure & More",
     "home.meta.desc": "Clear, trustworthy health education written in plain English. Understand diabetes, blood pressure, cholesterol, and more — no jargon, no confusion.",
 
     // Topics index
