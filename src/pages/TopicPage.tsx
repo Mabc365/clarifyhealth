@@ -47,13 +47,44 @@ const TopicPage = () => {
           : `Learn what ${topic.title.toLowerCase()} means in plain English. No medical jargon. Includes questions to ask your doctor.`}
         canonical={`/topics/${topic.id}`}
         jsonLd={{
-          "@type": "MedicalWebPage",
-          name: topic.title,
-          about: { "@type": "MedicalCondition", name: topic.title },
-          description: topic.definition,
-          audience: { "@type": "PeopleAudience", audienceType: "Patient" },
-          lastReviewed: "2026-03-01",
-          mainContentOfPage: { "@type": "WebPageElement", cssSelector: ".stagger-reveal" },
+          "@graph": [
+            {
+              "@type": "MedicalWebPage",
+              "@id": `https://clarifyhealth.co/topics/${topic.id}#webpage`,
+              url: `https://clarifyhealth.co/topics/${topic.id}`,
+              name: topic.title,
+              about: { "@type": "MedicalCondition", name: topic.title },
+              description: topic.definition,
+              audience: { "@type": "PeopleAudience", audienceType: "Patient" },
+              lastReviewed: "2026-03-01",
+              mainContentOfPage: { "@type": "WebPageElement", cssSelector: ".stagger-reveal" },
+              author: {
+                "@type": "Person",
+                name: "Mustafa Asif",
+                url: "https://clarifyhealth.co/about",
+                description:
+                  "Founder of Clarify Health. Researches and writes plain-English health explainers using only peer-reviewed sources (PubMed, NIH, Mayo Clinic, Harvard Health).",
+              },
+              publisher: {
+                "@type": "Organization",
+                name: "Clarify Health",
+                url: "https://clarifyhealth.co",
+              },
+              citation: topic.sources.map((s) => ({
+                "@type": "CreativeWork",
+                name: s.name,
+                url: s.url,
+              })),
+            },
+            {
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: "https://clarifyhealth.co/" },
+                { "@type": "ListItem", position: 2, name: "Topics", item: "https://clarifyhealth.co/topics" },
+                { "@type": "ListItem", position: 3, name: topic.title, item: `https://clarifyhealth.co/topics/${topic.id}` },
+              ],
+            },
+          ],
         }}
       />
       <div className="mx-auto max-w-[1100px]">
