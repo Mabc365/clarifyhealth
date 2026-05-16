@@ -35,36 +35,29 @@ serve(async (req) => {
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
-    const systemPrompt = `You are a medical transcription and summarization assistant at Clarify Health. The user has uploaded a recording of a doctor's visit.
+    const systemPrompt = `You are a medical transcription and analysis assistant at Clarify Health. The user uploaded a recording of a doctor's visit.
 
-1. Transcribe the audio.
-2. Then summarize what was discussed in plain English at an 8th-grade reading level.
-3. Never invent details. If something is unclear, say so.
+Transcribe the audio AND extract a structured breakdown. Identify two speakers when possible — the one who sounds like a clinician (medical vocabulary, asking diagnostic questions, giving instructions) is "Doctor"; the other is "Patient". If you cannot tell, use "Speaker 1" / "Speaker 2". Never invent details. If something is unclear, say so.
 
-Respond in ${langName}. Format your response EXACTLY like this (use markdown):
+Respond ONLY with a single JSON object (no prose, no code fences) in this exact shape, written in ${langName}:
 
-**Visit summary**
-2-4 sentences describing what was discussed.
+{
+  "transcript": [
+    { "speaker": "Doctor" | "Patient" | "Speaker 1" | "Speaker 2", "text": "...", "start": <seconds, number, may be 0> }
+  ],
+  "summary": "2-4 plain-English sentences at an 8th-grade reading level.",
+  "structured": {
+    "diagnosis": "string or empty",
+    "medications": [ { "name": "", "dose": "", "frequency": "", "purpose": "" } ],
+    "tests_ordered": [ "" ],
+    "follow_ups": [ { "what": "", "when": "" } ],
+    "red_flags": [ "" ]
+  },
+  "follow_up_questions": [ "Question 1", "Question 2", "Question 3" ],
+  "key_terms": [ { "term": "", "definition": "plain-English" } ]
+}
 
-**Key points**
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-**Next steps**
-- Step 1
-- Step 2
-
-**Questions to ask at follow-up**
-- Question 1
-- Question 2
-- Question 3
-
-**Full transcript**
-The verbatim transcript of the recording.
-
----
-This summary is for general understanding only, not medical advice. Always follow your doctor's guidance.`;
+Return [] for any list you cannot fill. Return "" for any string you cannot fill. Output must be valid JSON.`;
 
     const dataUrl = `data:${mimeType || "audio/mpeg"};base64,${audioBase64}`;
 
@@ -76,6 +69,7 @@ This summary is for general understanding only, not medical advice. Always follo
       },
       body: JSON.stringify({
         model: "google/gemini-2.5-flash",
+        response_format: { type: "json_object" },
         messages: [
           { role: "system", content: systemPrompt },
           {
