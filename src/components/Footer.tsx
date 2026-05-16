@@ -45,6 +45,10 @@ const Footer = () => {
 
         <FooterCol title="About" links={[
           { to: "/about", label: t("nav.about") },
+          { to: "/editorial-standards", label: "Editorial standards" },
+          { to: "/reviewers", label: "Our reviewers" },
+          { to: "/contact", label: "Contact" },
+          { to: "/newsletter", label: "Newsletter" },
           { to: "/login", label: t("auth.login") },
           { to: "/signup", label: t("auth.signup") },
         ]} />
@@ -53,6 +57,7 @@ const Footer = () => {
           { to: "/privacy", label: "Privacy" },
           { to: "/terms", label: "Terms" },
           { to: "/disclaimer", label: "Medical disclaimer" },
+          { to: "/accessibility", label: "Accessibility" },
           { to: "/rss", label: "RSS feed" },
         ]} />
       </div>
@@ -62,8 +67,9 @@ const Footer = () => {
         style={{ borderColor: "hsl(var(--border) / 0.6)", fontFamily: "Inter, sans-serif" }}
       >
         <span>{t("footer.copyright")}</span>
-        <span className="flex items-center gap-1.5">
-          Made with <Heart className="h-3.5 w-3.5 text-accent" aria-hidden="true" fill="currentColor" /> for clearer healthcare.
+        <span className="flex items-center gap-1.5 text-center">
+          <Heart className="h-3.5 w-3.5 text-accent" aria-hidden="true" fill="currentColor" />
+          Educational only — not medical advice. Always talk to your doctor.
         </span>
       </div>
     </footer>
