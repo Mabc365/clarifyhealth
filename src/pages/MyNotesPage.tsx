@@ -262,7 +262,9 @@ const MyNotesPage = () => {
       await supabase.from("visit_notes").update({ processing_status: "transcribing" }).eq("id", note.id);
       fetchNotes();
       try {
-        const res = await fetch(note.recording_url);
+        const url = signedUrls[note.id] || (await getSignedRecordingUrl(note.recording_url));
+        if (!url) throw new Error("No recording URL");
+        const res = await fetch(url);
         const blob = await res.blob();
         const buf = await blob.arrayBuffer();
         const bytes = new Uint8Array(buf);
