@@ -14,6 +14,81 @@ export type Database = {
   }
   public: {
     Tables: {
+      articles: {
+        Row: {
+          body_system: string
+          conditions: string[]
+          created_at: string
+          id: string
+          key_terms: Json
+          language: string
+          last_reviewed: string
+          life_stage: string
+          questions_to_ask: Json
+          read_time_min: number
+          reading_grade: number
+          related_slugs: string[]
+          reviewer_credentials: string
+          reviewer_name: string
+          sections: Json
+          slug: string
+          sources: Json
+          summary: string | null
+          title: string
+          tldr: Json
+          updated_at: string
+          when_to_call: Json
+        }
+        Insert: {
+          body_system: string
+          conditions?: string[]
+          created_at?: string
+          id?: string
+          key_terms?: Json
+          language?: string
+          last_reviewed?: string
+          life_stage?: string
+          questions_to_ask?: Json
+          read_time_min?: number
+          reading_grade?: number
+          related_slugs?: string[]
+          reviewer_credentials?: string
+          reviewer_name?: string
+          sections?: Json
+          slug: string
+          sources?: Json
+          summary?: string | null
+          title: string
+          tldr?: Json
+          updated_at?: string
+          when_to_call?: Json
+        }
+        Update: {
+          body_system?: string
+          conditions?: string[]
+          created_at?: string
+          id?: string
+          key_terms?: Json
+          language?: string
+          last_reviewed?: string
+          life_stage?: string
+          questions_to_ask?: Json
+          read_time_min?: number
+          reading_grade?: number
+          related_slugs?: string[]
+          reviewer_credentials?: string
+          reviewer_name?: string
+          sections?: Json
+          slug?: string
+          sources?: Json
+          summary?: string | null
+          title?: string
+          tldr?: Json
+          updated_at?: string
+          when_to_call?: Json
+        }
+        Relationships: []
+      }
       doctor_search_queries: {
         Row: {
           created_at: string
@@ -128,6 +203,39 @@ export type Database = {
           id?: string
           token?: string
           used_at?: string | null
+        }
+        Relationships: []
+      }
+      glossary_terms: {
+        Row: {
+          category: string | null
+          created_at: string
+          id: string
+          language: string
+          plain_definition: string
+          pronunciation: string | null
+          see_also: string[]
+          term: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          language?: string
+          plain_definition: string
+          pronunciation?: string | null
+          see_also?: string[]
+          term: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          id?: string
+          language?: string
+          plain_definition?: string
+          pronunciation?: string | null
+          see_also?: string[]
+          term?: string
         }
         Relationships: []
       }
