@@ -48,7 +48,7 @@ const strings: Record<Language, Record<string, string>> = {
     "home.holistic.label": "Evidence-Based Wellness",
     "home.holistic.title": "Holistic & Natural Health",
     "home.holistic.sub": "What does the research actually say? Each topic cites only peer-reviewed sources — PubMed, NIH, Harvard Health, and Mayo Clinic.",
-    "home.meta.title": "Clarify Health — Your Health, in Plain English",
+    "home.meta.title": "Clarify Health — Plain-English Guides to Diabetes, Blood Pressure & More",
     "home.meta.desc": "Clear, trustworthy health education written in plain English. Understand diabetes, blood pressure, cholesterol, and more — no jargon, no confusion.",
 
     // Topics index
@@ -235,7 +235,7 @@ const strings: Record<Language, Record<string, string>> = {
     "home.holistic.label": "Bienestar basado en evidencia",
     "home.holistic.title": "Salud holística y natural",
     "home.holistic.sub": "¿Qué dice realmente la investigación? Cada tema cita solo fuentes revisadas por pares — PubMed, NIH, Harvard Health y Mayo Clinic.",
-    "home.meta.title": "Clarify Health — Tu salud, en español sencillo",
+    "home.meta.title": "Clarify Health \u2014 Gu\u00edas de Salud en Espa\u00f1ol Sencillo",
     "home.meta.desc": "Educación de salud clara y confiable escrita en español sencillo. Entiende la diabetes, presión arterial, colesterol y más — sin jerga ni confusión.",
 
     // Topics index
