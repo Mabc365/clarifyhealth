@@ -5,8 +5,8 @@ Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
   try {
     const { text, mode } = await req.json();
-    if (!text || typeof text !== "string") {
-      return new Response(JSON.stringify({ error: "Missing text" }), {
+    if (!text || typeof text !== "string" || text.length > 8000) {
+      return new Response(JSON.stringify({ error: "Text required (max 8000 chars)" }), {
         status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
