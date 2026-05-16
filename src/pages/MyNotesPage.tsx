@@ -229,6 +229,29 @@ const MyNotesPage = () => {
   };
 
   const reprocess = async (note: VisitNote) => {
+    if (note.recording_url) {
+      await supabase.from("visit_notes").update({ processing_status: "transcribing" }).eq("id", note.id);
+      fetchNotes();
+      try {
+        const res = await fetch(note.recording_url);
+        const blob = await res.blob();
+        const buf = await blob.arrayBuffer();
+        const bytes = new Uint8Array(buf);
+        let bin = ""; const CH = 8192;
+        for (let i = 0; i < bytes.length; i += CH) {
+          bin += String.fromCharCode.apply(null, Array.from(bytes.subarray(i, Math.min(i + CH, bytes.length))));
+        }
+        const b64 = btoa(bin);
+        const mime = blob.type || "audio/webm";
+        processAudio(note.id, b64, mime);
+      } catch (err) {
+        console.error("reprocess audio fetch error:", err);
+        await supabase.from("visit_notes").update({ processing_status: "failed" }).eq("id", note.id);
+        toast({ title: "Could not load recording", variant: "destructive" });
+        fetchNotes();
+      }
+      return;
+    }
     await supabase.from("visit_notes").update({ processing_status: "analyzing" }).eq("id", note.id);
     fetchNotes();
     if (note.raw_notes) processText(note.id, note.raw_notes);
@@ -474,8 +497,11 @@ function NoteCard({
               ) : null}
               <DropdownMenuItem onClick={onEmail} className="gap-2"><Mail className="h-4 w-4" />Email to me</DropdownMenuItem>
               <DropdownMenuItem onClick={onCopy} className="gap-2"><Copy className="h-4 w-4" />Copy summary</DropdownMenuItem>
-              {note.raw_notes && !processing && (
-                <DropdownMenuItem onClick={onReprocess} className="gap-2"><HelpCircle className="h-4 w-4" />Re-analyze</DropdownMenuItem>
+              {(note.recording_url || note.raw_notes) && !processing && (
+                <DropdownMenuItem onClick={onReprocess} className="gap-2">
+                  <HelpCircle className="h-4 w-4" />
+                  {note.recording_url ? "Transcribe & analyze recording" : "Re-analyze"}
+                </DropdownMenuItem>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
