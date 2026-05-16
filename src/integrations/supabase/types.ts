@@ -299,6 +299,33 @@ export type Database = {
         }
         Relationships: []
       }
+      problem_reports: {
+        Row: {
+          article_slug: string
+          created_at: string
+          description: string
+          id: string
+          problem_type: string
+          reporter_email: string | null
+        }
+        Insert: {
+          article_slug: string
+          created_at?: string
+          description: string
+          id?: string
+          problem_type: string
+          reporter_email?: string | null
+        }
+        Update: {
+          article_slug?: string
+          created_at?: string
+          description?: string
+          id?: string
+          problem_type?: string
+          reporter_email?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           avatar_url: string | null
