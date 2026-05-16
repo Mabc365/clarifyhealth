@@ -8,7 +8,6 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-import FloatingAskButton from "@/components/FloatingAskButton";
 import Index from "./pages/Index";
 const TopicsIndex = lazy(() => import("./pages/TopicsIndex"));
 const TopicPage = lazy(() => import("./pages/TopicPage"));
@@ -36,6 +35,7 @@ const ContactPage = lazy(() => import("./pages/ContactPage"));
 const NewsletterPage = lazy(() => import("./pages/NewsletterPage"));
 const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
 const AccessibilityPage = lazy(() => import("./pages/AccessibilityPage"));
+const ToolsPage = lazy(() => import("./pages/ToolsPage"));
 
 const queryClient = new QueryClient();
 
@@ -65,7 +65,6 @@ const Chrome = ({ children }: { children: React.ReactNode }) => {
       <Header />
       <div id="main-content" className="animate-page-enter">{children}</div>
       <Footer />
-      <FloatingAskButton />
     </>
   );
 };
@@ -111,6 +110,7 @@ const App = () => (
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/search" element={<SearchResultsPage />} />
               <Route path="/accessibility" element={<AccessibilityPage />} />
+              <Route path="/tools" element={<ToolsPage />} />
               <Route path="/rss" element={<RssRedirect />} />
               <Route path="*" element={<NotFound />} />
               </Routes>
