@@ -5,6 +5,7 @@ import {
 } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
+import logoUrl from "@/assets/logo.jpeg";
 
 const LANGUAGE_OPTIONS: { code: Language; flag: string; name: string }[] = [
   { code: "en", flag: "\u{1F1FA}\u{1F1F8}", name: "English" },
@@ -210,9 +211,7 @@ const Header = () => {
             className="relative z-50 flex items-center gap-2 text-[17px] font-semibold tracking-tight text-foreground"
             style={{ fontFamily: "Fraunces, serif" }}
           >
-            <span className="inline-flex h-7 w-7 items-center justify-center rounded-xl bg-primary text-primary-foreground text-[13px] font-bold" style={{ fontFamily: "Fraunces, serif" }}>
-              C
-            </span>
+            <img src={logoUrl} alt="" className="h-7 w-7 object-contain" />
             Clarify Health
           </Link>
 
