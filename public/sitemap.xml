@@ -1,104 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml">
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/ask</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/about</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <!-- Health Topics -->
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics/type-2-diabetes</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics/high-blood-pressure</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics/high-cholesterol</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics/asthma</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics/anxiety</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics/depression</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics/heart-disease</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics/kidney-disease</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics/thyroid-disease</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://clarifyhealth.lovable.app/topics/acid-reflux</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://clarifyhealth.co/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://clarifyhealth.co/topics</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://clarifyhealth.co/ask</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/find-a-doctor</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://clarifyhealth.co/my-notes</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://clarifyhealth.co/wellness-plan</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://clarifyhealth.co/about</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://clarifyhealth.co/login</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://clarifyhealth.co/signup</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://clarifyhealth.co/privacy</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://clarifyhealth.co/terms</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://clarifyhealth.co/disclaimer</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/type-2-diabetes</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/high-blood-pressure</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/high-cholesterol</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/asthma</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/anxiety</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/depression</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/heart-disease</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/kidney-disease</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/thyroid-disease</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/acid-reflux</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/stroke</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/copd</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/arthritis</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/osteoporosis</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/sleep-apnea</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/ibs</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/eczema-psoriasis</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/migraines</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/anemia</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/adhd</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/chronic-kidney-disease</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/topics/pre-diabetes</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://clarifyhealth.co/holistic/anti-inflammatory-foods</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://clarifyhealth.co/holistic/stress-reduction</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://clarifyhealth.co/holistic/sleep-hygiene</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://clarifyhealth.co/holistic/herbal-supplements</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://clarifyhealth.co/holistic/exercise-as-medicine</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://clarifyhealth.co/holistic/gut-health</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>
