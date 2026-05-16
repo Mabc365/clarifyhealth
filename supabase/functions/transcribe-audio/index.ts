@@ -59,7 +59,13 @@ Respond ONLY with a single JSON object (no prose, no code fences) in this exact 
 
 Return [] for any list you cannot fill. Return "" for any string you cannot fill. Output must be valid JSON.`;
 
-    const dataUrl = `data:${mimeType || "audio/mpeg"};base64,${audioBase64}`;
+    const mt = (mimeType || "audio/mpeg").toLowerCase();
+    let format = "mp3";
+    if (mt.includes("wav")) format = "wav";
+    else if (mt.includes("webm")) format = "webm";
+    else if (mt.includes("ogg")) format = "ogg";
+    else if (mt.includes("flac")) format = "flac";
+    else if (mt.includes("m4a") || mt.includes("mp4") || mt.includes("aac") || mt.includes("x-m4a")) format = "aac";
 
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -76,7 +82,7 @@ Return [] for any list you cannot fill. Return "" for any string you cannot fill
             role: "user",
             content: [
               { type: "text", text: "Please transcribe and summarize this doctor visit recording." },
-              { type: "input_audio", input_audio: { data: dataUrl, format: mimeType?.includes("wav") ? "wav" : "mp3" } },
+              { type: "input_audio", input_audio: { data: audioBase64, format } },
             ],
           },
         ],
