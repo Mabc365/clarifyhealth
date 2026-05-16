@@ -364,3 +364,10 @@
 button[type="submit"] .pulse-dot {
   background-color: hsl(var(--primary-foreground));
 }
+
+/* Print styles */
+@media print {
+  .no-print, header[role="banner"], footer { display: none !important; }
+  .print-area { max-width: 100% !important; }
+  body { background: white !important; color: black !important; }
+}
