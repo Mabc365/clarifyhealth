@@ -458,6 +458,7 @@ const MyNotesPage = () => {
                 <NoteCard
                   key={note.id}
                   note={note}
+                  recordingSignedUrl={signedUrls[note.id]}
                   expanded={expandedId === note.id}
                   onToggle={() => setExpandedId(expandedId === note.id ? null : note.id)}
                   onDelete={() => handleDelete(note.id)}
@@ -478,9 +479,9 @@ const MyNotesPage = () => {
 };
 
 function NoteCard({
-  note, expanded, onToggle, onDelete, onAddTag, onRemoveTag, onReprocess, onEmail, onCopy, onExportPdf,
+  note, recordingSignedUrl, expanded, onToggle, onDelete, onAddTag, onRemoveTag, onReprocess, onEmail, onCopy, onExportPdf,
 }: {
-  note: VisitNote; expanded: boolean; onToggle: () => void; onDelete: () => void;
+  note: VisitNote; recordingSignedUrl?: string; expanded: boolean; onToggle: () => void; onDelete: () => void;
   onAddTag: (t: string) => void; onRemoveTag: (t: string) => void;
   onReprocess: () => void; onEmail: () => void; onCopy: () => void;
   onExportPdf: (includeTranscript: boolean) => void;
@@ -546,7 +547,7 @@ function NoteCard({
         <div className="mt-4 pt-4" style={{ borderTop: "0.5px solid hsl(var(--border))" }}>
           <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
             <span className="text-[10px] uppercase tracking-[1px] px-2 py-1 rounded-full bg-amber-100 text-amber-900 font-medium">Not clinician-approved</span>
-            {note.recording_url && signedUrls[note.id] && <audio controls src={signedUrls[note.id]} className="h-9 max-w-full" />}
+            {note.recording_url && recordingSignedUrl && <audio controls src={recordingSignedUrl} className="h-9 max-w-full" />}
           </div>
 
           <Tabs defaultValue="summary" className="w-full">
