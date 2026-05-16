@@ -23,6 +23,7 @@ Deno.serve(async (req) => {
     await supabase.from("newsletter_subscribers").update({ status: "confirmed", confirmed_at: new Date().toISOString() }).eq("id", sub.id);
     return new Response(JSON.stringify({ ok: true }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (e) {
-    return new Response(JSON.stringify({ error: String(e) }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    console.error(e);
+    return new Response(JSON.stringify({ error: "An unexpected error occurred" }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
 });
