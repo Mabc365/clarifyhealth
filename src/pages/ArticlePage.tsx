@@ -40,7 +40,7 @@ const ArticlePage = () => {
     if (!slug) return;
     setLoading(true);
     supabase.from("articles").select("*").eq("slug", slug).eq("language", "en").maybeSingle().then(({ data }) => {
-      setArticle(data as Article | null);
+      setArticle(data as unknown as Article | null);
       setLoading(false);
     });
   }, [slug]);
@@ -90,7 +90,7 @@ const ArticlePage = () => {
 
   return (
     <main className="min-h-screen pt-24 pb-20 px-6 bg-background">
-      <PageMeta title={`${article.title} — Clarify Health`} description={article.summary ?? article.tldr?.[0]} />
+      <PageMeta title={`${article.title} — Clarify Health`} description={article.summary ?? article.tldr?.[0] ?? ""} canonical={`/article/${article.slug}`} />
       <article className="mx-auto max-w-3xl print-area">
         <Link to="/topics" className="text-sm text-muted-foreground hover:text-primary inline-block mb-6 no-print">← All topics</Link>
 

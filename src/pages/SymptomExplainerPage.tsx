@@ -55,7 +55,7 @@ const SymptomExplainerPage = () => {
 
   return (
     <main className="min-h-screen pt-24 pb-20 px-6 bg-background">
-      <PageMeta title="Symptom Explainer — Clarify Health" description="Describe what you're feeling. Get plain-English context about what body system it may relate to. Not a diagnosis." />
+      <PageMeta title="Symptom Explainer — Clarify Health" description="Describe what you're feeling. Get plain-English context about what body system it may relate to. Not a diagnosis." canonical="/symptoms" />
       <div className="mx-auto max-w-3xl">
         <header className="mb-8">
           <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1.5 rounded-full mb-4">

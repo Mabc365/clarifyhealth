@@ -39,7 +39,7 @@ const GlossaryPage = () => {
 
   return (
     <main className="min-h-screen pt-24 pb-20 px-6 bg-background">
-      <PageMeta title="Medical Glossary — Clarify Health" description="Common medical terms explained in plain English with pronunciation." />
+      <PageMeta title="Medical Glossary — Clarify Health" description="Common medical terms explained in plain English with pronunciation." canonical="/glossary" />
       <div className="mx-auto max-w-3xl">
         <header className="mb-8">
           <h1 className="text-4xl md:text-5xl font-semibold mb-3" style={{ fontFamily: "Fraunces, serif" }}>

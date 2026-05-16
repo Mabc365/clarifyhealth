@@ -62,7 +62,7 @@ const JargonTranslatorPage = () => {
 
   return (
     <main className="min-h-screen pt-24 pb-20 px-6 bg-background">
-      <PageMeta title="Jargon Translator — Clarify Health" description="Paste a confusing lab report, discharge note, or insurance letter and get a plain-English version." />
+      <PageMeta title="Jargon Translator — Clarify Health" description="Paste a confusing lab report, discharge note, or insurance letter and get a plain-English version." canonical="/translate" />
       <div className="mx-auto max-w-3xl">
         <header className="mb-8">
           <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary bg-primary/10 px-3 py-1.5 rounded-full mb-4">
