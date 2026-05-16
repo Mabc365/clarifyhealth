@@ -76,6 +76,23 @@ const MyNotesPage = () => {
   const [submitting, setSubmitting] = useState(false);
 
   const pollRef = useRef<number | null>(null);
+  const [signedUrls, setSignedUrls] = useState<Record<string, string>>({});
+
+  // Extract storage path from either a stored path or a legacy public URL
+  const extractRecordingPath = (val: string | null): string | null => {
+    if (!val) return null;
+    const marker = "/recordings/";
+    const idx = val.indexOf(marker);
+    if (idx >= 0) return val.substring(idx + marker.length);
+    return val;
+  };
+
+  const getSignedRecordingUrl = async (val: string | null): Promise<string | null> => {
+    const path = extractRecordingPath(val);
+    if (!path) return null;
+    const { data } = await supabase.storage.from("recordings").createSignedUrl(path, 3600);
+    return data?.signedUrl ?? null;
+  };
 
   useEffect(() => {
     if (!authLoading && !user) navigate("/login");
@@ -101,7 +118,19 @@ const MyNotesPage = () => {
     const { data } = await supabase
       .from("visit_notes").select("*")
       .order("visit_date", { ascending: false });
-    setNotes((data as unknown as VisitNote[]) || []);
+    const list = (data as unknown as VisitNote[]) || [];
+    setNotes(list);
+    // Generate signed URLs for any recordings we don't yet have a fresh URL for
+    const next: Record<string, string> = { ...signedUrls };
+    await Promise.all(
+      list.map(async (n) => {
+        if (n.recording_url && !next[n.id]) {
+          const url = await getSignedRecordingUrl(n.recording_url);
+          if (url) next[n.id] = url;
+        }
+      })
+    );
+    setSignedUrls(next);
     setLoadingNotes(false);
   };
 
@@ -143,8 +172,8 @@ const MyNotesPage = () => {
       const path = `${user.id}/${crypto.randomUUID()}.${ext}`;
       const { error: uploadError } = await supabase.storage.from("recordings").upload(path, audioFile);
       if (!uploadError) {
-        const { data: urlData } = supabase.storage.from("recordings").getPublicUrl(path);
-        recordingUrl = urlData.publicUrl;
+        // Store the path; we generate short-lived signed URLs at read time
+        recordingUrl = path;
       }
       try {
         const buf = await audioFile.arrayBuffer();
@@ -233,7 +262,9 @@ const MyNotesPage = () => {
       await supabase.from("visit_notes").update({ processing_status: "transcribing" }).eq("id", note.id);
       fetchNotes();
       try {
-        const res = await fetch(note.recording_url);
+        const url = signedUrls[note.id] || (await getSignedRecordingUrl(note.recording_url));
+        if (!url) throw new Error("No recording URL");
+        const res = await fetch(url);
         const blob = await res.blob();
         const buf = await blob.arrayBuffer();
         const bytes = new Uint8Array(buf);
@@ -427,6 +458,7 @@ const MyNotesPage = () => {
                 <NoteCard
                   key={note.id}
                   note={note}
+                  recordingSignedUrl={signedUrls[note.id]}
                   expanded={expandedId === note.id}
                   onToggle={() => setExpandedId(expandedId === note.id ? null : note.id)}
                   onDelete={() => handleDelete(note.id)}
@@ -447,9 +479,9 @@ const MyNotesPage = () => {
 };
 
 function NoteCard({
-  note, expanded, onToggle, onDelete, onAddTag, onRemoveTag, onReprocess, onEmail, onCopy, onExportPdf,
+  note, recordingSignedUrl, expanded, onToggle, onDelete, onAddTag, onRemoveTag, onReprocess, onEmail, onCopy, onExportPdf,
 }: {
-  note: VisitNote; expanded: boolean; onToggle: () => void; onDelete: () => void;
+  note: VisitNote; recordingSignedUrl?: string; expanded: boolean; onToggle: () => void; onDelete: () => void;
   onAddTag: (t: string) => void; onRemoveTag: (t: string) => void;
   onReprocess: () => void; onEmail: () => void; onCopy: () => void;
   onExportPdf: (includeTranscript: boolean) => void;
@@ -515,7 +547,7 @@ function NoteCard({
         <div className="mt-4 pt-4" style={{ borderTop: "0.5px solid hsl(var(--border))" }}>
           <div className="flex items-center justify-between mb-3 gap-3 flex-wrap">
             <span className="text-[10px] uppercase tracking-[1px] px-2 py-1 rounded-full bg-amber-100 text-amber-900 font-medium">Not clinician-approved</span>
-            {note.recording_url && <audio controls src={note.recording_url} className="h-9 max-w-full" />}
+            {note.recording_url && recordingSignedUrl && <audio controls src={recordingSignedUrl} className="h-9 max-w-full" />}
           </div>
 
           <Tabs defaultValue="summary" className="w-full">

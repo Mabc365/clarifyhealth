@@ -1,4 +1,5 @@
 import { corsHeaders } from 'npm:@supabase/supabase-js@2/cors';
+import { createClient } from 'npm:@supabase/supabase-js@2';
 
 const GATEWAY_URL = 'https://connector-gateway.lovable.dev/resend';
 
@@ -13,6 +14,16 @@ interface SendBody {
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders });
 
+  // Require authenticated user; force `to` to that user's email to prevent open-relay abuse
+  const authHeader = req.headers.get('Authorization');
+  if (!authHeader?.startsWith('Bearer ')) return json({ error: 'Unauthorized' }, 401);
+  const authClient = createClient(
+    Deno.env.get('SUPABASE_URL')!,
+    Deno.env.get('SUPABASE_ANON_KEY')!,
+  );
+  const { data: userData, error: userErr } = await authClient.auth.getUser(authHeader.replace('Bearer ', ''));
+  if (userErr || !userData?.user?.email) return json({ error: 'Unauthorized' }, 401);
+
   const LOVABLE_API_KEY = Deno.env.get('LOVABLE_API_KEY');
   const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
   if (!LOVABLE_API_KEY) return json({ error: 'LOVABLE_API_KEY not configured' }, 500);
@@ -21,7 +32,8 @@ Deno.serve(async (req) => {
   let body: SendBody;
   try { body = await req.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
 
-  const to = body.to ?? 'clarifyhlth@gmail.com';
+  // Always send to the authenticated user's own email — ignore client-supplied recipients
+  const to = userData.user.email;
   const subject = body.subject ?? 'Hello World';
   const html = body.html ?? '<p>Congrats on sending your <strong>first email</strong>!</p>';
   const from = body.from ?? 'Clarify Health <onboarding@resend.dev>';
@@ -35,7 +47,7 @@ Deno.serve(async (req) => {
       'Authorization': `Bearer ${LOVABLE_API_KEY}`,
       'X-Connection-Api-Key': RESEND_API_KEY,
     },
-    body: JSON.stringify({ from, to: Array.isArray(to) ? to : [to], subject, html, text: body.text }),
+    body: JSON.stringify({ from, to: [to], subject, html, text: body.text }),
   });
 
   const data = await resp.json().catch(() => ({}));
