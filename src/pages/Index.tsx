@@ -39,15 +39,46 @@ const Index = () => {
         description={t("home.meta.desc")}
         canonical="/"
         jsonLd={{
-          "@type": "WebSite",
-          name: "Clarify Health",
-          url: "https://clarifyhealth.lovable.app",
-          description: t("home.meta.desc"),
-          potentialAction: {
-            "@type": "SearchAction",
-            target: "https://clarifyhealth.lovable.app/ask?q={search_term_string}",
-            "query-input": "required name=search_term_string",
-          },
+          "@graph": [
+            {
+              "@type": "WebSite",
+              "@id": "https://clarifyhealth.co/#website",
+              name: "Clarify Health",
+              url: "https://clarifyhealth.co",
+              description: t("home.meta.desc"),
+              potentialAction: {
+                "@type": "SearchAction",
+                target: "https://clarifyhealth.co/ask?q={search_term_string}",
+                "query-input": "required name=search_term_string",
+              },
+            },
+            {
+              "@type": "MedicalOrganization",
+              "@id": "https://clarifyhealth.co/#organization",
+              name: "Clarify Health",
+              url: "https://clarifyhealth.co",
+              description:
+                "Clarify Health is a plain-English health education resource that translates complex medical information into clear, trustworthy answers anyone can understand.",
+              areaServed: "Worldwide",
+              knowsLanguage: ["en", "es", "ur", "hi", "ar"],
+              medicalSpecialty: [
+                "PrimaryCare",
+                "Cardiovascular",
+                "Endocrine",
+                "Psychiatric",
+                "Pulmonary",
+              ],
+            },
+            {
+              "@type": "WebPage",
+              "@id": "https://clarifyhealth.co/#webpage",
+              url: "https://clarifyhealth.co/",
+              name: t("home.meta.title"),
+              description: t("home.meta.desc"),
+              isPartOf: { "@id": "https://clarifyhealth.co/#website" },
+              about: { "@id": "https://clarifyhealth.co/#organization" },
+            },
+          ],
         }}
       />
 
