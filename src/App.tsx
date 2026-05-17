@@ -32,11 +32,9 @@ const SymptomExplainerPage = lazy(() => import("./pages/SymptomExplainerPage"));
 const GlossaryPage = lazy(() => import("./pages/GlossaryPage"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const EmbedArticlePage = lazy(() => import("./pages/EmbedArticlePage"));
-const NewsletterConfirmPage = lazy(() => import("./pages/NewsletterConfirmPage"));
 const EditorialStandardsPage = lazy(() => import("./pages/EditorialStandardsPage"));
 const ReviewersPage = lazy(() => import("./pages/ReviewersPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
-const NewsletterPage = lazy(() => import("./pages/NewsletterPage"));
 const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
 const AccessibilityPage = lazy(() => import("./pages/AccessibilityPage"));
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
@@ -115,8 +113,6 @@ const App = () => (
               <Route path="/glossary" element={<GlossaryPage />} />
               <Route path="/article/:slug" element={<ArticlePage />} />
               <Route path="/embed/article/:slug" element={<EmbedArticlePage />} />
-              <Route path="/newsletter/confirm" element={<NewsletterConfirmPage />} />
-              <Route path="/newsletter" element={<NewsletterPage />} />
               <Route path="/editorial-standards" element={<EditorialStandardsPage />} />
               <Route path="/reviewers" element={<ReviewersPage />} />
               <Route path="/contact" element={<ContactPage />} />

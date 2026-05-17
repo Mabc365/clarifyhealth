@@ -9,7 +9,7 @@ const H2 = ({ children }: { children: React.ReactNode }) => (
 const AIDisclaimerPage = () => (
   <LegalLayout
     title="AI Disclaimer & Acceptable Use"
-    description="Important notice about AI-generated outputs and acceptable use of [COMPANY NAME]."
+    description="Important notice about AI-generated outputs and acceptable use of Clarify Health."
     canonical="/legal/ai-disclaimer"
   >
     <section
@@ -64,7 +64,7 @@ const AIDisclaimerPage = () => (
     <section>
       <H2>Contact</H2>
       <p>
-        Questions: <a href="mailto:[CONTACT EMAIL]" className="text-primary hover:underline">[CONTACT EMAIL]</a>.
+        Questions: <a href="mailto:mustafa@clarifyhealth.co" className="text-primary hover:underline">mustafa@clarifyhealth.co</a>.
       </p>
     </section>
   </LegalLayout>

@@ -20,7 +20,6 @@ const staticEntries = [
   { path: "/editorial-standards", changefreq: "monthly", priority: "0.6" },
   { path: "/reviewers", changefreq: "monthly", priority: "0.5" },
   { path: "/contact", changefreq: "yearly", priority: "0.4" },
-  { path: "/newsletter", changefreq: "monthly", priority: "0.6" },
   { path: "/accessibility", changefreq: "yearly", priority: "0.3" },
   { path: "/legal/privacy", changefreq: "yearly", priority: "0.3" },
   { path: "/legal/terms", changefreq: "yearly", priority: "0.3" },

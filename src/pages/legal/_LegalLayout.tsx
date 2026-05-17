@@ -9,7 +9,7 @@ interface Props {
   children: ReactNode;
 }
 
-const LegalLayout = ({ title, description, canonical, lastUpdated = "[EFFECTIVE DATE]", children }: Props) => (
+const LegalLayout = ({ title, description, canonical, lastUpdated = "May 17, 2026", children }: Props) => (
   <main className="pt-32 pb-[64px] md:pb-[120px] px-6">
     <PageMeta title={`${title} | Clarify Health`} description={description} canonical={canonical} />
     <article className="mx-auto max-w-[760px]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
