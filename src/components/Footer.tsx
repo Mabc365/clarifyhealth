@@ -39,9 +39,11 @@ const Footer = () => {
         ]} />
 
         <FooterCol title="Legal" links={[
-          { to: "/privacy", label: "Privacy" },
-          { to: "/terms", label: "Terms" },
-          { to: "/disclaimer", label: "Medical disclaimer" },
+          { to: "/legal/privacy", label: "Privacy" },
+          { to: "/legal/terms", label: "Terms" },
+          { to: "/legal/ai-disclaimer", label: "AI disclaimer" },
+          { to: "/legal/cookies", label: "Cookies" },
+          { to: "/legal/do-not-sell", label: "Do Not Sell or Share My Info" },
           { to: "/accessibility", label: "Accessibility" },
         ]} />
       </div>
