@@ -34,7 +34,6 @@ const Footer = () => {
         <FooterCol title="Resources" links={[
           { to: "/editorial-standards", label: "Editorial standards" },
           { to: "/reviewers", label: "Reviewers" },
-          { to: "/newsletter", label: "Newsletter" },
           { to: "/contact", label: "Contact" },
         ]} />
 

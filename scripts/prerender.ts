@@ -42,7 +42,6 @@ const STATIC_PAGES: Page[] = [
   { path: "/editorial-standards", title: "Editorial Standards — Clarify Health", description: "How we write, review, update, and correct every article. Conflict-of-interest policy." },
   { path: "/reviewers", title: "Our Reviewers — Clarify Health", description: "The clinicians and editors who review every article on Clarify Health." },
   { path: "/contact", title: "Contact — Clarify Health", description: "Get in touch with the Clarify Health team. We read every message." },
-  { path: "/newsletter", title: "Newsletter — Clarify Health", description: "Plain-English health explainers in your inbox. One email a week." },
   { path: "/accessibility", title: "Accessibility Statement — Clarify Health", description: "Our WCAG 2.2 AA accessibility commitment and how to report barriers." },
   { path: "/privacy", title: "Privacy Policy — Clarify Health", description: "How Clarify Health handles your privacy." },
   { path: "/terms", title: "Terms of Service — Clarify Health", description: "Terms of service for Clarify Health." },
