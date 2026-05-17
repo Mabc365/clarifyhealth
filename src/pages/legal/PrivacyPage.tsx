@@ -15,7 +15,8 @@ const PrivacyPage = () => (
     <section>
       <p>
         This Privacy Policy explains how <strong className="text-foreground">Clarify Health</strong>{" "}
-        ("we", "us", "our") collects, uses, and protects information when you use our website,
+        ("we", "us", "our") — an independent educational project, not a registered business entity —
+        collects, uses, and protects information when you use our website,
         mobile app, and AI-powered features (collectively, the "Service"). We are based in the
         United States but the Service is accessible globally.
       </p>

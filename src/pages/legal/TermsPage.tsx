@@ -16,7 +16,8 @@ const TermsPage = () => (
       <H2>1. Acceptance of terms</H2>
       <p>
         By creating an account or using <strong className="text-foreground">Clarify Health</strong>
-        {" "}("we", "us", "the Service"), you agree to these Terms of Service and our{" "}
+        {" "}("we", "us", "the Service") — an independent educational project run by an individual,
+        not a registered business entity — you agree to these Terms of Service and our{" "}
         <a href="/legal/privacy" className="text-primary hover:underline">Privacy Policy</a>. If
         you do not agree, do not use the Service.
       </p>
