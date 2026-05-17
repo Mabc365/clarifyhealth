@@ -1,79 +1,50 @@
-# Advanced Doctor Visit Notes
+## Legal & compliance infrastructure
 
-A major upgrade to `/my-notes` covering live recording, better transcripts, structured AI breakdown, search & tags, and PDF/email export.
+Build out the full legal scaffold as specified. Existing `/privacy`, `/terms`, `/disclaimer` pages will be replaced/augmented and moved under `/legal/*` with redirects from old URLs preserved.
 
-## 1. Live in-browser recording
-- New `<VisitRecorder />` using `MediaRecorder` (webm/opus).
-- Mic permission prompt, big record button, pause/resume, live timer, animated waveform (Web Audio AnalyserNode).
-- Cap at **60 min** with a warning at 55 min.
-- On stop: shows playback + "Save & transcribe" or "Discard".
-- Drag-and-drop / file upload remains as a fallback in the same modal.
+### 1. New / rewritten pages (under `/legal/*`)
 
-## 2. High-quality transcription with speaker labels (ElevenLabs Scribe)
-- Replace the Gemini audio path with **ElevenLabs `scribe_v2`** (`diarize=true`, `tag_audio_events=true`).
-- New edge function `transcribe-visit` uploads the audio file directly to ElevenLabs (multipart), returns:
-  - Full text
-  - Word-level timestamps
-  - Speaker-labeled segments (speaker_0 / speaker_1 → relabeled "Doctor" / "Patient" by simple heuristic: longer-speaking party = Doctor, or user picks)
-- Stored as `ai_transcript` JSON on `visit_notes`.
+- `/legal/privacy` — full CCPA/CPRA + GDPR + COPPA policy with all required sections. Replaces existing `PrivacyPage`.
+- `/legal/terms` — full ToS: eligibility, AI disclaimer (medical/legal/financial), as-is, limitation of liability, indemnification, IP license, arbitration + class-action waiver, governing law `[STATE]`. Replaces existing `TermsPage`.
+- `/legal/ai-disclaimer` — prominent AI / acceptable-use warning. Replaces existing `DisclaimerPage`.
+- `/legal/cookies` — cookie & local-storage policy with opt-out instructions.
+- `/legal/do-not-sell` — CCPA "Do Not Sell or Share" page (states we don't sell, provides opt-out request form anyway).
 
-Requires new secret: **`ELEVENLABS_API_KEY`** (I'll ask you for it before deploying).
+Old routes (`/privacy`, `/terms`, `/disclaimer`) → `<Navigate>` redirects to new `/legal/*` paths so existing links and sitemap stay valid.
 
-## 3. Structured AI breakdown
-- After transcription, a second function `analyze-visit` calls Lovable AI Gateway (`google/gemini-2.5-flash`) with the transcript and returns strict JSON:
-  ```
-  diagnosis, medications[{name, dose, frequency, purpose}],
-  tests_ordered[], follow_ups[{what, when}],
-  red_flags[], plain_english_summary, key_terms[{term, definition}]
-  ```
-- Rendered in the expanded card as labeled sections (Diagnosis, Medications table, Tests, Follow-ups, Red flags).
-- All sections keep the "Not clinician-approved" amber badge.
+All pages: "Last Updated: [EFFECTIVE DATE]" header, placeholders `[COMPANY NAME]`, `[CONTACT EMAIL]`, `[STATE]`, `[EFFECTIVE DATE]`, plain language, crawlable (no auth).
 
-## 4. Smart follow-up questions + inline jargon glossary
-- `analyze-visit` also returns `follow_up_questions[]` personalized to what was discussed.
-- `key_terms` are rendered inline: any medical word in the transcript that matches a term shows a dotted underline + popover with the plain-English definition.
+### 2. UI/UX compliance elements
 
-## 5. Search, tags, PDF/email export
-- Search box at top of `/my-notes` (client-side ILIKE across doctor name, specialty, transcript, summary).
-- Tag chips on each note (free-text, stored as `text[]`), editable in the card. Filter pill row above the list.
-- Per-note menu:
-  - **Export PDF** — client-side via `jspdf` (already common; small bundle) producing a clean summary sheet (visit info + structured breakdown + follow-up questions). No transcript by default; toggle to include.
-  - **Email me** — invokes existing Resend `send-email` function with the rendered HTML.
-  - **Copy to clipboard**.
+- **CookieConsentBanner** component — fixed bottom banner on first visit, Accept / Reject / Customize. Stores choice in `localStorage` (`clarify_cookie_consent`). Mounted in `App.tsx`. Gates any future analytics.
+- **Signup flow** (`SignupPage`):
+  - Unchecked "I agree to the Terms of Service and Privacy Policy" checkbox (with links), required to submit.
+  - Unchecked "I confirm I am 18 or older" checkbox, required.
+  - Submit disabled until both checked.
+- **AIInputNotice** component — small inline warning shown above AI input on `/ask`, `/translate`, `/symptoms`, `/wellness-plan`, `/my-notes` (visit recorder): "Do not input information you're not authorized to share. AI outputs are not professional advice."
+- **AccountSettingsPage** at `/account` (auth-gated):
+  - Update email, update password.
+  - Download my data (JSON export of profile + notes via Supabase queries client-side).
+  - Delete my account (confirms what's deleted: profile, notes, recordings; calls a `delete-account` edge function that purges user rows + auth user).
+  - Link from Header user menu / `MyNotesPage`.
+- **Footer** — add legal column links to new `/legal/*` paths, plus "Do Not Sell or Share My Personal Information" link.
 
-## 6. Schema changes (one migration)
-Add to `visit_notes`:
-- `ai_transcript jsonb` (segments + timestamps)
-- `ai_structured jsonb` (diagnosis/meds/tests/follow_ups/red_flags/key_terms)
-- `ai_follow_up_questions jsonb`
-- `tags text[] default '{}'`
-- `duration_seconds int`
+### 3. Backend
 
-Allow `UPDATE` policy on `tags` (already covered by existing "Users can update their own notes").
+- Edge function `delete-account` — auth-required; deletes user's notes/recordings/profile and calls `auth.admin.deleteUser`. Uses service role.
 
-## 7. Edge functions
-- New: `transcribe-visit` (ElevenLabs Scribe, multipart upload, returns transcript JSON).
-- New: `analyze-visit` (Lovable AI → structured JSON).
-- Keep existing `transcribe-audio` as legacy fallback if ElevenLabs key is missing.
+### 4. Sitemap & SEO
 
-## 8. UI / UX
-- Expanded card becomes a tabbed view: **Summary · Transcript · Questions · Glossary**.
-- Recording modal redesigned with clear states: idle → recording → review → uploading → analyzing.
-- Progress chip on the note ("Transcribing…", "Analyzing…") with polling on `visit_notes`.
+- Update `scripts/generate-sitemap.ts`: add `/legal/privacy`, `/legal/terms`, `/legal/cookies`, `/legal/ai-disclaimer`, `/legal/do-not-sell`, `/account`. Regenerate `public/sitemap.xml`.
 
-## Technical notes
-- `MediaRecorder` produces `audio/webm;codecs=opus` — supported by Scribe.
-- For files > ~6 MB, upload to the existing `recordings` bucket first, then pass the signed URL to `transcribe-visit` (avoids base64 round-trip).
-- `jspdf` + `jspdf-autotable` for export (≈80 KB gzipped, lazy-loaded).
-- All new secrets prompted via the secrets tool before deploying functions.
+### 5. Out of scope (called out to user)
 
-## Files I'll touch
-- `supabase/migrations/<new>.sql`
-- `supabase/functions/transcribe-visit/index.ts` (new)
-- `supabase/functions/analyze-visit/index.ts` (new)
-- `src/pages/MyNotesPage.tsx`
-- `src/components/notes/VisitRecorder.tsx` (new)
-- `src/components/notes/StructuredBreakdown.tsx` (new)
-- `src/components/notes/TranscriptView.tsx` (new)
-- `src/components/notes/GlossaryPopover.tsx` (new)
-- `src/lib/exportVisitPdf.ts` (new)
+- Picking a state, real privacy email, listing actual subprocessors with accurate names, HIPAA decisions, lawyer review, business entity — left as placeholders / mentioned in closing message.
+
+### Files
+
+**New:** `src/pages/legal/PrivacyPage.tsx`, `TermsPage.tsx`, `CookiesPage.tsx`, `AIDisclaimerPage.tsx`, `DoNotSellPage.tsx`, `src/pages/AccountSettingsPage.tsx`, `src/components/CookieConsentBanner.tsx`, `src/components/AIInputNotice.tsx`, `supabase/functions/delete-account/index.ts`.
+
+**Edited:** `src/App.tsx` (routes + redirects + banner mount), `src/components/Footer.tsx` (legal links + Do Not Sell), `src/pages/SignupPage.tsx` (checkboxes), `src/pages/AskPage.tsx`, `src/pages/JargonTranslatorPage.tsx`, `src/pages/SymptomExplainerPage.tsx`, `src/pages/WellnessPlanPage.tsx`, `src/components/notes/VisitRecorder.tsx` (AI notices), `scripts/generate-sitemap.ts`, `public/sitemap.xml`.
+
+**Deleted:** `src/pages/PrivacyPage.tsx`, `TermsPage.tsx`, `DisclaimerPage.tsx` (replaced by `/legal/*` versions; routes redirect).

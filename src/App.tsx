@@ -7,6 +7,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import CookieConsentBanner from "@/components/CookieConsentBanner";
 
 import Index from "./pages/Index";
 const TopicsIndex = lazy(() => import("./pages/TopicsIndex"));
@@ -19,9 +20,12 @@ const SignupPage = lazy(() => import("./pages/SignupPage"));
 const MyNotesPage = lazy(() => import("./pages/MyNotesPage"));
 const FindADoctorPage = lazy(() => import("./pages/FindADoctorPage"));
 const WellnessPlanPage = lazy(() => import("./pages/WellnessPlanPage"));
-const PrivacyPage = lazy(() => import("./pages/PrivacyPage"));
-const TermsPage = lazy(() => import("./pages/TermsPage"));
-const DisclaimerPage = lazy(() => import("./pages/DisclaimerPage"));
+const PrivacyPage = lazy(() => import("./pages/legal/PrivacyPage"));
+const TermsPage = lazy(() => import("./pages/legal/TermsPage"));
+const AIDisclaimerPage = lazy(() => import("./pages/legal/AIDisclaimerPage"));
+const CookiesPage = lazy(() => import("./pages/legal/CookiesPage"));
+const DoNotSellPage = lazy(() => import("./pages/legal/DoNotSellPage"));
+const AccountSettingsPage = lazy(() => import("./pages/AccountSettingsPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const JargonTranslatorPage = lazy(() => import("./pages/JargonTranslatorPage"));
 const SymptomExplainerPage = lazy(() => import("./pages/SymptomExplainerPage"));
@@ -95,9 +99,17 @@ const App = () => (
               <Route path="/my-notes" element={<MyNotesPage />} />
               <Route path="/find-a-doctor" element={<FindADoctorPage />} />
               <Route path="/wellness-plan" element={<WellnessPlanPage />} />
-              <Route path="/privacy" element={<PrivacyPage />} />
-              <Route path="/terms" element={<TermsPage />} />
-              <Route path="/disclaimer" element={<DisclaimerPage />} />
+              <Route path="/account" element={<AccountSettingsPage />} />
+              {/* Legal */}
+              <Route path="/legal/privacy" element={<PrivacyPage />} />
+              <Route path="/legal/terms" element={<TermsPage />} />
+              <Route path="/legal/ai-disclaimer" element={<AIDisclaimerPage />} />
+              <Route path="/legal/cookies" element={<CookiesPage />} />
+              <Route path="/legal/do-not-sell" element={<DoNotSellPage />} />
+              {/* Legacy redirects */}
+              <Route path="/privacy" element={<Navigate to="/legal/privacy" replace />} />
+              <Route path="/terms" element={<Navigate to="/legal/terms" replace />} />
+              <Route path="/disclaimer" element={<Navigate to="/legal/ai-disclaimer" replace />} />
               <Route path="/translate" element={<JargonTranslatorPage />} />
               <Route path="/symptoms" element={<SymptomExplainerPage />} />
               <Route path="/glossary" element={<GlossaryPage />} />
@@ -116,6 +128,7 @@ const App = () => (
               </Routes>
             </Suspense>
           </Chrome>
+          <CookieConsentBanner />
         </BrowserRouter>
       </TooltipProvider>
     </LanguageProvider>

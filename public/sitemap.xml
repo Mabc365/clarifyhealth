@@ -71,17 +71,27 @@
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://clarifyhealth.co/privacy</loc>
+    <loc>https://clarifyhealth.co/legal/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://clarifyhealth.co/terms</loc>
+    <loc>https://clarifyhealth.co/legal/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://clarifyhealth.co/disclaimer</loc>
+    <loc>https://clarifyhealth.co/legal/ai-disclaimer</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://clarifyhealth.co/legal/cookies</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://clarifyhealth.co/legal/do-not-sell</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

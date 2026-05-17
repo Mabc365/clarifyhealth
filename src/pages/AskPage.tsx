@@ -4,6 +4,7 @@ import { Clock, ChevronDown, ChevronUp } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
 import { trackQuestionAsked } from "@/lib/analytics";
+import AIInputNotice from "@/components/AIInputNotice";
 
 // ── Constants ─────────────────────────────────────────────────────────────
 
@@ -297,6 +298,7 @@ const AskPage = () => {
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="stagger-reveal mt-8">
+          <AIInputNotice className="mb-3" />
           <textarea
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
