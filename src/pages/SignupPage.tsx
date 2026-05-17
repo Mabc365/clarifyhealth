@@ -11,6 +11,8 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [confirmAge, setConfirmAge] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -19,6 +21,10 @@ const SignupPage = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!agreeTerms || !confirmAge) {
+      setError("Please confirm your age and agree to the Terms and Privacy Policy.");
+      return;
+    }
     setError("");
     setLoading(true);
 
@@ -111,13 +117,39 @@ const SignupPage = () => {
               />
             </div>
 
+            <div className="space-y-2 pt-1">
+              <label className="flex items-start gap-2 text-[13px] text-foreground/80" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <input
+                  type="checkbox"
+                  checked={confirmAge}
+                  onChange={(e) => setConfirmAge(e.target.checked)}
+                  className="mt-[3px]"
+                />
+                <span>I confirm I am 18 or older.</span>
+              </label>
+              <label className="flex items-start gap-2 text-[13px] text-foreground/80" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+                <input
+                  type="checkbox"
+                  checked={agreeTerms}
+                  onChange={(e) => setAgreeTerms(e.target.checked)}
+                  className="mt-[3px]"
+                />
+                <span>
+                  I agree to the{" "}
+                  <Link to="/legal/terms" className="text-primary hover:underline">Terms of Service</Link>{" "}
+                  and{" "}
+                  <Link to="/legal/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
+                </span>
+              </label>
+            </div>
+
             {error && (
               <p className="text-destructive text-[13px]">{error}</p>
             )}
 
             <Button
               type="submit"
-              disabled={loading}
+              disabled={loading || !agreeTerms || !confirmAge}
               className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
             >
               {loading ? "..." : t("auth.signup")}
