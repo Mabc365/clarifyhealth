@@ -9,13 +9,13 @@ const H2 = ({ children }: { children: React.ReactNode }) => (
 const TermsPage = () => (
   <LegalLayout
     title="Terms of Service"
-    description="The terms governing your use of [COMPANY NAME]."
+    description="The terms governing your use of Clarify Health."
     canonical="/legal/terms"
   >
     <section>
       <H2>1. Acceptance of terms</H2>
       <p>
-        By creating an account or using <strong className="text-foreground">[COMPANY NAME]</strong>
+        By creating an account or using <strong className="text-foreground">Clarify Health</strong>
         {" "}("we", "us", "the Service"), you agree to these Terms of Service and our{" "}
         <a href="/legal/privacy" className="text-primary hover:underline">Privacy Policy</a>. If
         you do not agree, do not use the Service.
@@ -34,7 +34,7 @@ const TermsPage = () => (
       <H2>3. Account responsibilities</H2>
       <p>
         You are responsible for keeping your login credentials secure and for all activity under
-        your account. Notify us immediately at <a href="mailto:[CONTACT EMAIL]" className="text-primary hover:underline">[CONTACT EMAIL]</a>{" "}
+        your account. Notify us immediately at <a href="mailto:mustafa@clarifyhealth.co" className="text-primary hover:underline">mustafa@clarifyhealth.co</a>{" "}
         of any unauthorized access.
       </p>
     </section>
@@ -91,7 +91,7 @@ const TermsPage = () => (
     <section>
       <H2>8. Limitation of liability</H2>
       <p>
-        TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT WILL [COMPANY NAME], ITS AFFILIATES,
+        TO THE MAXIMUM EXTENT PERMITTED BY LAW, IN NO EVENT WILL Clarify Health, ITS AFFILIATES,
         OR ITS LICENSORS BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR
         PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, ARISING OUT OF OR RELATED TO YOUR
         USE OF THE SERVICE. OUR TOTAL LIABILITY FOR ANY CLAIM WILL NOT EXCEED THE GREATER OF
@@ -103,7 +103,7 @@ const TermsPage = () => (
     <section>
       <H2>9. Indemnification</H2>
       <p>
-        You agree to indemnify and hold harmless [COMPANY NAME] and its affiliates from any
+        You agree to indemnify and hold harmless Clarify Health and its affiliates from any
         claims, damages, or expenses (including reasonable attorneys' fees) arising from your
         Inputs, your use of the Service, or your breach of these Terms.
       </p>
@@ -121,7 +121,7 @@ const TermsPage = () => (
     <section>
       <H2>11. Governing law</H2>
       <p>
-        These Terms are governed by the laws of the State of <strong className="text-foreground">[STATE]</strong>,
+        These Terms are governed by the laws of the State of <strong className="text-foreground">New Jersey</strong>,
         United States, without regard to conflict-of-laws principles.
       </p>
     </section>
@@ -131,10 +131,10 @@ const TermsPage = () => (
       <p>
         Any dispute arising out of or relating to these Terms or the Service will be resolved by
         binding individual arbitration administered by the American Arbitration Association under
-        its Consumer Arbitration Rules. The seat of arbitration will be in <strong className="text-foreground">[STATE]</strong>.
-        <strong className="text-foreground"> YOU AND [COMPANY NAME] AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN AN INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE ACTION.</strong>{" "}
+        its Consumer Arbitration Rules. The seat of arbitration will be in <strong className="text-foreground">New Jersey</strong>.
+        <strong className="text-foreground"> YOU AND Clarify Health AGREE THAT EACH MAY BRING CLAIMS AGAINST THE OTHER ONLY IN AN INDIVIDUAL CAPACITY AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS OR REPRESENTATIVE ACTION.</strong>{" "}
         You may opt out of arbitration within 30 days of accepting these Terms by emailing{" "}
-        <a href="mailto:[CONTACT EMAIL]" className="text-primary hover:underline">[CONTACT EMAIL]</a>.
+        <a href="mailto:mustafa@clarifyhealth.co" className="text-primary hover:underline">mustafa@clarifyhealth.co</a>.
       </p>
     </section>
 
@@ -145,7 +145,7 @@ const TermsPage = () => (
 
     <section>
       <H2>14. Contact</H2>
-      <p>Questions: <a href="mailto:[CONTACT EMAIL]" className="text-primary hover:underline">[CONTACT EMAIL]</a>.</p>
+      <p>Questions: <a href="mailto:mustafa@clarifyhealth.co" className="text-primary hover:underline">mustafa@clarifyhealth.co</a>.</p>
     </section>
   </LegalLayout>
 );

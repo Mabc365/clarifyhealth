@@ -9,12 +9,12 @@ const H2 = ({ children }: { children: React.ReactNode }) => (
 const PrivacyPage = () => (
   <LegalLayout
     title="Privacy Policy"
-    description="How [COMPANY NAME] collects, processes, and protects your information."
+    description="How Clarify Health collects, processes, and protects your information."
     canonical="/legal/privacy"
   >
     <section>
       <p>
-        This Privacy Policy explains how <strong className="text-foreground">[COMPANY NAME]</strong>{" "}
+        This Privacy Policy explains how <strong className="text-foreground">Clarify Health</strong>{" "}
         ("we", "us", "our") collects, uses, and protects information when you use our website,
         mobile app, and AI-powered features (collectively, the "Service"). We are based in the
         United States but the Service is accessible globally.
@@ -77,7 +77,7 @@ const PrivacyPage = () => (
         <li>Opt out of sale or sharing of personal information (we do not sell or share).</li>
         <li>Non-discrimination for exercising your rights.</li>
       </ul>
-      <p className="mt-2">To exercise a right, email <a href="mailto:[CONTACT EMAIL]" className="text-primary hover:underline">[CONTACT EMAIL]</a>.</p>
+      <p className="mt-2">To exercise a right, email <a href="mailto:mustafa@clarifyhealth.co" className="text-primary hover:underline">mustafa@clarifyhealth.co</a>.</p>
     </section>
 
     <section>
@@ -152,7 +152,7 @@ const PrivacyPage = () => (
     <section>
       <H2>14. Contact</H2>
       <p>
-        Privacy requests: <a href="mailto:[CONTACT EMAIL]" className="text-primary hover:underline">[CONTACT EMAIL]</a>.
+        Privacy requests: <a href="mailto:mustafa@clarifyhealth.co" className="text-primary hover:underline">mustafa@clarifyhealth.co</a>.
       </p>
     </section>
   </LegalLayout>

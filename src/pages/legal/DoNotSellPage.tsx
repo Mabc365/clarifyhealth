@@ -18,7 +18,7 @@ const DoNotSellPage = () => {
     >
       <section>
         <p>
-          <strong className="text-foreground">[COMPANY NAME] does not sell your personal
+          <strong className="text-foreground">Clarify Health does not sell your personal
           information, and we do not "share" it for cross-context behavioral advertising</strong>
           {" "}as those terms are defined under the California Consumer Privacy Act (CCPA) as
           amended by the California Privacy Rights Act (CPRA).
@@ -43,7 +43,7 @@ const DoNotSellPage = () => {
             style={{ border: "0.5px solid hsl(var(--border))", borderRadius: "4px" }}
           />
           <a
-            href={email ? `mailto:[CONTACT EMAIL]?subject=${subject}&body=${body}` : undefined}
+            href={email ? `mailto:mustafa@clarifyhealth.co?subject=${subject}&body=${body}` : undefined}
             onClick={() => email && setSubmitted(true)}
             aria-disabled={!email}
             className={`inline-flex items-center px-5 py-3 text-[14px] font-medium rounded bg-primary text-primary-foreground hover:bg-primary/90 ${
@@ -59,7 +59,7 @@ const DoNotSellPage = () => {
           )}
         </div>
         <p className="mt-4 text-[13px] text-muted-foreground">
-          You may also email <a href="mailto:[CONTACT EMAIL]" className="text-primary hover:underline">[CONTACT EMAIL]</a>{" "}
+          You may also email <a href="mailto:mustafa@clarifyhealth.co" className="text-primary hover:underline">mustafa@clarifyhealth.co</a>{" "}
           directly with the subject line "Do Not Sell or Share My Personal Information".
         </p>
       </section>

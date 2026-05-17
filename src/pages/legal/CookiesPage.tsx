@@ -16,12 +16,12 @@ const clearConsent = () => {
 const CookiesPage = () => (
   <LegalLayout
     title="Cookie Policy"
-    description="What cookies and local storage [COMPANY NAME] uses and how to opt out."
+    description="What cookies and local storage Clarify Health uses and how to opt out."
     canonical="/legal/cookies"
   >
     <section>
       <p>
-        This Cookie Policy explains how <strong className="text-foreground">[COMPANY NAME]</strong>{" "}
+        This Cookie Policy explains how <strong className="text-foreground">Clarify Health</strong>{" "}
         uses cookies and similar technologies (such as browser local storage) when you use the
         Service.
       </p>
@@ -66,7 +66,7 @@ const CookiesPage = () => (
 
     <section>
       <H2>3. Contact</H2>
-      <p>Questions: <a href="mailto:[CONTACT EMAIL]" className="text-primary hover:underline">[CONTACT EMAIL]</a>.</p>
+      <p>Questions: <a href="mailto:mustafa@clarifyhealth.co" className="text-primary hover:underline">mustafa@clarifyhealth.co</a>.</p>
     </section>
   </LegalLayout>
 );
