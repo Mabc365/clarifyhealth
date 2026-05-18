@@ -141,6 +141,96 @@ const Index = () => {
 
       {/* 5. Final CTA */}
       <section className="px-6 py-24 md:py-32 border-t" style={{ borderColor: "hsl(var(--border) / 0.5)" }}>
+        <div className="mx-auto max-w-[1000px] mb-24 md:mb-32">
+          <div
+            className="rounded-3xl p-10 md:p-16 grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+            style={{
+              background: "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--primary) / 0.02))",
+              border: "1px solid hsl(var(--border) / 0.6)",
+            }}
+          >
+            <div>
+              <span
+                className="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[12px] font-medium text-primary"
+                style={{
+                  background: "hsl(var(--primary) / 0.1)",
+                  fontFamily: "Inter, sans-serif",
+                }}
+              >
+                <Smartphone className="h-3 w-3" />
+                iOS app — June 30
+              </span>
+              <h2
+                className="mt-5 text-[28px] md:text-[36px] font-medium text-foreground"
+                style={{ fontFamily: "Fraunces, serif", letterSpacing: "-0.01em", lineHeight: 1.15 }}
+              >
+                Track your health from your pocket.
+              </h2>
+              <p
+                className="mt-4 text-[16px] text-foreground/75"
+                style={{ fontFamily: "Inter, sans-serif", lineHeight: 1.7 }}
+              >
+                A mobile companion that syncs with Apple Health and Google Health Connect so your vitals, activity, and visit notes live in one place — explained in plain English.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {[
+                  { icon: Heart, text: "Syncs with Apple Health & Android equivalents" },
+                  { icon: Activity, text: "Clear breakdowns of trends, vitals, and changes" },
+                  { icon: Smartphone, text: "Visit notes and recordings on the go" },
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3">
+                    <item.icon className="h-4 w-4 mt-1 text-primary shrink-0" />
+                    <span
+                      className="text-[15px] text-foreground/85"
+                      style={{ fontFamily: "Inter, sans-serif" }}
+                    >
+                      {item.text}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+              <p
+                className="mt-6 text-[13px] text-muted-foreground"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                iOS launches June 30, 2026. Android shortly after.
+              </p>
+            </div>
+            <div className="flex justify-center md:justify-end">
+              <div
+                className="relative w-[240px] h-[480px] rounded-[42px] p-3 shadow-2xl"
+                style={{
+                  background: "linear-gradient(160deg, hsl(var(--foreground) / 0.92), hsl(var(--foreground) / 0.75))",
+                }}
+              >
+                <div
+                  className="w-full h-full rounded-[32px] overflow-hidden flex flex-col items-center justify-center text-center px-6"
+                  style={{ background: "hsl(var(--background))" }}
+                >
+                  <Heart className="h-10 w-10 text-primary mb-4" fill="currentColor" />
+                  <p
+                    className="text-[22px] font-medium text-foreground"
+                    style={{ fontFamily: "Fraunces, serif" }}
+                  >
+                    Clarify Health
+                  </p>
+                  <p
+                    className="mt-2 text-[13px] text-muted-foreground"
+                    style={{ fontFamily: "Inter, sans-serif" }}
+                  >
+                    Your health, explained.
+                  </p>
+                  <div className="mt-8 w-full space-y-2">
+                    <div className="h-2 rounded-full bg-primary/20" />
+                    <div className="h-2 rounded-full bg-primary/40 w-3/4" />
+                    <div className="h-2 rounded-full bg-primary/30 w-1/2" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="mx-auto max-w-[680px] text-center">
           <h2
             className="text-[32px] md:text-[44px] font-medium text-foreground"
