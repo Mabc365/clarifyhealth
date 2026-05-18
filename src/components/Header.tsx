@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  Menu, X, ChevronDown, LogOut, FileText, Leaf, Search,
+  Menu, X, ChevronDown, LogOut, FileText, Leaf,
 } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
@@ -156,8 +156,6 @@ const UserMenu = () => {
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [query, setQuery] = useState("");
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useLanguage();
@@ -183,15 +181,6 @@ const Header = () => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (query.trim()) {
-      navigate(`/ask?q=${encodeURIComponent(query.trim())}`);
-      setSearchOpen(false);
-      setQuery("");
-    }
-  };
 
   return (
     <>
@@ -234,53 +223,28 @@ const Header = () => {
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
-            {/* Search (icon only — expands to input) */}
-            <form
-              onSubmit={handleSearch}
-              role="search"
-              className={`flex items-center transition-all duration-300 overflow-hidden ${
-                searchOpen ? "w-[240px]" : "w-9"
-              }`}
-              style={{
-                border: "1px solid hsl(var(--border))",
-                borderRadius: "999px",
-                background: "hsl(var(--background) / 0.6)",
-              }}
-            >
-              <button
-                type="button"
-                onClick={() => setSearchOpen((o) => !o)}
-                aria-label={searchOpen ? "Close search" : "Open search"}
-                className="flex h-9 w-9 shrink-0 items-center justify-center text-muted-foreground hover:text-foreground"
-              >
-                <Search className="h-4 w-4" />
-              </button>
-              {searchOpen && (
-                <input
-                  autoFocus
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search topics…"
-                  aria-label="Search"
-                  className="h-9 w-full bg-transparent pr-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                />
-              )}
-            </form>
-
             <LanguageDropdown />
 
             {!loading && (
               user ? (
                 <UserMenu />
               ) : (
-                <Link
-                  to="/ask"
-                  className="text-[13px] font-medium px-4 py-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-                  style={{ fontFamily: "Inter, sans-serif" }}
-                >
-                  {t("nav.ask")}
-                </Link>
+                <>
+                  <Link
+                    to="/login"
+                    className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
+                    style={{ fontFamily: "Inter, sans-serif" }}
+                  >
+                    {t("auth.login")}
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="text-[13px] font-medium px-4 py-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
+                    style={{ fontFamily: "Inter, sans-serif" }}
+                  >
+                    {t("auth.signup")}
+                  </Link>
+                </>
               )
             )}
           </div>
