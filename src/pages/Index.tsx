@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Smartphone, Heart, Activity } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import HeroIllustration from "@/components/HeroIllustration";
 import { useLanguage } from "@/contexts/LanguageContext";
