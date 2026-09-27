@@ -23,7 +23,6 @@ const Index = () => {
           alt="A patient and clinician calmly reviewing a health report together"
           width={1920}
           height={1280}
-          fetchpriority="high"
           className="home-hero-image absolute inset-0 h-full w-full object-cover"
         />
         <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1240px] flex-col items-center justify-center px-5 pb-24 pt-32 text-center text-primary-foreground md:pb-12 md:pt-36">
