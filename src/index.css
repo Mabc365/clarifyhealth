@@ -206,6 +206,7 @@ html.dyslexic-font * {
 .home-hero-image {
   object-position: center;
   animation: hero-drift 18s ease-in-out infinite alternate;
+  transform-origin: center;
 }
 @keyframes hero-drift {
   from { transform: scale(1.01); }
