@@ -27,30 +27,30 @@ html.dyslexic-font * {
 @layer base {
   :root {
     /* Clarify Health — Ocean Signal */
-    --background: 150 17% 98%;
-    --foreground: 190 63% 17%;
-    --card: 0 0% 100%;
-    --card-foreground: 158 17% 14%;
-    --popover: 42 33% 97%;
-    --popover-foreground: 158 17% 14%;
-    --primary: 190 63% 17%;
-    --primary-foreground: 150 17% 98%;
+    --background: 40 16% 96%;
+    --foreground: 180 20% 7%;
+    --card: 40 16% 96%;
+    --card-foreground: 180 20% 7%;
+    --popover: 40 16% 96%;
+    --popover-foreground: 180 20% 7%;
+    --primary: 188 62% 15%;
+    --primary-foreground: 40 16% 96%;
     --primary-glow: 188 52% 32%;
-    --secondary: 185 30% 88%;
-    --secondary-foreground: 158 17% 14%;
-    --muted: 42 22% 92%;
-    --muted-foreground: 158 12% 30%; /* darker for WCAG AA */
-    --accent: 7 88% 59%;
-    --accent-foreground: 150 17% 98%;
+    --secondary: 185 23% 88%;
+    --secondary-foreground: 180 20% 7%;
+    --muted: 36 12% 91%;
+    --muted-foreground: 180 7% 32%;
+    --accent: 7 99% 55%;
+    --accent-foreground: 40 16% 96%;
     --card-surface: 185 30% 88%;
     --destructive: 0 70% 45%;
     --destructive-foreground: 42 33% 97%;
-    --border: 145 12% 78%;
-    --input: 145 12% 78%;
+    --border: 180 7% 80%;
+    --input: 180 7% 80%;
     --ring: 152 62% 26%;
     --radius: 8px;
     --section-bg: 185 30% 94%;
-    --shadow-soft: 0 8px 30px -12px hsl(158 17% 14% / 0.08);
+    --shadow-soft: 0 8px 24px -14px hsl(180 20% 7% / 0.18);
     --shadow-card: 0 2px 12px -4px hsl(158 17% 14% / 0.06), 0 8px 32px -12px hsl(158 17% 14% / 0.08);
     --sidebar-background: 42 33% 97%;
     --sidebar-foreground: 158 17% 14%;
@@ -119,12 +119,12 @@ html.dyslexic-font * {
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    line-height: 1.7;
+    font-family: 'Manrope', 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Sora', 'Manrope', sans-serif;
+    font-family: 'Sora', 'Helvetica Neue', Arial, sans-serif;
     font-feature-settings: "ss01" 1, "ss02" 1, "kern" 1, "liga" 1;
     letter-spacing: 0;
     line-height: 1.15;
@@ -200,12 +200,13 @@ html.dyslexic-font * {
   content: "";
   position: absolute;
   inset: 0;
-  background: hsl(var(--foreground) / 0.56);
+  background: hsl(var(--foreground) / 0.58);
   pointer-events: none;
 }
 .home-hero-image {
-  object-position: 66% center;
+  object-position: center;
   animation: hero-drift 18s ease-in-out infinite alternate;
+  transform-origin: center;
 }
 @keyframes hero-drift {
   from { transform: scale(1.01); }
@@ -214,6 +215,63 @@ html.dyslexic-font * {
 @media (max-width: 767px) {
   .home-hero-image { object-position: 66% center; }
   .home-hero::after { background: hsl(var(--foreground) / 0.68); }
+}
+
+@layer components {
+  .micro-label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  .primary-action {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-accent px-5 py-3 text-[11px] font-bold uppercase text-accent-foreground transition-transform hover:scale-[1.02] active:scale-[0.98];
+    letter-spacing: 0.08em;
+  }
+
+  .page-shell {
+    @apply bg-background px-5 pb-24 pt-40 md:px-8 md:pb-40 md:pt-52;
+  }
+
+  .page-shell > * {
+    @apply mx-auto max-w-[1180px];
+  }
+
+  .page-intro {
+    @apply pb-24 md:pb-40;
+  }
+
+  .page-intro h1 {
+    @apply mt-8 max-w-[980px] text-[44px] font-medium leading-[1.04] text-foreground md:text-[70px];
+  }
+
+  .page-intro > p:last-child {
+    @apply mt-7 max-w-[620px] text-[16px] leading-[1.7] text-muted-foreground;
+  }
+
+  .directory-grid {
+    @apply grid border-l border-t border-border sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  .directory-grid > li {
+    @apply border-b border-r border-border transition-colors hover:bg-muted;
+  }
+
+  .editorial-row {
+    @apply grid gap-10 border-b border-border py-16 md:grid-cols-[0.7fr_1.3fr] md:gap-20 md:py-24;
+  }
+
+  .editorial-row h2 {
+    @apply text-[30px] font-medium leading-tight text-foreground md:text-[38px];
+  }
+
+  .editorial-row > div,
+  .editorial-row > p {
+    @apply max-w-[650px] text-[16px] leading-[1.8] text-muted-foreground;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
