@@ -42,18 +42,18 @@ const Index = () => {
 
       <section className="px-5 py-32 md:py-56" aria-label="Introducing Clarify Health">
         <div className="mx-auto max-w-[820px] text-center">
-          <p className="micro-label text-muted-foreground">Introducing</p>
+          <p className="micro-label text-muted-foreground">{t("home.introLabel")}</p>
           <h2 className="mt-7 text-[42px] font-medium leading-[1.04] text-foreground md:text-[68px]">
-            Understand your health.<br />Without the medical degree.
+            {t("home.introTitle")}
           </h2>
-          <p className="mt-7 text-[14px] text-muted-foreground">Clear answers for everyday people.</p>
+          <p className="mt-7 text-[14px] text-muted-foreground">{t("home.introSub")}</p>
         </div>
       </section>
 
       <section className="border-y border-border bg-background py-24 md:py-36" aria-labelledby="why-title">
         <div className="mx-auto max-w-[1180px] px-5 md:px-8">
           <h2 id="why-title" className="max-w-[900px] text-[38px] font-medium leading-[1.08] text-foreground md:text-[52px]">
-            Health information should help you move forward.
+            {t("home.trustTitle")}
           </h2>
           <div className="mt-16 grid border-y border-border md:grid-cols-3">
             {cards.map((card, index) => (
@@ -86,8 +86,8 @@ const Index = () => {
             <div className="relative h-[280px] border-t border-border md:h-[440px]">
               <img src={heroImage} alt="A health conversation in progress" loading="lazy" className="h-full w-full object-cover object-center grayscale" />
               <div className="absolute bottom-0 left-0 max-w-[470px] bg-card p-6 md:p-9">
-                <p className="micro-label text-accent">A clearer next step</p>
-                <p className="mt-3 text-[20px] font-medium leading-snug text-foreground md:text-[25px]">Read it. Understand it. Bring better questions to your doctor.</p>
+                <p className="micro-label text-accent">{t("home.nextStep")}</p>
+                <p className="mt-3 text-[20px] font-medium leading-snug text-foreground md:text-[25px]">{t("home.nextStepText")}</p>
               </div>
             </div>
           </div>
