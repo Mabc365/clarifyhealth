@@ -262,7 +262,7 @@ const Header = () => {
 
       {/* Mobile full-screen overlay */}
       {mobileOpen && (
-        <div className="nav-overlay fixed inset-0 z-40 flex flex-col items-start justify-center bg-background px-10 md:hidden">
+        <div className="nav-overlay fixed inset-0 z-40 flex flex-col items-start justify-center bg-primary px-10 text-primary-foreground md:hidden">
           <nav className="flex flex-col gap-6">
             {navLinks.map((link, i) => (
               <Link
@@ -271,8 +271,8 @@ const Header = () => {
                 onClick={() => setMobileOpen(false)}
                 className={`nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-primary ${
                   location.pathname.startsWith(link.to)
-                    ? "text-primary"
-                    : "text-foreground"
+                    ? "text-accent"
+                    : "text-primary-foreground"
                 }`}
                 style={{
                   fontFamily: "'Playfair Display', serif",
@@ -288,7 +288,7 @@ const Header = () => {
                 <Link
                   to="/my-notes"
                   onClick={() => setMobileOpen(false)}
-                  className="nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-primary text-foreground"
+                  className="nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-accent text-primary-foreground"
                   style={{
                     fontFamily: "'Playfair Display', serif",
                     animationDelay: `${navLinks.length * 80}ms`,
@@ -300,7 +300,7 @@ const Header = () => {
                 <Link
                   to="/login"
                   onClick={() => setMobileOpen(false)}
-                  className="nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-primary text-foreground"
+                  className="nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-accent text-primary-foreground"
                   style={{
                     fontFamily: "'Playfair Display', serif",
                     animationDelay: `${navLinks.length * 80}ms`,
