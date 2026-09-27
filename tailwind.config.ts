@@ -68,8 +68,8 @@ export default {
         sm: "calc(var(--radius) - 10px)",
       },
       fontFamily: {
-        serif: ["Fraunces", "Playfair Display", "Georgia", "serif"],
-        sans: ["Inter", "DM Sans", "ui-sans-serif", "system-ui"],
+        serif: ["Sora", "Manrope", "ui-sans-serif", "system-ui"],
+        sans: ["Manrope", "Inter", "ui-sans-serif", "system-ui"],
       },
       boxShadow: {
         soft: "var(--shadow-soft)",

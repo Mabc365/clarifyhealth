@@ -185,20 +185,17 @@ const Header = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled && !mobileOpen
-            ? "bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60"
-            : "bg-background/40 backdrop-blur-md"
-        }`}
-        style={{ borderBottom: scrolled && !mobileOpen ? "1px solid hsl(var(--border) / 0.6)" : "1px solid transparent" }}
+        className="pointer-events-none fixed left-0 right-0 top-3 z-50 px-3 transition-all duration-300 md:top-4 md:px-6"
         role="banner"
       >
-        <div className="mx-auto flex h-[56px] max-w-[1180px] items-center justify-between gap-4 px-6">
+        <div className={`pointer-events-auto mx-auto flex h-[56px] max-w-[1100px] items-center justify-between gap-4 rounded-lg border px-4 shadow-soft backdrop-blur-xl transition-colors md:px-5 ${
+          scrolled && !mobileOpen ? "border-border bg-background/95" : "border-border/70 bg-background/90"
+        }`}>
           <Link
             to="/"
             aria-label="Clarify Health — home"
-            className="relative z-50 flex items-center gap-2 text-[17px] font-semibold tracking-tight text-foreground"
-            style={{ fontFamily: "Fraunces, serif" }}
+            className="relative z-50 flex items-center gap-2 text-[15px] font-semibold text-foreground"
+            style={{ fontFamily: "Sora, sans-serif" }}
           >
             <img src={logoUrl} alt="" className="h-9 w-9 object-contain dark:invert" />
             Clarify Health
@@ -215,7 +212,7 @@ const Header = () => {
                     ? "text-foreground"
                     : "text-muted-foreground"
                 }`}
-                style={{ fontFamily: "Inter, sans-serif" }}
+                style={{ fontFamily: "Manrope, sans-serif" }}
               >
                 {link.label}
               </Link>
@@ -233,14 +230,14 @@ const Header = () => {
                   <Link
                     to="/login"
                     className="text-[13px] font-medium text-muted-foreground hover:text-foreground transition-colors"
-                    style={{ fontFamily: "Inter, sans-serif" }}
+                    style={{ fontFamily: "Manrope, sans-serif" }}
                   >
                     {t("auth.login")}
                   </Link>
                   <Link
                     to="/signup"
-                    className="text-[13px] font-medium px-4 py-2 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 transition-colors"
-                    style={{ fontFamily: "Inter, sans-serif" }}
+                    className="rounded-full bg-accent px-4 py-2 text-[13px] font-semibold text-accent-foreground transition-transform hover:scale-[1.02]"
+                    style={{ fontFamily: "Manrope, sans-serif" }}
                   >
                     {t("auth.signup")}
                   </Link>
@@ -265,7 +262,7 @@ const Header = () => {
 
       {/* Mobile full-screen overlay */}
       {mobileOpen && (
-        <div className="nav-overlay fixed inset-0 z-40 flex flex-col items-start justify-center bg-background px-10 md:hidden">
+        <div className="nav-overlay fixed inset-0 z-40 flex flex-col items-start justify-center bg-primary px-10 text-primary-foreground md:hidden">
           <nav className="flex flex-col gap-6">
             {navLinks.map((link, i) => (
               <Link
@@ -274,8 +271,8 @@ const Header = () => {
                 onClick={() => setMobileOpen(false)}
                 className={`nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-primary ${
                   location.pathname.startsWith(link.to)
-                    ? "text-primary"
-                    : "text-foreground"
+                    ? "text-accent"
+                    : "text-primary-foreground"
                 }`}
                 style={{
                   fontFamily: "'Playfair Display', serif",
@@ -291,7 +288,7 @@ const Header = () => {
                 <Link
                   to="/my-notes"
                   onClick={() => setMobileOpen(false)}
-                  className="nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-primary text-foreground"
+                  className="nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-accent text-primary-foreground"
                   style={{
                     fontFamily: "'Playfair Display', serif",
                     animationDelay: `${navLinks.length * 80}ms`,
@@ -303,7 +300,7 @@ const Header = () => {
                 <Link
                   to="/login"
                   onClick={() => setMobileOpen(false)}
-                  className="nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-primary text-foreground"
+                  className="nav-overlay-link text-[36px] font-medium leading-tight transition-colors hover:text-accent text-primary-foreground"
                   style={{
                     fontFamily: "'Playfair Display', serif",
                     animationDelay: `${navLinks.length * 80}ms`,
