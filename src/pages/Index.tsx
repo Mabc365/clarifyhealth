@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, Smartphone, Heart, Activity } from "lucide-react";
+import { ArrowUpRight, Smartphone } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { useLanguage } from "@/contexts/LanguageContext";
 import heroImage from "@/assets/clarify-hero-consultation.jpg";
@@ -17,7 +17,7 @@ const Index = () => {
     <main className="bg-background">
       <PageMeta title={`Clarify Health — ${t("home.hero")}`} description={t("home.sub")} canonical="/" />
 
-      <section className="home-hero relative min-h-[720px] overflow-hidden md:min-h-[820px]" aria-labelledby="home-title">
+      <section className="home-hero relative min-h-[100svh] overflow-hidden" aria-labelledby="home-title">
         <img
           src={heroImage}
           alt="A patient and clinician calmly reviewing a health report together"
@@ -26,99 +26,112 @@ const Index = () => {
           fetchPriority="high"
           className="home-hero-image absolute inset-0 h-full w-full object-cover"
         />
-        <div className="relative z-10 mx-auto flex min-h-[720px] max-w-[1180px] items-end px-6 pb-16 pt-32 md:min-h-[820px] md:items-center md:pb-24 md:pt-36">
-          <div className="max-w-[720px] text-primary-foreground">
-            <p className="mb-5 text-[12px] font-semibold uppercase tracking-[0.14em] text-primary-foreground/75">
-              Clear health information. No jargon.
-            </p>
-            <h1 id="home-title" className="max-w-[700px] text-[48px] font-semibold leading-[0.98] md:text-[76px]">
-              {t("home.hero")}
-            </h1>
-            <p className="mt-6 max-w-[570px] text-[17px] leading-[1.7] text-primary-foreground/85 md:text-[19px]">
-              {t("home.sub")}
-            </p>
-            <Link to="/ask" className="mt-9 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-[15px] font-semibold text-accent-foreground transition-transform hover:scale-[1.02] press-scale">
-              {t("home.cta")}
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-border bg-background px-6 py-20 md:py-28" aria-label="Why Clarify Health">
-        <div className="mx-auto grid max-w-[1080px] grid-cols-1 divide-y divide-border md:grid-cols-3 md:divide-x md:divide-y-0">
-          {cards.map((card, index) => (
-            <article key={card.h} className="py-8 md:px-10 md:py-2 first:pl-0 last:pr-0">
-              <span className="text-[12px] font-semibold text-primary">0{index + 1}</span>
-              <h2 className="mt-5 text-[25px] font-semibold leading-tight text-foreground">{card.h}</h2>
-              <p className="mt-3 max-w-[280px] text-[16px] leading-[1.7] text-muted-foreground">{card.p}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="bg-primary px-6 py-24 text-primary-foreground md:py-32">
-        <div className="mx-auto grid max-w-[1080px] gap-14 md:grid-cols-[0.8fr_1.2fr] md:gap-24">
-          <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-primary-foreground/65">The process</p>
-            <h2 className="mt-5 text-[40px] font-semibold leading-[1.05] md:text-[54px]">{t("home.how")}</h2>
-          </div>
-          <ol className="divide-y divide-primary-foreground/20 border-y border-primary-foreground/20">
-            {steps.map((step, index) => (
-              <li key={step} className="grid grid-cols-[44px_1fr] gap-4 py-7">
-                <span className="text-[13px] font-semibold text-primary-foreground/60">0{index + 1}</span>
-                <p className="text-[18px] leading-[1.6] text-primary-foreground/90">{step}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      <section className="bg-background px-6 py-24 md:py-32">
-        <div className="mx-auto max-w-[1080px]">
-          <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-primary">{t("home.exampleLabel")}</p>
-          <Link to="/topics/type-2-diabetes" className="group mt-8 grid gap-8 border-y border-border py-10 md:grid-cols-[1fr_auto] md:items-end md:py-14">
-            <div className="max-w-[760px]">
-              <h2 className="text-[38px] font-semibold leading-[1.08] text-foreground transition-colors group-hover:text-primary md:text-[56px]">{t("home.exampleTitle")}</h2>
-              <p className="mt-5 max-w-[620px] text-[17px] leading-[1.7] text-muted-foreground">{t("home.exampleSub")}</p>
-            </div>
-            <span className="inline-flex items-center gap-2 text-[14px] font-semibold text-primary underline underline-offset-4">
-              {t("home.exampleRead")} <ArrowRight className="h-4 w-4" />
-            </span>
+        <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1240px] flex-col items-center justify-center px-5 pb-24 pt-32 text-center text-primary-foreground md:pb-12 md:pt-36">
+          <p className="micro-label mb-6 text-primary-foreground/75">Clear health information</p>
+          <h1 id="home-title" className="max-w-[1040px] text-[46px] font-medium leading-[1.02] md:text-[72px] lg:text-[82px]">
+            {t("home.hero")}
+          </h1>
+          <p className="mt-6 max-w-[610px] text-[16px] leading-[1.65] text-primary-foreground/85 md:text-[18px]">
+            {t("home.sub")}
+          </p>
+          <Link to="/ask" className="primary-action mt-8">
+            {t("home.cta")} <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
       </section>
 
-      <section className="bg-secondary px-6 py-24 md:py-32">
-        <div className="mx-auto grid max-w-[1080px] items-center gap-14 md:grid-cols-[1.15fr_0.85fr] md:gap-24">
-          <div>
-            <div className="flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.14em] text-primary">
-              <Smartphone className="h-4 w-4" /> iOS app — June 30
-            </div>
-            <h2 className="mt-6 max-w-[650px] text-[40px] font-semibold leading-[1.05] text-foreground md:text-[56px]">Track your health. Understand what changed.</h2>
-            <p className="mt-6 max-w-[650px] text-[17px] leading-[1.7] text-muted-foreground">A mobile companion that brings your health data and visit notes together, then explains them in plain English.</p>
-          </div>
-          <ul className="divide-y divide-border border-y border-border">
-            {[
-              { icon: Heart, text: "Syncs with Apple Health and Android equivalents" },
-              { icon: Activity, text: "Explains trends, vitals, and changes clearly" },
-              { icon: Smartphone, text: "Keeps visit notes ready when you need them" },
-            ].map((item) => (
-              <li key={item.text} className="flex items-center gap-4 py-6 text-[16px] text-foreground">
-                <item.icon className="h-5 w-5 shrink-0 text-primary" /> {item.text}
-              </li>
-            ))}
-          </ul>
+      <section className="px-5 py-32 md:py-56" aria-label="Introducing Clarify Health">
+        <div className="mx-auto max-w-[820px] text-center">
+          <p className="micro-label text-muted-foreground">Introducing</p>
+          <h2 className="mt-7 text-[42px] font-medium leading-[1.04] text-foreground md:text-[68px]">
+            Understand your health.<br />Without the medical degree.
+          </h2>
+          <p className="mt-7 text-[14px] text-muted-foreground">Clear answers for everyday people.</p>
         </div>
       </section>
 
-      <section className="bg-background px-6 py-24 text-center md:py-32">
-        <div className="mx-auto max-w-[760px]">
-          <h2 className="text-[42px] font-semibold leading-[1.05] text-foreground md:text-[62px]">{t("home.finalH")}</h2>
-          <p className="mx-auto mt-5 max-w-[520px] text-[15px] leading-[1.7] text-muted-foreground">{t("home.finalNote")}</p>
-          <Link to="/ask" className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-[15px] font-semibold text-accent-foreground transition-transform hover:scale-[1.02] press-scale">
-            {t("home.cta")} <ArrowRight className="h-4 w-4" />
-          </Link>
+      <section className="border-y border-border bg-background py-24 md:py-36" aria-labelledby="why-title">
+        <div className="mx-auto max-w-[1180px] px-5 md:px-8">
+          <h2 id="why-title" className="max-w-[900px] text-[38px] font-medium leading-[1.08] text-foreground md:text-[52px]">
+            Health information should help you move forward.
+          </h2>
+          <div className="mt-16 grid border-y border-border md:grid-cols-3">
+            {cards.map((card, index) => (
+              <article key={card.h} className="border-b border-border py-9 last:border-b-0 md:min-h-[245px] md:border-b-0 md:border-r md:px-8 md:first:pl-0 md:last:border-r-0">
+                <p className="micro-label text-accent">0{index + 1}</p>
+                <h3 className="mt-10 text-[24px] font-medium leading-tight text-foreground">{card.h}</h3>
+                <p className="mt-4 max-w-[290px] text-[15px] leading-[1.65] text-muted-foreground">{card.p}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-background px-5 py-28 md:py-44" aria-labelledby="process-title">
+        <div className="mx-auto max-w-[1180px]">
+          <div className="mx-auto max-w-[760px] text-center">
+            <p className="micro-label text-accent">The process</p>
+            <h2 id="process-title" className="mt-7 text-[40px] font-medium leading-[1.06] text-foreground md:text-[58px]">{t("home.how")}</h2>
+          </div>
+
+          <div className="mt-16 overflow-hidden rounded-lg border border-border bg-card">
+            <div className="grid md:grid-cols-3">
+              {steps.map((step, index) => (
+                <div key={step} className="border-b border-border p-7 md:min-h-[190px] md:border-b-0 md:border-r md:p-8 md:last:border-r-0">
+                  <span className="micro-label text-accent">Step 0{index + 1}</span>
+                  <p className="mt-12 text-[17px] leading-[1.55] text-foreground">{step}</p>
+                </div>
+              ))}
+            </div>
+            <div className="relative h-[280px] border-t border-border md:h-[440px]">
+              <img src={heroImage} alt="A health conversation in progress" loading="lazy" className="h-full w-full object-cover object-center grayscale" />
+              <div className="absolute bottom-0 left-0 max-w-[470px] bg-card p-6 md:p-9">
+                <p className="micro-label text-accent">A clearer next step</p>
+                <p className="mt-3 text-[20px] font-medium leading-snug text-foreground md:text-[25px]">Read it. Understand it. Bring better questions to your doctor.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-primary px-5 py-28 text-primary-foreground md:py-40" aria-labelledby="example-title">
+        <div className="mx-auto max-w-[1100px]">
+          <p className="micro-label text-accent">{t("home.exampleLabel")}</p>
+          <div className="mt-12 grid items-end gap-12 md:grid-cols-[1fr_280px]">
+            <h2 id="example-title" className="max-w-[780px] text-[44px] font-medium leading-[1.04] md:text-[70px]">{t("home.exampleTitle")}</h2>
+            <div>
+              <p className="text-[15px] leading-[1.7] text-primary-foreground/72">{t("home.exampleSub")}</p>
+              <Link to="/topics/type-2-diabetes" className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase text-accent underline decoration-accent underline-offset-4">
+                {t("home.exampleRead")} <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-secondary px-5 py-28 md:py-40" aria-labelledby="app-title">
+        <div className="mx-auto max-w-[1100px]">
+          <div className="grid gap-16 md:grid-cols-[1fr_0.9fr] md:items-end">
+            <div>
+              <p className="micro-label flex items-center gap-2 text-accent"><Smartphone className="h-4 w-4" /> iOS app · June 30</p>
+              <h2 id="app-title" className="mt-8 max-w-[680px] text-[42px] font-medium leading-[1.05] text-foreground md:text-[62px]">Track your health. Understand what changed.</h2>
+            </div>
+            <div className="border-y border-border">
+              {["Syncs with Apple Health and Android equivalents", "Explains trends, vitals, and changes clearly", "Keeps visit notes ready when you need them"].map((item, index) => (
+                <p key={item} className="grid grid-cols-[38px_1fr] border-b border-border py-5 text-[14px] text-foreground last:border-b-0">
+                  <span className="micro-label text-accent">0{index + 1}</span>{item}
+                </p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-background px-5 py-32 text-center md:py-52">
+        <div className="mx-auto max-w-[880px]">
+          <h2 className="text-[46px] font-medium leading-[1.04] text-foreground md:text-[72px]">{t("home.finalH")}</h2>
+          <p className="mt-5 text-[14px] text-muted-foreground">{t("home.finalNote")}</p>
+          <Link to="/ask" className="primary-action mt-8">{t("home.cta")} <ArrowUpRight className="h-4 w-4" /></Link>
         </div>
       </section>
     </main>
