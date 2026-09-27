@@ -26,30 +26,30 @@ html.dyslexic-font * {
 
 @layer base {
   :root {
-    /* Clarify Health — warm, editorial palette */
-    --background: 42 33% 97%;        /* #FAF8F3 warm off-white */
-    --foreground: 158 17% 14%;       /* #1B2A24 deep charcoal */
+    /* Clarify Health — Ocean Signal */
+    --background: 150 17% 98%;
+    --foreground: 190 63% 17%;
     --card: 0 0% 100%;
     --card-foreground: 158 17% 14%;
     --popover: 42 33% 97%;
     --popover-foreground: 158 17% 14%;
-    --primary: 152 62% 26%;          /* #1a6b4a forest */
-    --primary-foreground: 42 33% 97%;
-    --primary-glow: 152 55% 38%;
-    --secondary: 145 22% 87%;        /* #D6E4DC soft sage */
+    --primary: 190 63% 17%;
+    --primary-foreground: 150 17% 98%;
+    --primary-glow: 188 52% 32%;
+    --secondary: 185 30% 88%;
     --secondary-foreground: 158 17% 14%;
     --muted: 42 22% 92%;
     --muted-foreground: 158 12% 30%; /* darker for WCAG AA */
-    --accent: 8 70% 62%;             /* #E26D5C coral */
-    --accent-foreground: 42 33% 97%;
-    --card-surface: 145 22% 87%;     /* sage card */
+    --accent: 7 88% 59%;
+    --accent-foreground: 150 17% 98%;
+    --card-surface: 185 30% 88%;
     --destructive: 0 70% 45%;
     --destructive-foreground: 42 33% 97%;
     --border: 145 12% 78%;
     --input: 145 12% 78%;
     --ring: 152 62% 26%;
-    --radius: 16px;                  /* rounded-2xl baseline */
-    --section-bg: 145 22% 93%;
+    --radius: 8px;
+    --section-bg: 185 30% 94%;
     --shadow-soft: 0 8px 30px -12px hsl(158 17% 14% / 0.08);
     --shadow-card: 0 2px 12px -4px hsl(158 17% 14% / 0.06), 0 8px 32px -12px hsl(158 17% 14% / 0.08);
     --sidebar-background: 42 33% 97%;
@@ -65,20 +65,20 @@ html.dyslexic-font * {
   }
 
   .dark {
-    --background: 158 22% 8%;
+    --background: 190 58% 8%;
     --foreground: 42 33% 94%;
     --card: 158 22% 11%;
     --card-foreground: 42 33% 94%;
     --popover: 158 22% 11%;
     --popover-foreground: 42 33% 94%;
-    --primary: 152 55% 52%;
+    --primary: 185 44% 70%;
     --primary-foreground: 158 22% 8%;
     --primary-glow: 152 55% 60%;
     --secondary: 158 18% 16%;
     --secondary-foreground: 42 33% 94%;
     --muted: 158 18% 14%;
     --muted-foreground: 42 18% 72%;
-    --accent: 8 70% 65%;
+    --accent: 7 88% 64%;
     --accent-foreground: 158 22% 8%;
     --card-surface: 158 18% 14%;
     --destructive: 0 70% 55%;
@@ -119,14 +119,14 @@ html.dyslexic-font * {
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: 'Manrope', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     line-height: 1.7;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Fraunces', 'Playfair Display', Georgia, serif;
+    font-family: 'Sora', 'Manrope', sans-serif;
     font-feature-settings: "ss01" 1, "ss02" 1, "kern" 1, "liga" 1;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     line-height: 1.15;
   }
 
@@ -192,6 +192,35 @@ html.dyslexic-font * {
   html {
     scrollbar-width: thin;
     scrollbar-color: hsl(152, 62%, 26%) transparent;
+  }
+}
+
+/* Homepage visual system */
+.home-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: hsl(var(--foreground) / 0.56);
+  pointer-events: none;
+}
+.home-hero-image {
+  object-position: 66% center;
+  animation: hero-drift 18s ease-in-out infinite alternate;
+}
+@keyframes hero-drift {
+  from { transform: scale(1.01); }
+  to { transform: scale(1.05); }
+}
+@media (max-width: 767px) {
+  .home-hero-image { object-position: 66% center; }
+  .home-hero::after { background: hsl(var(--foreground) / 0.68); }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
