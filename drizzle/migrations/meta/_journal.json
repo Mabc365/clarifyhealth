@@ -8,6 +8,13 @@
       "when": 1790631415440,
       "tag": "0000_clarify_health_foundation",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1790631492296,
+      "tag": "0001_expose_clarify_health_schema",
+      "breakpoints": true
     }
   ]
 }
