@@ -83,12 +83,15 @@ const Header = () => {
   const location = useLocation();
   const { t, lang } = useLanguage();
   const closeTimer = useRef<number>();
-  const openPreview = (i: number) => { window.clearTimeout(closeTimer.current); setActivePreview(i); };
-  const scheduleClose = () => { window.clearTimeout(closeTimer.current); closeTimer.current = window.setTimeout(() => setActivePreview(null), 180); };
+  const isTouch = useMemo(() => typeof window !== "undefined" && window.matchMedia("(hover: none)").matches, []);
+  const openPreview = (i: number) => { if (isTouch) return; window.clearTimeout(closeTimer.current); setActivePreview(i); };
+  const togglePreview = (i: number) => { window.clearTimeout(closeTimer.current); setActivePreview((current) => (current === i ? null : i)); };
+  const scheduleClose = () => { if (isTouch) return; window.clearTimeout(closeTimer.current); closeTimer.current = window.setTimeout(() => setActivePreview(null), 180); };
 
   useEffect(() => {
     if (activePreview !== null) setLastPreview(activePreview);
   }, [activePreview]);
+  useEffect(() => setActivePreview(null), [location.pathname]);
   const navLinks = [
     {
       to: "/topics",
