@@ -15,6 +15,13 @@
       "when": 1790631492296,
       "tag": "0001_expose_clarify_health_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1790631519746,
+      "tag": "0002_reload_api_schema_cache",
+      "breakpoints": true
     }
   ]
 }
