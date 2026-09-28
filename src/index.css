@@ -232,6 +232,10 @@ html.dyslexic-font * {
     letter-spacing: 0.08em;
   }
 
+  .nav-preview {
+    transform: translate(-50%, 6px);
+  }
+
   .page-shell {
     @apply bg-background px-5 pb-24 pt-40 md:px-8 md:pb-40 md:pt-52;
   }

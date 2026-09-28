@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ChevronDown, FileText, Leaf, LogOut, Menu, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, FileText, Leaf, LogOut, Menu, X } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import logoUrl from "@/assets/logo.png";
@@ -81,9 +81,27 @@ const Header = () => {
   const { t } = useLanguage();
   const { user, loading } = useAuth();
   const navLinks = [
-    { to: "/topics", label: t("nav.topics") },
-    { to: "/tools", label: "Tools" },
-    { to: "/about", label: t("nav.about") },
+    {
+      to: "/topics",
+      label: t("nav.topics"),
+      eyebrow: t("nav.preview.topics.label"),
+      title: t("nav.preview.topics.title"),
+      description: t("nav.preview.topics.desc"),
+    },
+    {
+      to: "/tools",
+      label: t("nav.tools"),
+      eyebrow: t("nav.preview.tools.label"),
+      title: t("nav.preview.tools.title"),
+      description: t("nav.preview.tools.desc"),
+    },
+    {
+      to: "/about",
+      label: t("nav.about"),
+      eyebrow: t("nav.preview.about.label"),
+      title: t("nav.preview.about.title"),
+      description: t("nav.preview.about.desc"),
+    },
   ];
 
   useEffect(() => setMobileOpen(false), [location.pathname]);
@@ -95,13 +113,13 @@ const Header = () => {
   return (
     <>
       <header className="pointer-events-none fixed inset-x-0 top-3 z-50 px-3 md:top-4 md:px-6" role="banner">
-        <div className="pointer-events-auto mx-auto max-w-[1040px] overflow-visible rounded-lg border border-border/80 bg-background/90 shadow-soft backdrop-blur-xl">
-          <div className="flex h-[54px] items-center justify-between px-4 md:px-5">
+        <div className="pointer-events-auto mx-auto max-w-[1180px] overflow-visible rounded-lg border border-border/80 bg-background/95 shadow-soft backdrop-blur-xl">
+          <div className="flex h-[60px] items-center justify-between px-4 md:px-6">
             <Link to="/" aria-label="Clarify Health — home" className="flex items-center gap-2 text-[14px] font-semibold text-foreground">
-              <img src={logoUrl} alt="" className="h-8 w-8 object-contain dark:invert" />
+              <img src={logoUrl} alt="" className="h-9 w-9 object-contain dark:invert" />
               <span className="hidden sm:inline">Clarify Health</span>
             </Link>
-            <p className="pointer-events-none absolute left-1/2 hidden -translate-x-1/2 text-[12px] font-medium text-foreground md:block">Health information, made clear.</p>
+            <p className="pointer-events-none absolute left-1/2 hidden -translate-x-1/2 text-[13px] font-medium text-foreground lg:block">Health information, made clear.</p>
             <div className="hidden items-center gap-4 md:flex">
               <LanguageDropdown />
               {!loading && (user ? <UserMenu /> : <>
@@ -113,9 +131,22 @@ const Header = () => {
               {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
-          <nav className="hidden h-[38px] grid-cols-3 border-t border-border/70 md:grid" aria-label="Main">
+          <nav className="hidden h-[44px] grid-cols-3 border-t border-border/70 md:grid" aria-label="Main">
             {navLinks.map((link) => (
-              <Link key={link.to} to={link.to} className={`flex items-center justify-center border-r border-border/70 text-[11px] transition-colors last:border-r-0 hover:bg-muted ${location.pathname.startsWith(link.to) ? "text-accent" : "text-foreground"}`}>{link.label}</Link>
+              <div key={link.to} className="group/nav relative border-r border-border/70 last:border-r-0">
+                <Link to={link.to} className={`flex h-full items-center justify-center gap-1.5 text-[12px] font-medium transition-colors hover:bg-muted focus-visible:bg-muted ${location.pathname.startsWith(link.to) ? "text-accent" : "text-foreground"}`}>
+                  {link.label}<ChevronDown className="h-3 w-3 text-muted-foreground transition-transform group-hover/nav:rotate-180 group-focus-within/nav:rotate-180" />
+                </Link>
+                <div className="nav-preview pointer-events-none absolute left-1/2 top-full w-[min(360px,calc(100vw-32px))] -translate-x-1/2 pt-3 opacity-0 transition duration-200 group-hover/nav:pointer-events-auto group-hover/nav:translate-y-0 group-hover/nav:opacity-100 group-focus-within/nav:pointer-events-auto group-focus-within/nav:translate-y-0 group-focus-within/nav:opacity-100">
+                  <Link to={link.to} className="block rounded-lg border border-border bg-popover p-5 shadow-soft">
+                    <span className="micro-label text-accent">{link.eyebrow}</span>
+                    <span className="mt-3 flex items-start justify-between gap-5 text-[18px] font-semibold text-popover-foreground">
+                      {link.title}<ArrowUpRight className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                    </span>
+                    <span className="mt-2 block text-[13px] leading-[1.6] text-muted-foreground">{link.description}</span>
+                  </Link>
+                </div>
+              </div>
             ))}
           </nav>
         </div>

@@ -22,8 +22,18 @@ const strings: Record<Language, Record<string, string>> = {
   en: {
     // Nav / global
     "nav.topics": "Topics",
+    "nav.tools": "Tools",
     "nav.ask": "Ask",
     "nav.about": "About",
+    "nav.preview.topics.label": "Browse the library",
+    "nav.preview.topics.title": "Understand common health topics",
+    "nav.preview.topics.desc": "Clear explanations of conditions, symptoms, tests, and questions to ask your doctor.",
+    "nav.preview.tools.label": "Try a tool",
+    "nav.preview.tools.title": "Make health information easier",
+    "nav.preview.tools.desc": "Translate medical jargon, explain symptoms, find a doctor, or organize visit notes.",
+    "nav.preview.about.label": "Our purpose",
+    "nav.preview.about.title": "Why Clarify Health exists",
+    "nav.preview.about.desc": "Learn how we write, review, and present health information in plain language.",
     "footer.copyright": `© ${new Date().getFullYear()} Clarify Health`,
 
     // Homepage
@@ -236,8 +246,18 @@ const strings: Record<Language, Record<string, string>> = {
   es: {
     // Nav / global
     "nav.topics": "Temas",
+    "nav.tools": "Herramientas",
     "nav.ask": "Preguntar",
     "nav.about": "Acerca de",
+    "nav.preview.topics.label": "Explora la biblioteca",
+    "nav.preview.topics.title": "Entiende temas de salud comunes",
+    "nav.preview.topics.desc": "Explicaciones claras de condiciones, síntomas, pruebas y preguntas para tu doctor.",
+    "nav.preview.tools.label": "Prueba una herramienta",
+    "nav.preview.tools.title": "Simplifica la información de salud",
+    "nav.preview.tools.desc": "Traduce jerga médica, explica síntomas, busca un doctor u organiza notas de visitas.",
+    "nav.preview.about.label": "Nuestro propósito",
+    "nav.preview.about.title": "Por qué existe Clarify Health",
+    "nav.preview.about.desc": "Descubre cómo escribimos, revisamos y presentamos información de salud en lenguaje sencillo.",
     "footer.copyright": `© ${new Date().getFullYear()} Clarify Health`,
 
     // Homepage
@@ -446,8 +466,18 @@ const strings: Record<Language, Record<string, string>> = {
   ur: {
     // Nav / global
     "nav.topics": "موضوعات",
+    "nav.tools": "ٹولز",
     "nav.ask": "پوچھیں",
     "nav.about": "ہمارے بارے میں",
+    "nav.preview.topics.label": "لائبریری دیکھیں",
+    "nav.preview.topics.title": "عام صحت کے موضوعات سمجھیں",
+    "nav.preview.topics.desc": "بیماریوں، علامات، ٹیسٹوں اور ڈاکٹر سے پوچھنے کے سوالات کی آسان وضاحت۔",
+    "nav.preview.tools.label": "ٹول آزمائیں",
+    "nav.preview.tools.title": "صحت کی معلومات آسان بنائیں",
+    "nav.preview.tools.desc": "طبی اصطلاحات سمجھیں، علامات جانیں، ڈاکٹر تلاش کریں یا ملاقات کے نوٹس ترتیب دیں۔",
+    "nav.preview.about.label": "ہمارا مقصد",
+    "nav.preview.about.title": "Clarify Health کیوں موجود ہے",
+    "nav.preview.about.desc": "جانیں کہ ہم صحت کی معلومات کو آسان زبان میں کیسے لکھتے اور پیش کرتے ہیں۔",
     "footer.copyright": `© ${new Date().getFullYear()} Clarify Health`,
 
     // Homepage
@@ -654,8 +684,18 @@ const strings: Record<Language, Record<string, string>> = {
   hi: {
     // Nav / global
     "nav.topics": "विषय",
+    "nav.tools": "टूल्स",
     "nav.ask": "पूछें",
     "nav.about": "हमारे बारे में",
+    "nav.preview.topics.label": "लाइब्रेरी देखें",
+    "nav.preview.topics.title": "आम स्वास्थ्य विषय समझें",
+    "nav.preview.topics.desc": "स्थितियों, लक्षणों, जांचों और डॉक्टर से पूछने वाले सवालों की सरल व्याख्या।",
+    "nav.preview.tools.label": "कोई टूल आज़माएं",
+    "nav.preview.tools.title": "स्वास्थ्य जानकारी सरल बनाएं",
+    "nav.preview.tools.desc": "मेडिकल शब्द समझें, लक्षण जानें, डॉक्टर खोजें या विज़िट नोट्स व्यवस्थित करें।",
+    "nav.preview.about.label": "हमारा उद्देश्य",
+    "nav.preview.about.title": "Clarify Health क्यों है",
+    "nav.preview.about.desc": "जानें कि हम स्वास्थ्य जानकारी को सरल भाषा में कैसे लिखते और प्रस्तुत करते हैं।",
     "footer.copyright": `© ${new Date().getFullYear()} Clarify Health`,
 
     // Homepage
@@ -853,8 +893,18 @@ const strings: Record<Language, Record<string, string>> = {
   ar: {
     // Nav / global
     "nav.topics": "المواضيع",
+    "nav.tools": "الأدوات",
     "nav.ask": "اسأل",
     "nav.about": "من نحن",
+    "nav.preview.topics.label": "تصفح المكتبة",
+    "nav.preview.topics.title": "افهم المواضيع الصحية الشائعة",
+    "nav.preview.topics.desc": "شروحات واضحة للحالات والأعراض والفحوصات والأسئلة التي تطرحها على طبيبك.",
+    "nav.preview.tools.label": "جرب أداة",
+    "nav.preview.tools.title": "بسّط المعلومات الصحية",
+    "nav.preview.tools.desc": "فسّر المصطلحات الطبية والأعراض، وابحث عن طبيب، ونظّم ملاحظات الزيارة.",
+    "nav.preview.about.label": "هدفنا",
+    "nav.preview.about.title": "لماذا يوجد Clarify Health",
+    "nav.preview.about.desc": "تعرّف على كيفية كتابة ومراجعة وتقديم المعلومات الصحية بلغة بسيطة.",
     "footer.copyright": `© ${new Date().getFullYear()} Clarify Health`,
 
     // Homepage
