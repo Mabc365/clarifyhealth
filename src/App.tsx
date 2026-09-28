@@ -12,7 +12,6 @@ import CookieConsentBanner from "@/components/CookieConsentBanner";
 import Index from "./pages/Index";
 const TopicsIndex = lazy(() => import("./pages/TopicsIndex"));
 const TopicPage = lazy(() => import("./pages/TopicPage"));
-const AskPage = lazy(() => import("./pages/AskPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const HolisticTopicPage = lazy(() => import("./pages/HolisticTopicPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
@@ -28,7 +27,6 @@ const DoNotSellPage = lazy(() => import("./pages/legal/DoNotSellPage"));
 const AccountSettingsPage = lazy(() => import("./pages/AccountSettingsPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const JargonTranslatorPage = lazy(() => import("./pages/JargonTranslatorPage"));
-const SymptomExplainerPage = lazy(() => import("./pages/SymptomExplainerPage"));
 const GlossaryPage = lazy(() => import("./pages/GlossaryPage"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const EmbedArticlePage = lazy(() => import("./pages/EmbedArticlePage"));
@@ -89,7 +87,7 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/topics" element={<TopicsIndex />} />
               <Route path="/topics/:id" element={<TopicPage />} />
-              <Route path="/ask" element={<AskPage />} />
+              <Route path="/ask" element={<Navigate to="/topics" replace />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/holistic/:id" element={<HolisticTopicPage />} />
               <Route path="/login" element={<LoginPage />} />
@@ -109,7 +107,7 @@ const App = () => (
               <Route path="/terms" element={<Navigate to="/legal/terms" replace />} />
               <Route path="/disclaimer" element={<Navigate to="/legal/ai-disclaimer" replace />} />
               <Route path="/translate" element={<JargonTranslatorPage />} />
-              <Route path="/symptoms" element={<SymptomExplainerPage />} />
+              <Route path="/symptoms" element={<Navigate to="/tools" replace />} />
               <Route path="/glossary" element={<GlossaryPage />} />
               <Route path="/article/:slug" element={<ArticlePage />} />
               <Route path="/embed/article/:slug" element={<EmbedArticlePage />} />

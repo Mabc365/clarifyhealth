@@ -33,8 +33,8 @@ const Index = () => {
           <p className="mt-6 max-w-[610px] text-[16px] leading-[1.65] text-primary-foreground/85 md:text-[18px]">
             {t("home.sub")}
           </p>
-          <Link to="/ask" className="primary-action mt-8">
-            {t("home.cta")} <ArrowUpRight className="h-4 w-4" />
+          <Link to="/topics" className="primary-action mt-8">
+            {t("home.ctaTopics")} <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
       </section>
@@ -130,7 +130,7 @@ const Index = () => {
         <div className="mx-auto max-w-[880px]">
           <h2 className="text-[46px] font-medium leading-[1.04] text-foreground md:text-[72px]">{t("home.finalH")}</h2>
           <p className="mt-5 text-[14px] text-muted-foreground">{t("home.finalNote")}</p>
-          <Link to="/ask" className="primary-action mt-8">{t("home.cta")} <ArrowUpRight className="h-4 w-4" /></Link>
+          <Link to="/topics" className="primary-action mt-8">{t("home.ctaTopics")} <ArrowUpRight className="h-4 w-4" /></Link>
         </div>
       </section>
     </main>

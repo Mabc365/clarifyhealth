@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowUpRight, BookOpen, ChevronDown, FileText, HeartPulse, Leaf, LogOut, Menu, Stethoscope, X } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
+import { getTopics } from "@/data/topics";
 import logoUrl from "@/assets/logo.png";
 
 const LANGUAGE_OPTIONS: { code: Language; flag: string; name: string }[] = [
@@ -80,8 +81,10 @@ const Header = () => {
   const [activePreview, setActivePreview] = useState<number | null>(null);
   const [lastPreview, setLastPreview] = useState(0);
   const location = useLocation();
-  const { t } = useLanguage();
-  const { user, loading } = useAuth();
+  const { t, lang } = useLanguage();
+  const closeTimer = useRef<number>();
+  const openPreview = (i: number) => { window.clearTimeout(closeTimer.current); setActivePreview(i); };
+  const scheduleClose = () => { window.clearTimeout(closeTimer.current); closeTimer.current = window.setTimeout(() => setActivePreview(null), 180); };
 
   useEffect(() => {
     if (activePreview !== null) setLastPreview(activePreview);
@@ -124,7 +127,7 @@ const Header = () => {
       <header className="pointer-events-none fixed inset-x-0 top-2 z-50 px-2 md:top-3 md:px-3" role="banner">
         <div
           className={`header-panel pointer-events-auto relative mx-auto max-w-[1180px] overflow-visible rounded-[18px] border border-border/80 bg-background/95 shadow-soft backdrop-blur-xl transition-shadow duration-300`}
-          onMouseLeave={() => setActivePreview(null)}
+          onMouseLeave={scheduleClose} onMouseEnter={() => window.clearTimeout(closeTimer.current)}
         >
           <div className="grid h-[64px] grid-cols-[1fr_auto_1fr] items-center px-4 md:px-5">
             <Link to="/" aria-label="Clarify Health — home" className="flex w-fit items-center gap-2.5 text-foreground">
@@ -134,13 +137,9 @@ const Header = () => {
             <Link to="/" className="hidden text-[18px] font-medium text-foreground md:block">Clarify Health</Link>
             <div className="hidden items-center justify-end gap-4 md:flex">
               <LanguageDropdown />
-              {!loading && (user ? <UserMenu /> : <>
-                <Link to="/login" className="text-[11px] font-medium text-muted-foreground hover:text-foreground">{t("auth.login")}</Link>
-                <Link to="/signup" className="primary-action !rounded-xl !px-5 !py-3 !text-[10px]">{t("auth.signup")} <ArrowUpRight className="h-3.5 w-3.5" /></Link>
-              </>)}
+              <Link to="/translate" className="primary-action !rounded-xl !px-5 !py-3 !text-[10px]">{t("topic.cta2.button")} <ArrowUpRight className="h-3.5 w-3.5" /></Link>
             </div>
             <div className="flex items-center justify-end gap-2 md:hidden">
-              {!loading && !user && <Link to="/signup" className="primary-action !rounded-xl !px-4 !py-3 !text-[10px]">{t("auth.signup")} <ArrowUpRight className="h-3 w-3" /></Link>}
               <button onClick={() => setMobileOpen((value) => !value)} className="flex h-10 w-10 items-center justify-center text-foreground" aria-label="Toggle menu" aria-expanded={mobileOpen}>
                 {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
@@ -151,8 +150,8 @@ const Header = () => {
               <Link
                 key={link.to}
                 to={link.to}
-                onMouseEnter={() => setActivePreview(index)}
-                onFocus={() => setActivePreview(index)}
+                onMouseEnter={() => openPreview(index)}
+                onFocus={() => openPreview(index)}
                 className={`flex h-full items-center justify-center gap-1.5 border-r border-border/70 text-[14px] font-medium transition-colors first:border-l hover:bg-muted focus-visible:bg-muted ${activePreview === index || location.pathname.startsWith(link.to) ? "bg-muted text-foreground" : "text-foreground"}`}
               >
                 {link.label}<ChevronDown className={`h-3 w-3 text-muted-foreground transition-transform ${activePreview === index ? "rotate-180" : ""}`} />
@@ -162,28 +161,28 @@ const Header = () => {
 
           <div
             aria-hidden={activePreview === null}
-            className={`absolute inset-x-[-1px] top-full hidden min-h-[300px] overflow-hidden rounded-b-[18px] border border-t-0 border-border/80 bg-background transition-[opacity,transform] duration-300 ease-out md:grid md:grid-cols-[1.08fr_.92fr] ${activePreview === null ? "pointer-events-none -translate-y-2 opacity-0" : "pointer-events-auto translate-y-0 opacity-100"}`}
+            className={`absolute inset-x-[-1px] top-full hidden min-h-[300px] overflow-hidden rounded-b-[18px] border border-t-0 border-border/80 bg-background transition-[opacity,transform,visibility] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:grid md:grid-cols-[1.08fr_.92fr] ${activePreview === null ? "pointer-events-none invisible -translate-y-1 opacity-0" : "pointer-events-auto translate-y-0 opacity-100"}`}
           >
-            <div className="flex flex-col justify-center px-10 py-10 lg:px-12">
+            <div key={lastPreview} className="flex flex-col justify-center px-10 py-10 lg:px-12 animate-[fade-in_0.35s_ease-out]">
               <span className="micro-label text-accent">{navLinks[lastPreview].eyebrow}</span>
               <h2 className="mt-4 max-w-[500px] text-[32px] font-medium leading-[1.1] text-foreground">{navLinks[lastPreview].title}</h2>
               <p className="mt-5 max-w-[540px] text-[16px] leading-[1.55] text-muted-foreground">{navLinks[lastPreview].description}</p>
-              <Link to={navLinks[lastPreview].to} className="mt-8 inline-flex w-fit items-center gap-2 text-[11px] font-bold uppercase text-accent underline-offset-4 hover:underline">
+              <Link to={navLinks[lastPreview].to} onClick={() => setActivePreview(null)} className="mt-8 inline-flex w-fit items-center gap-2 text-[11px] font-bold uppercase text-accent underline-offset-4 hover:underline">
                 {navLinks[lastPreview].label} <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </div>
-            <div className="m-6 ml-0 min-h-[252px] overflow-hidden rounded-lg bg-secondary">
+            <div key={`v${lastPreview}`} className="m-6 ml-0 min-h-[252px] overflow-hidden rounded-lg bg-secondary animate-[fade-in_0.35s_ease-out]">
               {navLinks[lastPreview].kind === "topics" && (
                 <div className="flex h-full flex-col justify-between p-7">
                   <BookOpen className="h-8 w-8 text-primary" />
                   <div className="space-y-3">
-                    {["Type 2 diabetes", "High blood pressure", "Anxiety"].map((item, index) => <div key={item} className="flex items-center justify-between border-b border-primary/15 pb-3 text-[14px] font-medium"><span>0{index + 1}&nbsp;&nbsp; {item}</span><ArrowUpRight className="h-3.5 w-3.5" /></div>)}
+                    {getTopics(lang).slice(0, 3).map((item, index) => <Link key={item.id} to={`/topics/${item.id}`} onClick={() => setActivePreview(null)} className="group flex items-center justify-between border-b border-primary/15 pb-3 text-[14px] font-medium transition-colors hover:text-accent"><span>0{index + 1}&nbsp;&nbsp; {item.title}</span><ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link>)}
                   </div>
                 </div>
               )}
               {navLinks[lastPreview].kind === "tools" && (
                 <div className="grid h-full grid-cols-2 gap-px bg-border">
-                  {[{ icon: FileText, name: "Jargon translator" }, { icon: HeartPulse, name: "Symptom explainer" }, { icon: Stethoscope, name: "Find a doctor" }, { icon: Leaf, name: "Visit notes" }].map(({ icon: Icon, name }) => <div key={name} className="flex flex-col justify-between bg-secondary p-5"><Icon className="h-6 w-6 text-primary" /><span className="text-[13px] font-semibold">{name}</span></div>)}
+                  {[{ icon: FileText, name: "Jargon translator", to: "/translate" }, { icon: BookOpen, name: "Glossary", to: "/glossary" }, { icon: Stethoscope, name: "Find a doctor", to: "/find-a-doctor" }, { icon: Leaf, name: "Visit notes", to: "/my-notes" }].map(({ icon: Icon, name, to }) => <Link key={name} to={to} onClick={() => setActivePreview(null)} className="flex flex-col justify-between bg-secondary p-5 transition-colors hover:bg-muted"><Icon className="h-6 w-6 text-primary" /><span className="text-[13px] font-semibold">{name}</span></Link>)}
                 </div>
               )}
               {navLinks[lastPreview].kind === "about" && (
@@ -206,7 +205,7 @@ const Header = () => {
               </nav>
               <div className="flex min-h-[54px] items-center justify-between px-2 pt-3">
                 <LanguageDropdown mobile />
-                {!loading && (user ? <Link to="/my-notes" className="text-[13px] font-semibold text-accent">{t("auth.myNotes")}</Link> : <Link to="/login" className="text-[13px] font-medium text-foreground">{t("auth.login")}</Link>)}
+                <Link to="/translate" className="text-[13px] font-semibold text-accent">{t("topic.cta2.button")}</Link>
               </div>
             </div>
           )}

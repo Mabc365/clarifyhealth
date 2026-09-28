@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { ArrowRight, Check, Copy } from "lucide-react";
 import { getTopics } from "@/data/topics";
+import { getPathway } from "@/data/treatment-pathways";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
 import { trackTopicView } from "@/lib/analytics";
@@ -11,6 +12,7 @@ const TopicPage = () => {
   const { lang, t } = useLanguage();
   const topics = getTopics(lang);
   const topic = topics.find((tp) => tp.id === id);
+  const pathway = id ? getPathway(lang, id) : undefined;
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -131,6 +133,23 @@ const TopicPage = () => {
               ))}
             </div>
 
+            {pathway && (
+              <section className="mt-16" aria-labelledby="pathway-title">
+                <span className="micro-label text-accent">{t("pathway.label")}</span>
+                <h2 id="pathway-title" className="mt-3 text-[26px] font-medium leading-tight text-foreground md:text-[28px]">{t("pathway.title")}</h2>
+                <ol className="mt-8 border-t border-border">
+                  {pathway.map((step, i) => (
+                    <li key={i} className="grid grid-cols-[44px_1fr] gap-2 border-b border-border py-5 md:grid-cols-[44px_200px_1fr]">
+                      <span className="micro-label pt-1 text-accent">0{i + 1}</span>
+                      <span className="text-[15px] font-medium text-foreground">{t(`pathway.s${i + 1}`)}</span>
+                      <p className="col-start-2 text-[15px] leading-[1.65] text-muted-foreground md:col-start-3">{step}</p>
+                    </li>
+                  ))}
+                </ol>
+                <p className="mt-4 text-[13px] text-muted-foreground">{t("pathway.note")}</p>
+              </section>
+            )}
+
             {/* Sources */}
             <div className="mt-20 animate-fade-in" style={{ animationDelay: "350ms" }}>
               <div className="h-px w-full bg-border mb-8" style={{ height: "0.5px" }} />
@@ -200,17 +219,17 @@ const TopicPage = () => {
       <section className="grain-bg mt-24 px-6 py-[64px] md:py-[80px]" style={{ backgroundColor: "hsl(var(--section-bg))" }}>
         <div className="relative mx-auto max-w-[1100px] flex flex-col items-center text-center">
           <h2 className="text-[32px] font-semibold text-foreground md:text-[36px]" style={{ letterSpacing: "-0.5px" }}>
-            {t("topic.stillHaveQuestions")}
+            {t("topic.cta2.title")}
           </h2>
           <p className="mt-3 max-w-[480px] text-[16px] text-muted-foreground" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-            {t("topic.cta.sub")}
+            {t("topic.cta2.sub")}
           </p>
           <Link
-            to="/ask"
+            to="/translate"
             className="mt-8 inline-flex items-center gap-2 bg-primary px-8 py-3 text-[14px] font-medium text-primary-foreground hover:bg-primary/90 transition-all press-scale"
             style={{ fontFamily: "'DM Sans', sans-serif", borderRadius: "4px" }}
           >
-            {t("topic.cta.button")}
+            {t("topic.cta2.button")}
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
