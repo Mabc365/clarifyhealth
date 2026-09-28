@@ -78,9 +78,14 @@ const UserMenu = () => {
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activePreview, setActivePreview] = useState<number | null>(null);
+  const [lastPreview, setLastPreview] = useState(0);
   const location = useLocation();
   const { t } = useLanguage();
   const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (activePreview !== null) setLastPreview(activePreview);
+  }, [activePreview]);
   const navLinks = [
     {
       to: "/topics",
@@ -118,7 +123,7 @@ const Header = () => {
     <>
       <header className="pointer-events-none fixed inset-x-0 top-2 z-50 px-2 md:top-3 md:px-3" role="banner">
         <div
-          className="header-panel pointer-events-auto relative mx-auto max-w-[1180px] overflow-visible rounded-[18px] border border-border/80 bg-background/95 shadow-soft backdrop-blur-xl"
+          className={`header-panel pointer-events-auto relative mx-auto max-w-[1180px] overflow-visible rounded-[18px] border border-border/80 bg-background/95 shadow-soft backdrop-blur-xl transition-shadow duration-300`}
           onMouseLeave={() => setActivePreview(null)}
         >
           <div className="grid h-[64px] grid-cols-[1fr_auto_1fr] items-center px-4 md:px-5">
