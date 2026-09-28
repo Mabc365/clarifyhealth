@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ArrowUpRight, BookOpen, ChevronDown, FileText, HeartPulse, Leaf, LogOut, Menu, Stethoscope, X } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
@@ -83,12 +83,15 @@ const Header = () => {
   const location = useLocation();
   const { t, lang } = useLanguage();
   const closeTimer = useRef<number>();
-  const openPreview = (i: number) => { window.clearTimeout(closeTimer.current); setActivePreview(i); };
-  const scheduleClose = () => { window.clearTimeout(closeTimer.current); closeTimer.current = window.setTimeout(() => setActivePreview(null), 180); };
+  const isTouch = useMemo(() => typeof window !== "undefined" && window.matchMedia("(hover: none)").matches, []);
+  const openPreview = (i: number) => { if (isTouch) return; window.clearTimeout(closeTimer.current); setActivePreview(i); };
+  const togglePreview = (i: number) => { window.clearTimeout(closeTimer.current); setActivePreview((current) => (current === i ? null : i)); };
+  const scheduleClose = () => { if (isTouch) return; window.clearTimeout(closeTimer.current); closeTimer.current = window.setTimeout(() => setActivePreview(null), 180); };
 
   useEffect(() => {
     if (activePreview !== null) setLastPreview(activePreview);
   }, [activePreview]);
+  useEffect(() => setActivePreview(null), [location.pathname]);
   const navLinks = [
     {
       to: "/topics",
@@ -146,23 +149,39 @@ const Header = () => {
             </div>
           </div>
           <nav className="hidden h-[54px] grid-cols-3 border-t border-border/70 px-4 md:grid" aria-label="Main">
-            {navLinks.map((link, index) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                onMouseEnter={() => openPreview(index)}
-                onFocus={() => openPreview(index)}
-                className={`flex h-full items-center justify-center gap-1.5 border-r border-border/70 text-[14px] font-medium transition-colors first:border-l hover:bg-muted focus-visible:bg-muted ${activePreview === index || location.pathname.startsWith(link.to) ? "bg-muted text-foreground" : "text-foreground"}`}
-              >
-                {link.label}<ChevronDown className={`h-3 w-3 text-muted-foreground transition-transform ${activePreview === index ? "rotate-180" : ""}`} />
-              </Link>
-            ))}
+            {navLinks.map((link, index) =>
+              isTouch ? (
+                <button
+                  key={link.to}
+                  type="button"
+                  onClick={() => togglePreview(index)}
+                  aria-expanded={activePreview === index}
+                  className={`flex h-full items-center justify-center gap-1.5 border-r border-border/70 text-[14px] font-medium transition-colors first:border-l hover:bg-muted focus-visible:bg-muted ${activePreview === index || location.pathname.startsWith(link.to) ? "bg-muted text-foreground" : "text-foreground"}`}
+                >
+                  {link.label}<ChevronDown className={`h-3 w-3 text-muted-foreground transition-transform duration-300 ${activePreview === index ? "rotate-180" : ""}`} />
+                </button>
+              ) : (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  onMouseEnter={() => openPreview(index)}
+                  onFocus={() => openPreview(index)}
+                  className={`flex h-full items-center justify-center gap-1.5 border-r border-border/70 text-[14px] font-medium transition-colors first:border-l hover:bg-muted focus-visible:bg-muted ${activePreview === index || location.pathname.startsWith(link.to) ? "bg-muted text-foreground" : "text-foreground"}`}
+                >
+                  {link.label}<ChevronDown className={`h-3 w-3 text-muted-foreground transition-transform duration-300 ${activePreview === index ? "rotate-180" : ""}`} />
+                </Link>
+              )
+            )}
           </nav>
 
           <div
             aria-hidden={activePreview === null}
-            className={`absolute inset-x-[-1px] top-full hidden min-h-[300px] overflow-hidden rounded-b-[18px] border border-t-0 border-border/80 bg-background transition-[opacity,transform,visibility] duration-[400ms] ease-[cubic-bezier(0.22,1,0.36,1)] md:grid md:grid-cols-[1.08fr_.92fr] ${activePreview === null ? "pointer-events-none invisible -translate-y-1 opacity-0" : "pointer-events-auto translate-y-0 opacity-100"}`}
+            className={`hidden md:grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${activePreview === null ? "grid-rows-[0fr]" : "grid-rows-[1fr]"}`}
           >
+            <div className="min-h-0 overflow-hidden">
+              <div
+                className={`grid grid-cols-[1.08fr_.92fr] border-t border-border/70 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${activePreview === null ? "pointer-events-none -translate-y-3 opacity-0" : "translate-y-0 opacity-100"}`}
+              >
             <div key={lastPreview} className="flex flex-col justify-center px-10 py-10 lg:px-12 animate-[fade-in_0.35s_ease-out]">
               <span className="micro-label text-accent">{navLinks[lastPreview].eyebrow}</span>
               <h2 className="mt-4 max-w-[500px] text-[32px] font-medium leading-[1.1] text-foreground">{navLinks[lastPreview].title}</h2>
@@ -191,6 +210,8 @@ const Header = () => {
                   <span className="micro-label absolute bottom-6 left-6 text-primary">Plain language. Better questions.</span>
                 </div>
               )}
+            </div>
+              </div>
             </div>
           </div>
 
