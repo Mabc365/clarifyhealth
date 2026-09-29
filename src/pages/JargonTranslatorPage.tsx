@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Copy, Printer, Loader2, FileText, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { handleAiGateError } from "@/lib/aiGate";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -36,6 +38,7 @@ const renderWithTooltips = (text: string, terms: Term[]) => {
 };
 
 const JargonTranslatorPage = () => {
+  const navigate = useNavigate();
   const [text, setText] = useState("");
   const [result, setResult] = useState<Result | null>(null);
   const [loading, setLoading] = useState(false);
@@ -47,6 +50,7 @@ const JargonTranslatorPage = () => {
     setResult(null);
     const { data, error } = await supabase.functions.invoke("jargon-translate", { body: { text } });
     setLoading(false);
+    if (error && (await handleAiGateError(error, navigate))) return;
     if (error) {
       toast({ title: "Couldn't translate", description: error.message, variant: "destructive" });
       return;
