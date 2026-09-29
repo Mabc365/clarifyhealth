@@ -14,6 +14,27 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_usage: {
+        Row: {
+          created_at: string
+          feature: string
+          id: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          feature: string
+          id?: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          feature?: string
+          id?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       article_feedback: {
         Row: {
           article_slug: string
@@ -353,6 +374,33 @@ export type Database = {
         }
         Relationships: []
       }
+      subscriptions: {
+        Row: {
+          plan_id: string | null
+          status: string
+          tier: string
+          updated_at: string
+          user_id: string
+          whop_membership_id: string | null
+        }
+        Insert: {
+          plan_id?: string | null
+          status?: string
+          tier?: string
+          updated_at?: string
+          user_id: string
+          whop_membership_id?: string | null
+        }
+        Update: {
+          plan_id?: string | null
+          status?: string
+          tier?: string
+          updated_at?: string
+          user_id?: string
+          whop_membership_id?: string | null
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
@@ -475,6 +523,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      consume_ai_use: {
+        Args: { _feature: string; _user_id: string }
+        Returns: Json
+      }
       delete_email: {
         Args: { message_id: number; queue_name: string }
         Returns: boolean
