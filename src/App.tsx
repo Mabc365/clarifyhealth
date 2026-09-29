@@ -36,6 +36,8 @@ const ContactPage = lazy(() => import("./pages/ContactPage"));
 const SearchResultsPage = lazy(() => import("./pages/SearchResultsPage"));
 const AccessibilityPage = lazy(() => import("./pages/AccessibilityPage"));
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const CheckoutReturnPage = lazy(() => import("./pages/CheckoutReturnPage"));
 
 const queryClient = new QueryClient();
 
@@ -117,6 +119,8 @@ const App = () => (
               <Route path="/search" element={<SearchResultsPage />} />
               <Route path="/accessibility" element={<AccessibilityPage />} />
               <Route path="/tools" element={<ToolsPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/checkout/return" element={<CheckoutReturnPage />} />
               <Route path="/rss" element={<RssRedirect />} />
               <Route path="*" element={<NotFound />} />
               </Routes>
