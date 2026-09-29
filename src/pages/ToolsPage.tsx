@@ -26,7 +26,11 @@ const ToolsPage = () => {
           <li key={tool.to}>
             <Link to={tool.to} className="group flex min-h-[230px] flex-col justify-between p-6 md:p-7">
               <div className="flex items-start justify-between gap-4">
-                <span className="micro-label text-accent">{tool.paid ? t("plus.badge") : `Tool ${String(index + 1).padStart(2, "0")}`}</span>
+                {tool.paid ? (
+                  <Link to="/checkout" className="micro-label text-accent underline underline-offset-4">{t("plus.badge")}</Link>
+                ) : (
+                  <span className="micro-label text-accent">{`Tool ${String(index + 1).padStart(2, "0")}`}</span>
+                )}
                 <ArrowUpRight className="h-4 w-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:text-accent" />
               </div>
               <div><h2 className="text-[24px] font-medium leading-tight text-foreground">{tool.title}</h2><p className="mt-3 text-[14px] leading-[1.6] text-muted-foreground">{tool.desc}</p></div>
