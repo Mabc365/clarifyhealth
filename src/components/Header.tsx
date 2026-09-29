@@ -82,6 +82,7 @@ const Header = () => {
   const [lastPreview, setLastPreview] = useState(0);
   const location = useLocation();
   const { t, lang } = useLanguage();
+  const { user } = useAuth();
   const closeTimer = useRef<number>();
   const isTouch = useMemo(() => typeof window !== "undefined" && window.matchMedia("(hover: none)").matches, []);
   const openPreview = (i: number) => { if (isTouch) return; window.clearTimeout(closeTimer.current); setActivePreview(i); };
@@ -140,9 +141,11 @@ const Header = () => {
             <Link to="/" className="hidden text-[18px] font-medium text-foreground md:block">Clarify Health</Link>
             <div className="hidden items-center justify-end gap-4 md:flex">
               <LanguageDropdown />
+              {user ? <UserMenu /> : <Link to="/login" className="text-[13px] font-medium text-foreground underline-offset-4 hover:underline">{t("auth.login")}</Link>}
               <Link to="/translate" className="primary-action !rounded-xl !px-5 !py-3 !text-[10px]">{t("topic.cta2.button")} <ArrowUpRight className="h-3.5 w-3.5" /></Link>
             </div>
             <div className="flex items-center justify-end gap-2 md:hidden">
+              {user ? <UserMenu /> : <Link to="/login" className="text-[13px] font-medium text-foreground">{t("auth.login")}</Link>}
               <button onClick={() => setMobileOpen((value) => !value)} className="flex h-10 w-10 items-center justify-center text-foreground" aria-label="Toggle menu" aria-expanded={mobileOpen}>
                 {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>

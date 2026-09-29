@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Play, Pause, Printer, Loader2, Sparkles, AlertTriangle, MessageSquare, BookOpen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { handleAiGateError } from "@/lib/aiGate";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import PageMeta from "@/components/PageMeta";
@@ -29,6 +31,7 @@ type Article = {
 
 const ArticlePage = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [eli5Loading, setEli5Loading] = useState(false);
@@ -64,6 +67,7 @@ const ArticlePage = () => {
     setAudioLoading(true);
     const { data, error } = await supabase.functions.invoke("tts-speak", { body: { text: articleText().slice(0, 3800), speed } });
     setAudioLoading(false);
+    if (error && (await handleAiGateError(error, navigate))) return;
     if (error || !data) { toast({ title: "Audio failed", variant: "destructive" }); return; }
     const blob = data instanceof Blob ? data : new Blob([data as ArrayBuffer], { type: "audio/mpeg" });
     const url = URL.createObjectURL(blob);
@@ -80,6 +84,7 @@ const ArticlePage = () => {
     setEli5Loading(true);
     const { data, error } = await supabase.functions.invoke("eli5-rewrite", { body: { text: content, mode: "eli5" } });
     setEli5Loading(false);
+    if (error && (await handleAiGateError(error, navigate))) return;
     if (error || !data) { toast({ title: "Couldn't rewrite", variant: "destructive" }); return; }
     setEli5Map((m) => ({ ...m, [idx]: (data as any).text }));
   };

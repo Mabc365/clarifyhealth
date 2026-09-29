@@ -1,8 +1,10 @@
+import { requireAiUse } from "../_shared/gate.ts";
 import { corsHeaders, DISCLAIMER } from "../_shared/cors.ts";
 import { aiChat } from "../_shared/ai.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  { const blocked = await requireAiUse(req, "jargon-translate"); if (blocked) return blocked; }
   try {
     const { text } = await req.json();
     if (!text || typeof text !== "string" || text.length > 8000) {

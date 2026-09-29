@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { handleAiGateError } from "@/lib/aiGate";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -217,6 +218,7 @@ const WellnessPlanPage = () => {
       const { data, error: fnError } = await supabase.functions.invoke("wellness-plan", {
         body: { preferences: prefs, language: lang },
       });
+    if (fnError && (await handleAiGateError(fnError, navigate))) return;
 
       if (fnError) throw fnError;
       if (data?.error) {

@@ -1,8 +1,10 @@
+import { requireAiUse } from "../_shared/gate.ts";
 import { corsHeaders } from "../_shared/cors.ts";
 
 // Uses Lovable AI Gateway's OpenAI-compatible TTS endpoint.
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  { const blocked = await requireAiUse(req, "tts-speak"); if (blocked) return blocked; }
   try {
     const { text, voice = "alloy", speed = 1.0 } = await req.json();
     if (!text || typeof text !== "string" || text.length > 4000) {

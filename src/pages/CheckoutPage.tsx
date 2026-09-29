@@ -3,6 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import { Checkout, CheckoutElement, WhopElements } from "@whop/elements-react";
 import { loadWhop } from "@whop/elements";
 import PageMeta from "@/components/PageMeta";
+import { useAuth } from "@/hooks/useAuth";
 
 const PLANS = {
   tier1: { id: "plan_fmrUm4OGpaGSD", name: "Plus", price: "$10/mo", uses: "25 AI uses per month" },
@@ -16,6 +17,7 @@ const CheckoutPage = () => {
   const initial: Tier = params.get("plan") === "tier2" ? "tier2" : "tier1";
   const [tier, setTier] = useState<Tier>(initial);
   const plan = PLANS[tier];
+  const { user, loading } = useAuth();
 
   return (
     <>
@@ -56,6 +58,14 @@ const CheckoutPage = () => {
           </div>
 
           <div className="mt-8">
+            {loading ? null : !user ? (
+              <p className="rounded-lg border border-border p-5 text-[14px] text-foreground">
+                Please <Link to="/login" className="text-primary underline underline-offset-4">log in</Link> or{" "}
+                <Link to="/signup" className="text-primary underline underline-offset-4">create an account</Link> first. Use the same email at checkout so your plan unlocks.
+              </p>
+            ) : (
+            <>
+            <p className="mb-4 text-[13px] text-muted-foreground">Use <strong>{user.email}</strong> at checkout so your plan unlocks automatically.</p>
             <WhopElements elements={loadWhop()}>
               <Checkout
                 key={plan.id}
@@ -68,6 +78,8 @@ const CheckoutPage = () => {
                 <CheckoutElement />
               </Checkout>
             </WhopElements>
+            </>
+            )}
           </div>
 
           <p className="mt-6 text-[12px] leading-relaxed text-muted-foreground">
