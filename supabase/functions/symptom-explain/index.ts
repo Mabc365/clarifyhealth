@@ -1,8 +1,10 @@
+import { requireAiUse } from "../_shared/gate.ts";
 import { corsHeaders, DISCLAIMER } from "../_shared/cors.ts";
 import { aiChat } from "../_shared/ai.ts";
 
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
+  { const blocked = await requireAiUse(req, "symptom-explain"); if (blocked) return blocked; }
   try {
     const { description } = await req.json();
     if (!description || typeof description !== "string" || description.length > 4000) {
