@@ -44,9 +44,13 @@ const AccountSettingsPage = () => {
 
   const updateProfile = async () => {
     setBusy("profile");
-    const { error } = await supabase.from("profiles").upsert({ user_id: user.id, display_name: displayName.trim() || null }, { onConflict: "user_id" });
+    const cleanName = displayName.trim() || null;
+    const [{ error }, { error: authError }] = await Promise.all([
+      supabase.from("profiles").upsert({ user_id: user.id, display_name: cleanName }, { onConflict: "user_id" }),
+      supabase.auth.updateUser({ data: { display_name: cleanName } }),
+    ]);
     setBusy(null);
-    if (error) toast({ title: "Could not update profile", description: error.message, variant: "destructive" });
+    if (error || authError) toast({ title: "Could not update profile", description: error?.message ?? authError?.message, variant: "destructive" });
     else toast({ title: "Profile updated" });
   };
 
