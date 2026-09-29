@@ -31,19 +31,17 @@ const LoginPage = () => {
   return (
     <>
       <PageMeta title="Log In | Clarify Health" description="Log in to access your doctor visit notes and health journal." canonical="/login" />
-      <main className="min-h-screen flex items-center justify-center px-6 pt-20 pb-24">
-        <div className="w-full max-w-[400px]">
-          <h1
-            className="text-[32px] font-medium mb-2"
-            style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.5px" }}
-          >
+      <main className="min-h-screen flex items-center justify-center px-6 pt-32 pb-24">
+        <div className="w-full max-w-[420px]">
+          <span className="micro-label text-accent">Your account</span>
+          <h1 className="mt-4 text-[36px] font-medium">
             {t("auth.login")}
           </h1>
-          <p className="text-muted-foreground text-[14px] mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="mt-3 mb-8 text-[15px] leading-relaxed text-muted-foreground">
             {t("auth.loginSub")}
           </p>
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <form onSubmit={handleLogin} className="space-y-5 border-t border-border pt-8">
             <div>
               <Label htmlFor="email" className="text-[13px]">Email</Label>
               <Input
@@ -80,7 +78,7 @@ const LoginPage = () => {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-[13px] text-muted-foreground" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="mt-7 text-center text-[13px] text-muted-foreground">
             {t("auth.noAccount")}{" "}
             <Link to="/signup" className="text-primary hover:underline font-medium">
               {t("auth.signup")}

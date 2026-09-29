@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -16,7 +16,6 @@ const SignupPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
   const { t } = useLanguage();
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -47,15 +46,12 @@ const SignupPage = () => {
 
   if (success) {
     return (
-      <main className="min-h-screen flex items-center justify-center px-6 pt-20 pb-24">
+      <main className="min-h-screen flex items-center justify-center px-6 pt-32 pb-24">
         <div className="w-full max-w-[400px] text-center">
-          <h1
-            className="text-[28px] font-medium mb-4"
-            style={{ fontFamily: "'Playfair Display', serif" }}
-          >
+          <h1 className="mb-4 text-[30px] font-medium">
             {t("auth.checkEmail")}
           </h1>
-          <p className="text-muted-foreground text-[14px] mb-6" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="mb-6 text-[14px] text-muted-foreground">
             {t("auth.checkEmailSub")}
           </p>
           <Link to="/login">
@@ -69,19 +65,17 @@ const SignupPage = () => {
   return (
     <>
       <PageMeta title="Sign Up | Clarify Health" description="Create an account to save your doctor visit notes." canonical="/signup" />
-      <main className="min-h-screen flex items-center justify-center px-6 pt-20 pb-24">
-        <div className="w-full max-w-[400px]">
-          <h1
-            className="text-[32px] font-medium mb-2"
-            style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.5px" }}
-          >
+      <main className="min-h-screen flex items-center justify-center px-6 pt-32 pb-24">
+        <div className="w-full max-w-[420px]">
+          <span className="micro-label text-accent">Your account</span>
+          <h1 className="mt-4 text-[36px] font-medium">
             {t("auth.signup")}
           </h1>
-          <p className="text-muted-foreground text-[14px] mb-8" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="mt-3 mb-8 text-[15px] leading-relaxed text-muted-foreground">
             {t("auth.signupSub")}
           </p>
 
-          <form onSubmit={handleSignup} className="space-y-4">
+          <form onSubmit={handleSignup} className="space-y-5 border-t border-border pt-8">
             <div>
               <Label htmlFor="name" className="text-[13px]">Name</Label>
               <Input
@@ -118,7 +112,7 @@ const SignupPage = () => {
             </div>
 
             <div className="space-y-2 pt-1">
-              <label className="flex items-start gap-2 text-[13px] text-foreground/80" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <label className="flex items-start gap-2 text-[13px] text-foreground/80">
                 <input
                   type="checkbox"
                   checked={confirmAge}
@@ -127,7 +121,7 @@ const SignupPage = () => {
                 />
                 <span>I confirm I am 18 or older.</span>
               </label>
-              <label className="flex items-start gap-2 text-[13px] text-foreground/80" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+              <label className="flex items-start gap-2 text-[13px] text-foreground/80">
                 <input
                   type="checkbox"
                   checked={agreeTerms}
@@ -156,7 +150,7 @@ const SignupPage = () => {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-[13px] text-muted-foreground" style={{ fontFamily: "'DM Sans', sans-serif" }}>
+          <p className="mt-7 text-center text-[13px] text-muted-foreground">
             {t("auth.hasAccount")}{" "}
             <Link to="/login" className="text-primary hover:underline font-medium">
               {t("auth.login")}

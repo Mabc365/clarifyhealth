@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowUpRight, BookOpen, ChevronDown, FileText, HeartPulse, Leaf, LogOut, Menu, Stethoscope, X } from "lucide-react";
+import { ArrowUpRight, BookOpen, ChevronDown, CreditCard, FileText, Leaf, LogOut, Menu, Settings, Stethoscope, X } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import { getTopics } from "@/data/topics";
+import { Button } from "@/components/ui/button";
 import logoUrl from "@/assets/logo.png";
 
 const LANGUAGE_OPTIONS: { code: Language; flag: string; name: string }[] = [
@@ -67,9 +68,11 @@ const UserMenu = () => {
       <button onClick={() => setOpen((value) => !value)} aria-haspopup="menu" aria-expanded={open} aria-label="Account menu" className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-[11px] font-bold text-primary-foreground">{initials}</button>
       {open && (
         <div className="absolute right-0 z-[70] mt-3 min-w-[190px] overflow-hidden rounded-lg border border-border bg-background py-1 shadow-soft animate-[fade-in_0.18s_ease-out]">
-          <button onClick={() => { navigate("/my-notes"); setOpen(false); }} className="flex w-full items-center gap-2.5 px-4 py-3 text-[13px] text-foreground hover:bg-muted"><FileText className="h-4 w-4" />{t("auth.myNotes")}</button>
-          <button onClick={() => { navigate("/wellness-plan"); setOpen(false); }} className="flex w-full items-center gap-2.5 px-4 py-3 text-[13px] text-foreground hover:bg-muted"><Leaf className="h-4 w-4" />{t("nav.wellnessPlan")}</button>
-          <button onClick={() => { signOut(); setOpen(false); }} className="flex w-full items-center gap-2.5 border-t border-border px-4 py-3 text-[13px] text-muted-foreground hover:bg-muted"><LogOut className="h-4 w-4" />{t("auth.signOut")}</button>
+          <Button variant="ghost" onClick={() => { navigate("/account"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><Settings className="h-4 w-4" />{t("auth.settings")}</Button>
+          <Button variant="ghost" onClick={() => { navigate("/my-notes"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><FileText className="h-4 w-4" />{t("auth.myNotes")}</Button>
+          <Button variant="ghost" onClick={() => { navigate("/wellness-plan"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><Leaf className="h-4 w-4" />{t("nav.wellnessPlan")}</Button>
+          <Button variant="ghost" onClick={() => { navigate("/checkout"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><CreditCard className="h-4 w-4" />Plus plans</Button>
+          <Button variant="ghost" onClick={() => { signOut(); setOpen(false); }} className="h-auto w-full justify-start rounded-none border-t border-border px-4 py-3 text-[13px] text-muted-foreground"><LogOut className="h-4 w-4" />{t("auth.signOut")}</Button>
         </div>
       )}
     </div>
@@ -141,11 +144,10 @@ const Header = () => {
             <Link to="/" className="hidden text-[18px] font-medium text-foreground md:block">Clarify Health</Link>
             <div className="hidden items-center justify-end gap-4 md:flex">
               <LanguageDropdown />
-              {user ? <UserMenu /> : <Link to="/login" className="text-[13px] font-medium text-foreground underline-offset-4 hover:underline">{t("auth.login")}</Link>}
-              <Link to="/translate" className="primary-action !rounded-xl !px-5 !py-3 !text-[10px]">{t("topic.cta2.button")} <ArrowUpRight className="h-3.5 w-3.5" /></Link>
+              {user ? <UserMenu /> : <Button asChild className="h-10 rounded-xl px-5 text-[11px] font-bold uppercase"><Link to="/login">{t("auth.login")} <ArrowUpRight className="h-3.5 w-3.5" /></Link></Button>}
             </div>
             <div className="flex items-center justify-end gap-2 md:hidden">
-              {user ? <UserMenu /> : <Link to="/login" className="text-[13px] font-medium text-foreground">{t("auth.login")}</Link>}
+              {user ? <UserMenu /> : <Button asChild size="sm" className="rounded-lg px-3 text-[12px]"><Link to="/login">{t("auth.login")}</Link></Button>}
               <button onClick={() => setMobileOpen((value) => !value)} className="flex h-10 w-10 items-center justify-center text-foreground" aria-label="Toggle menu" aria-expanded={mobileOpen}>
                 {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
@@ -227,9 +229,8 @@ const Header = () => {
                   </Link>
                 ))}
               </nav>
-              <div className="flex min-h-[54px] items-center justify-between px-2 pt-3">
+              <div className="flex min-h-[54px] items-center px-2 pt-3">
                 <LanguageDropdown mobile />
-                <Link to="/translate" className="text-[13px] font-semibold text-accent">{t("topic.cta2.button")}</Link>
               </div>
             </div>
           )}
