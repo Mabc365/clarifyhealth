@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Download, Trash2, KeyRound, Mail } from "lucide-react";
+import { CreditCard, Download, Trash2, KeyRound, Mail, UserRound } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 
 const AccountSettingsPage = () => {
@@ -15,12 +15,19 @@ const AccountSettingsPage = () => {
   const { toast } = useToast();
 
   const [email, setEmail] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [currentPassword, setCurrentPassword] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState<string | null>(null);
 
   useEffect(() => {
     if (!loading && !user) navigate("/login");
-    if (user) setEmail(user.email ?? "");
+    if (user) {
+      setEmail(user.email ?? "");
+      supabase.from("profiles").select("display_name").eq("user_id", user.id).maybeSingle().then(({ data }) => {
+        setDisplayName(data?.display_name ?? user.user_metadata?.display_name ?? "");
+      });
+    }
   }, [user, loading, navigate]);
 
   if (loading || !user) {
@@ -35,16 +42,28 @@ const AccountSettingsPage = () => {
     else toast({ title: "Check your inbox", description: "Confirm the change from the link we sent." });
   };
 
+  const updateProfile = async () => {
+    setBusy("profile");
+    const { error } = await supabase.from("profiles").upsert({ user_id: user.id, display_name: displayName.trim() || null }, { onConflict: "user_id" });
+    setBusy(null);
+    if (error) toast({ title: "Could not update profile", description: error.message, variant: "destructive" });
+    else toast({ title: "Profile updated" });
+  };
+
   const updatePassword = async () => {
     if (password.length < 6) {
       toast({ title: "Password too short", description: "Use at least 6 characters.", variant: "destructive" });
       return;
     }
     setBusy("password");
-    const { error } = await supabase.auth.updateUser({ password });
+    if (!currentPassword) {
+      toast({ title: "Enter your current password", variant: "destructive" });
+      return;
+    }
+    const { error } = await supabase.auth.updateUser({ password, current_password: currentPassword });
     setBusy(null);
     if (error) toast({ title: "Could not update password", description: error.message, variant: "destructive" });
-    else { setPassword(""); toast({ title: "Password updated" }); }
+    else { setCurrentPassword(""); setPassword(""); toast({ title: "Password updated" }); }
   };
 
   const downloadMyData = async () => {
@@ -100,15 +119,22 @@ const AccountSettingsPage = () => {
     <>
       <PageMeta title="Account Settings | Clarify Health" description="Manage your account, export your data, or delete your account." canonical="/account" />
       <main className="pt-32 pb-24 px-6">
-        <div className="mx-auto max-w-[640px]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
-          <h1 className="text-[36px] font-semibold text-foreground" style={{ fontFamily: "'Playfair Display', serif" }}>
+        <div className="mx-auto max-w-[640px]">
+          <h1 className="text-[36px] font-semibold text-foreground">
             Account Settings
           </h1>
           <p className="mt-2 text-[14px] text-muted-foreground">
             Signed in as <span className="text-foreground">{user.email}</span>
           </p>
 
-          <section className="mt-10 space-y-3">
+          <section className="mt-10 border-t border-border pt-8 space-y-3">
+            <h2 className="text-[18px] font-semibold text-foreground flex items-center gap-2"><UserRound className="h-4 w-4" /> Profile</h2>
+            <Label htmlFor="display-name" className="text-[13px]">Display name</Label>
+            <Input id="display-name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} autoComplete="name" />
+            <Button onClick={updateProfile} disabled={busy === "profile"}>Save profile</Button>
+          </section>
+
+          <section className="mt-10 border-t border-border pt-8 space-y-3">
             <h2 className="text-[18px] font-semibold text-foreground flex items-center gap-2"><Mail className="h-4 w-4" /> Email</h2>
             <Label htmlFor="email" className="text-[13px]">Email address</Label>
             <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -117,16 +143,24 @@ const AccountSettingsPage = () => {
             </Button>
           </section>
 
-          <section className="mt-10 space-y-3">
+          <section className="mt-10 border-t border-border pt-8 space-y-3">
             <h2 className="text-[18px] font-semibold text-foreground flex items-center gap-2"><KeyRound className="h-4 w-4" /> Password</h2>
+            <Label htmlFor="current-pw" className="text-[13px]">Current password</Label>
+            <Input id="current-pw" type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} autoComplete="current-password" />
             <Label htmlFor="pw" className="text-[13px]">New password</Label>
-            <Input id="pw" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" />
-            <Button onClick={updatePassword} disabled={busy === "password" || !password}>
+            <Input id="pw" type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="At least 6 characters" autoComplete="new-password" />
+            <Button onClick={updatePassword} disabled={busy === "password" || !password || !currentPassword}>
               Update password
             </Button>
           </section>
 
-          <section className="mt-10 space-y-3">
+          <section className="mt-10 border-t border-border pt-8 space-y-3">
+            <h2 className="text-[18px] font-semibold text-foreground flex items-center gap-2"><CreditCard className="h-4 w-4" /> AI plan</h2>
+            <p className="text-[14px] text-muted-foreground">Manage your monthly AI allowance through Clarify Health Plus.</p>
+            <Button asChild variant="outline"><Link to="/checkout">View plans</Link></Button>
+          </section>
+
+          <section className="mt-10 border-t border-border pt-8 space-y-3">
             <h2 className="text-[18px] font-semibold text-foreground flex items-center gap-2"><Download className="h-4 w-4" /> Download my data</h2>
             <p className="text-[14px] text-muted-foreground">
               Export a JSON file containing your profile, visit notes, and wellness plan.
@@ -136,7 +170,7 @@ const AccountSettingsPage = () => {
             </Button>
           </section>
 
-          <section className="mt-10 space-y-3">
+          <section className="mt-10 border-t border-border pt-8 space-y-3">
             <h2 className="text-[18px] font-semibold text-destructive flex items-center gap-2"><Trash2 className="h-4 w-4" /> Delete my account</h2>
             <p className="text-[14px] text-muted-foreground">
               Permanently delete your account and all associated data: your profile, every visit
