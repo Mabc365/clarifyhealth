@@ -24,7 +24,7 @@ const LoginPage = () => {
     if (error) {
       setError(error.message);
     } else {
-      navigate("/my-notes");
+      navigate("/dashboard");
     }
   };
 
