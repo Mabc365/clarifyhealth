@@ -61,7 +61,7 @@ Deno.serve(async (req) => {
 
   const { error } = await admin.from("subscriptions").upsert({
     user_id: userId, plan_id: planId, tier: status === "active" ? tier : "free", status,
-    whop_membership_id: m.id ?? null, updated_at: new Date().toISOString(),
+    whop_membership_id: m.membership?.id ?? m.id ?? null, updated_at: new Date().toISOString(),
   });
   if (error) { console.error(error); return new Response("DB error", { status: 500 }); }
   return new Response("ok", { status: 200 });
