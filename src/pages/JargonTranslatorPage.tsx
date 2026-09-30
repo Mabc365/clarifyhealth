@@ -48,14 +48,21 @@ const JargonTranslatorPage = () => {
     if (!text.trim()) return;
     setLoading(true);
     setResult(null);
-    const { data, error } = await supabase.functions.invoke("jargon-translate", { body: { text } });
-    setLoading(false);
-    if (error && (await handleAiGateError(error, navigate))) return;
-    if (error) {
-      toast({ title: "Couldn't translate", description: error.message, variant: "destructive" });
-      return;
+    try {
+      const { data, error } = await supabase.functions.invoke("jargon-translate", { body: { text } });
+      if (error && (await handleAiGateError(error, navigate))) return;
+      if (error) {
+        console.error(error);
+        toast({ title: "Couldn't translate", description: "Please try again.", variant: "destructive" });
+        return;
+      }
+      setResult(data as Result);
+    } catch (e) {
+      console.error(e);
+      toast({ title: "Couldn't translate", description: "Please try again.", variant: "destructive" });
+    } finally {
+      setLoading(false);
     }
-    setResult(data as Result);
   };
 
   const copy = async () => {
