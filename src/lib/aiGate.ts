@@ -10,7 +10,7 @@ export async function handleAiGateError(error: unknown, navigate: (to: string) =
     return true;
   }
   if (ctx.status === 403) {
-    toast({ title: "Monthly AI limit reached", description: "Upgrade to Plus for more AI uses." });
+    toast({ title: "Plus required", description: "AI tools need a Plus plan, or you have used this month's AI uses." });
     navigate("/checkout");
     return true;
   }

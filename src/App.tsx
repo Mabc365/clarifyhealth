@@ -38,6 +38,7 @@ const AccessibilityPage = lazy(() => import("./pages/AccessibilityPage"));
 const ToolsPage = lazy(() => import("./pages/ToolsPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const CheckoutReturnPage = lazy(() => import("./pages/CheckoutReturnPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 
 const queryClient = new QueryClient();
 
@@ -98,6 +99,7 @@ const App = () => (
               <Route path="/find-a-doctor" element={<FindADoctorPage />} />
               <Route path="/wellness-plan" element={<WellnessPlanPage />} />
               <Route path="/account" element={<AccountSettingsPage />} />
+              <Route path="/dashboard" element={<DashboardPage />} />
               {/* Legal */}
               <Route path="/legal/privacy" element={<PrivacyPage />} />
               <Route path="/legal/terms" element={<TermsPage />} />

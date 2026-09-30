@@ -68,6 +68,7 @@ const UserMenu = () => {
       <button onClick={() => setOpen((value) => !value)} aria-haspopup="menu" aria-expanded={open} aria-label="Account menu" className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-[11px] font-bold text-primary-foreground">{initials}</button>
       {open && (
         <div className="absolute right-0 z-[70] mt-3 min-w-[190px] overflow-hidden rounded-lg border border-border bg-background py-1 shadow-soft animate-[fade-in_0.18s_ease-out]">
+          <Button variant="ghost" onClick={() => { navigate("/dashboard"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><BookOpen className="h-4 w-4" />Dashboard</Button>
           <Button variant="ghost" onClick={() => { navigate("/account"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><Settings className="h-4 w-4" />{t("auth.settings")}</Button>
           <Button variant="ghost" onClick={() => { navigate("/my-notes"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><FileText className="h-4 w-4" />{t("auth.myNotes")}</Button>
           <Button variant="ghost" onClick={() => { navigate("/wellness-plan"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><Leaf className="h-4 w-4" />{t("nav.wellnessPlan")}</Button>
