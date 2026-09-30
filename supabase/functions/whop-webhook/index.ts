@@ -9,15 +9,17 @@ const PLAN_TIERS: Record<string, string> = {
 async function verify(secret: string, id: string, ts: string, body: string, sigHeader: string) {
   if (Math.abs(Date.now() / 1000 - Number(ts)) > 300) return false;
   const raw = secret.startsWith("whsec_") ? secret.slice(6) : secret;
-  let keyBytes: Uint8Array;
-  try { keyBytes = Uint8Array.from(atob(raw), (c) => c.charCodeAt(0)); }
-  catch { keyBytes = new TextEncoder().encode(secret); }
-  const key = await crypto.subtle.importKey("raw", keyBytes, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  const mac = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(`${id}.${ts}.${body}`));
-  const expected = btoa(String.fromCharCode(...new Uint8Array(mac)));
-  return sigHeader.split(" ").some((s) => s.split(",")[1] === expected);
+  const keys: Uint8Array[] = [new TextEncoder().encode(secret), new TextEncoder().encode(raw)];
+  try { keys.push(Uint8Array.from(atob(raw), (c) => c.charCodeAt(0))); } catch { /* not base64 */ }
+  const sigs = sigHeader.split(" ").map((s) => s.split(",")[1] ?? s);
+  for (const kb of keys) {
+    const key = await crypto.subtle.importKey("raw", kb, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+    const mac = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(`${id}.${ts}.${body}`));
+    const expected = btoa(String.fromCharCode(...new Uint8Array(mac)));
+    if (sigs.includes(expected)) return true;
+  }
+  return false;
 }
-
 Deno.serve(async (req) => {
   if (req.method !== "POST") return new Response("Method not allowed", { status: 405 });
   const secret = Deno.env.get("WHOP_WEBHOOK_SECRET");
@@ -35,14 +37,14 @@ Deno.serve(async (req) => {
   const event = JSON.parse(body);
   const type: string = event.type ?? event.action ?? "";
   const m = event.data ?? {};
-  const planId: string = m.plan?.id ?? m.plan_id ?? "";
-  const email: string = (m.user?.email ?? m.email ?? "").toLowerCase();
+  const planId: string = m.plan?.id ?? m.plan_id ?? m.membership?.plan?.id ?? m.product?.plan_id ?? "";
+  const email: string = (m.user?.email ?? m.email ?? m.member?.email ?? m.membership?.user?.email ?? "").toLowerCase();
   const tier = PLAN_TIERS[planId];
   console.log("Whop event", { type, planId, hasEmail: !!email, dataKeys: Object.keys(m), userKeys: Object.keys(m.user ?? {}) });
   if (!tier || !email) return new Response("Ignored", { status: 200 });
 
   let status: string | null = null;
-  if (/membership[._]?(activated|went_valid)/.test(type)) status = "active";
+  if (/membership[._]?(activated|went_valid)/.test(type) || /payment[._]succeeded/.test(type)) status = "active";
   if (/membership[._]?(deactivated|went_invalid)/.test(type)) status = "inactive";
   if (!status) return new Response("Ignored", { status: 200 });
 
