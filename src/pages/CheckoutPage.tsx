@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useSearchParams, Link } from "react-router-dom";
+import { useSearchParams, Link, useNavigate } from "react-router-dom";
 import { Checkout, CheckoutElement, WhopElements } from "@whop/elements-react";
 import { loadWhop } from "@whop/elements";
 import PageMeta from "@/components/PageMeta";
@@ -18,6 +18,7 @@ const CheckoutPage = () => {
   const [tier, setTier] = useState<Tier>(initial);
   const plan = PLANS[tier];
   const { user, loading } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <>
@@ -72,7 +73,7 @@ const CheckoutPage = () => {
                 plan={plan.id}
                 returnUrl={`${window.location.origin}/checkout/return`}
                 onComplete={() => {
-                  // analytics only — access is unlocked by Whop, not here
+                  navigate("/checkout/return"); // access is unlocked by the webhook
                 }}
               >
                 <CheckoutElement />

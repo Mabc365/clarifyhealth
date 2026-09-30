@@ -30,7 +30,7 @@ Deno.serve(async (req) => {
     body,
     req.headers.get("webhook-signature") ?? "",
   );
-  if (!ok) return new Response("Invalid signature", { status: 401 });
+  if (!ok) { console.warn("Invalid signature", { hasId: !!req.headers.get("webhook-id"), headers: [...req.headers.keys()] }); return new Response("Invalid signature", { status: 401 }); }
 
   const event = JSON.parse(body);
   const type: string = event.type ?? event.action ?? "";
@@ -38,6 +38,7 @@ Deno.serve(async (req) => {
   const planId: string = m.plan?.id ?? m.plan_id ?? "";
   const email: string = (m.user?.email ?? m.email ?? "").toLowerCase();
   const tier = PLAN_TIERS[planId];
+  console.log("Whop event", { type, planId, hasEmail: !!email, dataKeys: Object.keys(m), userKeys: Object.keys(m.user ?? {}) });
   if (!tier || !email) return new Response("Ignored", { status: 200 });
 
   let status: string | null = null;
