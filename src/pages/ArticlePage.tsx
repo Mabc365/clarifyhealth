@@ -99,7 +99,7 @@ const ArticlePage = () => {
 
   return (
     <main className="min-h-screen pt-24 pb-20 px-6 bg-background">
-      <PageMeta
+      <PageMeta ogType="article"
         title={`${article.title} — Clarify Health`}
         description={article.summary ?? article.tldr?.[0] ?? ""}
         canonical={`/article/${article.slug}`}
