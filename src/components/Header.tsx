@@ -31,7 +31,7 @@ const LanguageDropdown = ({ mobile = false }: { mobile?: boolean }) => {
 
   return (
     <div ref={ref} className="relative">
-      <button onClick={() => setOpen((value) => !value)} aria-haspopup="listbox" aria-expanded={open} aria-label="Change language" className={`inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground ${mobile ? "py-2 text-[14px]" : "text-[11px]"}`}>
+      <button onClick={() => setOpen((value) => !value)} aria-haspopup="listbox" aria-expanded={open} aria-label="Change language" className={`inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground ${mobile ? "py-2 text-[15px]" : "text-[13px]"}`}>
         <span aria-hidden="true">{current.flag}</span><span>{current.name}</span><ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
@@ -181,15 +181,15 @@ const Header = () => {
               <div
                 className={`grid grid-cols-[1.08fr_.92fr] border-t border-border/60 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${activePreview === null ? "pointer-events-none -translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}
               >
-            <div key={lastPreview} className="flex flex-col justify-center px-7 py-7 animate-[fade-in_0.35s_ease-out]">
+            <div key={lastPreview} className="flex flex-col justify-center px-9 py-8 animate-[fade-in_0.35s_ease-out]">
               <span className="micro-label text-accent">{navLinks[lastPreview].eyebrow}</span>
-              <h2 className="mt-3 max-w-[500px] text-[25px] font-medium leading-[1.1] text-foreground">{navLinks[lastPreview].title}</h2>
-              <p className="mt-4 max-w-[540px] text-[13px] leading-[1.55] text-muted-foreground">{navLinks[lastPreview].description}</p>
-              <Link to={navLinks[lastPreview].to} onClick={() => setActivePreview(null)} className="mt-6 inline-flex w-fit items-center gap-2 text-[11px] font-bold uppercase text-accent underline-offset-4 hover:underline">
+              <h2 className="mt-3 max-w-[520px] text-[28px] font-medium leading-[1.1] text-foreground">{navLinks[lastPreview].title}</h2>
+              <p className="mt-4 max-w-[560px] text-[15px] leading-[1.55] text-muted-foreground">{navLinks[lastPreview].description}</p>
+              <Link to={navLinks[lastPreview].to} onClick={() => setActivePreview(null)} className="mt-6 inline-flex w-fit items-center gap-2 text-[12px] font-bold uppercase tracking-wide text-accent underline-offset-4 hover:underline">
                 {navLinks[lastPreview].label}
               </Link>
             </div>
-            <div key={`v${lastPreview}`} className="m-4 ml-0 min-h-[200px] overflow-hidden rounded-lg bg-secondary animate-[fade-in_0.35s_ease-out]">
+            <div key={`v${lastPreview}`} className="m-5 ml-0 min-h-[230px] overflow-hidden rounded-lg bg-secondary animate-[fade-in_0.35s_ease-out]">
               {navLinks[lastPreview].kind === "topics" && (
                 <div className="flex h-full flex-col justify-between p-7">
                   <BookOpen className="h-8 w-8 text-primary" />
