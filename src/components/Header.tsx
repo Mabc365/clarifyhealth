@@ -161,7 +161,7 @@ const Header = () => {
           </div>
           <nav className="hidden h-[54px] grid-cols-3 border-t border-border/70 px-4 md:grid" aria-label="Main">
             {navLinks.map((link, index) =>
-              isTouch ? (
+              isTouch && !user ? (
                 <button
                   key={link.to}
                   type="button"
@@ -179,7 +179,7 @@ const Header = () => {
                   onFocus={() => openPreview(index)}
                   className={`flex h-full items-center justify-center gap-1.5 border-r border-border/70 text-[14px] font-medium transition-colors first:border-l hover:bg-muted focus-visible:bg-muted ${activePreview === index || location.pathname.startsWith(link.to) ? "bg-muted text-foreground" : "text-foreground"}`}
                 >
-                  {link.label}<ChevronDown className={`h-3 w-3 text-muted-foreground transition-transform duration-300 ${activePreview === index ? "rotate-180" : ""}`} />
+                  {link.label}{!user && <ChevronDown className={`h-3 w-3 text-muted-foreground transition-transform duration-300 ${activePreview === index ? "rotate-180" : ""}`} />}
                 </Link>
               )
             )}
