@@ -39,6 +39,7 @@ const ToolsPage = lazy(() => import("./pages/ToolsPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const CheckoutReturnPage = lazy(() => import("./pages/CheckoutReturnPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const ManagePlanPage = lazy(() => import("./pages/ManagePlanPage"));
 
 const queryClient = new QueryClient();
 
@@ -100,6 +101,7 @@ const App = () => (
               <Route path="/wellness-plan" element={<WellnessPlanPage />} />
               <Route path="/account" element={<AccountSettingsPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/manage-plan" element={<ManagePlanPage />} />
               {/* Legal */}
               <Route path="/legal/privacy" element={<PrivacyPage />} />
               <Route path="/legal/terms" element={<TermsPage />} />
