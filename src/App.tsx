@@ -39,6 +39,7 @@ const ToolsPage = lazy(() => import("./pages/ToolsPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const CheckoutReturnPage = lazy(() => import("./pages/CheckoutReturnPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const ManagePlanPage = lazy(() => import("./pages/ManagePlanPage"));
 
 const queryClient = new QueryClient();
 
