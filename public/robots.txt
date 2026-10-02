@@ -13,5 +13,7 @@ Allow: /
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /account
+Disallow: /embed/
 
 Sitemap: https://clarifyhealth.co/sitemap.xml

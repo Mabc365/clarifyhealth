@@ -7,11 +7,12 @@ interface PageMetaProps {
   canonical: string;
   ogImage?: string;
   jsonLd?: Record<string, unknown>;
+  ogType?: "website" | "article";
 }
 
-const BASE_URL = "https://clarifyhealth.lovable.app";
+const BASE_URL = "https://clarifyhealth.co";
 
-const PageMeta = ({ title, description, canonical, ogImage, jsonLd }: PageMetaProps) => {
+const PageMeta = ({ title, description, canonical, ogImage, jsonLd, ogType = "website" }: PageMetaProps) => {
   const { lang } = useLanguage();
 
   useEffect(() => {
@@ -31,7 +32,7 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd }: PageMetaPr
     setMeta("property", "og:title", title);
     setMeta("property", "og:description", description);
     setMeta("property", "og:url", `${BASE_URL}${canonical}`);
-    setMeta("property", "og:type", "website");
+    setMeta("property", "og:type", ogType);
     const localeMap: Record<string, string> = { en: "en_US", es: "es_ES", ur: "ur_PK", hi: "hi_IN", ar: "ar_SA" };
     setMeta("property", "og:locale", localeMap[lang] ?? "en_US");
     setMeta("name", "twitter:title", title);
@@ -96,7 +97,7 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd }: PageMetaPr
       if (s) s.remove();
       document.querySelectorAll('link[data-hreflang]').forEach((el) => el.remove());
     };
-  }, [title, description, canonical, ogImage, jsonLd, lang]);
+  }, [title, description, canonical, ogImage, jsonLd, lang, ogType]);
 
   return null;
 };

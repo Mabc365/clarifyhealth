@@ -42,7 +42,7 @@ const TopicPage = () => {
 
   return (
     <main className="pt-28 pb-0 px-6">
-      <PageMeta
+      <PageMeta ogType="article"
         title={`${topic.title} ${lang === "es" ? "Explicado" : "Explained Simply"} | Clarify Health`}
         description={lang === "es"
           ? `Aprende qué significa ${topic.title.toLowerCase()} en español sencillo. Sin jerga médica. Incluye preguntas para tu doctor.`
