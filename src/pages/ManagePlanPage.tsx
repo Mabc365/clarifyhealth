@@ -3,7 +3,7 @@ import { Link, Navigate } from "react-router-dom";
 import PageMeta from "@/components/PageMeta";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 
 type Info = { status: string | null; plan: string | null; renewal_period_end: number | string | null; cancel_at_period_end: boolean; manage_url: string };

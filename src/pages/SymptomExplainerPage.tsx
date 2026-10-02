@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Loader2, AlertTriangle, Stethoscope, Heart, ListChecks, Sparkles } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
+import { aiInvoke } from "@/lib/aiFunctions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import PageMeta from "@/components/PageMeta";
@@ -44,7 +45,7 @@ const SymptomExplainerPage = () => {
     if (!text.trim()) return;
     setLoading(true);
     setResult(null);
-    const { data, error } = await supabase.functions.invoke("symptom-explain", { body: { description: text } });
+    const { data, error } = await aiInvoke("symptom-explain", { body: { description: text } });
     setLoading(false);
     if (error) {
       toast({ title: "Couldn't explain", description: error.message, variant: "destructive" });

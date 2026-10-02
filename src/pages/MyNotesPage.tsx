@@ -1,7 +1,8 @@
 import { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleAiGateError } from "@/lib/aiGate";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
+import { aiInvoke } from "@/lib/aiFunctions";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -213,7 +214,7 @@ const MyNotesPage = () => {
 
   const processAudio = async (id: string, audioBase64: string, mimeType: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke("transcribe-audio", {
+      const { data, error } = await aiInvoke("transcribe-audio", {
         body: { audioBase64, mimeType, language: lang },
       });
     if (error && (await handleAiGateError(error, navigate))) return;
@@ -239,7 +240,7 @@ const MyNotesPage = () => {
 
   const processText = async (id: string, text: string) => {
     try {
-      const { data, error } = await supabase.functions.invoke("analyze-visit", {
+      const { data, error } = await aiInvoke("analyze-visit", {
         body: { text, language: lang },
       });
     if (error && (await handleAiGateError(error, navigate))) return;

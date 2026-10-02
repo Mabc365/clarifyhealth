@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { Search as SearchIcon, Loader2 } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import PageMeta from "@/components/PageMeta";
 
 type Hit = { slug: string; title: string; summary: string | null };

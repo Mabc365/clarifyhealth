@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Copy, Printer, Loader2, FileText, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { handleAiGateError } from "@/lib/aiGate";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
+import { aiInvoke } from "@/lib/aiFunctions";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import PageMeta from "@/components/PageMeta";
@@ -49,7 +50,7 @@ const JargonTranslatorPage = () => {
     setLoading(true);
     setResult(null);
     try {
-      const { data, error } = await supabase.functions.invoke("jargon-translate", { body: { text } });
+      const { data, error } = await aiInvoke("jargon-translate", { body: { text } });
       if (error && (await handleAiGateError(error, navigate))) return;
       if (error) {
         console.error(error);

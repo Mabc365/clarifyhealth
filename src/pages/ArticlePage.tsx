@@ -3,7 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import { Play, Pause, Printer, Loader2, Sparkles, AlertTriangle, MessageSquare, BookOpen } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { handleAiGateError } from "@/lib/aiGate";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
+import { aiInvoke } from "@/lib/aiFunctions";
 import { Button } from "@/components/ui/button";
 import PageMeta from "@/components/PageMeta";
 import ShareButton from "@/components/ShareButton";
@@ -65,7 +66,7 @@ const ArticlePage = () => {
       return;
     }
     setAudioLoading(true);
-    const { data, error } = await supabase.functions.invoke("tts-speak", { body: { text: articleText().slice(0, 3800), speed } });
+    const { data, error } = await aiInvoke("tts-speak", { body: { text: articleText().slice(0, 3800), speed } });
     setAudioLoading(false);
     if (error && (await handleAiGateError(error, navigate))) return;
     if (error || !data) { toast({ title: "Audio failed", variant: "destructive" }); return; }
@@ -82,7 +83,7 @@ const ArticlePage = () => {
 
   const rewriteEli5 = async (idx: number, content: string) => {
     setEli5Loading(true);
-    const { data, error } = await supabase.functions.invoke("eli5-rewrite", { body: { text: content, mode: "eli5" } });
+    const { data, error } = await aiInvoke("eli5-rewrite", { body: { text: content, mode: "eli5" } });
     setEli5Loading(false);
     if (error && (await handleAiGateError(error, navigate))) return;
     if (error || !data) { toast({ title: "Couldn't rewrite", variant: "destructive" }); return; }
