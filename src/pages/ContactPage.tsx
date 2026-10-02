@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Loader2, Mail } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import PageMeta from "@/components/PageMeta";

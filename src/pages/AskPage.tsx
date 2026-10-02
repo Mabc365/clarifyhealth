@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { aiInvoke } from "@/lib/aiFunctions";
 import { useSearchParams } from "react-router-dom";
 import { Clock, ChevronDown, ChevronUp } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -116,8 +117,8 @@ const AskPage = () => {
     setError("");
 
     try {
-      const { supabase } = await import("@/integrations/supabase/client");
-      const { data, error: fnError } = await supabase.functions.invoke("ask", {
+      const { supabase } = await import("@/lib/supabase");
+      const { data, error: fnError } = await aiInvoke("ask", {
         body: {
           question: text,
           mode: getMode(tab, text),

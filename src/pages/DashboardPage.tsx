@@ -4,7 +4,7 @@ import { ArrowUpRight } from "lucide-react";
 import PageMeta from "@/components/PageMeta";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
 
 const TOOLS = [
   { to: "/translate", title: "Jargon translator", desc: "Turn medical text into plain English.", ai: true },

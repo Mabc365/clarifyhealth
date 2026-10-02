@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleAiGateError } from "@/lib/aiGate";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/lib/supabase";
+import { aiInvoke } from "@/lib/aiFunctions";
 import { useAuth } from "@/hooks/useAuth";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Button } from "@/components/ui/button";
@@ -215,7 +216,7 @@ const WellnessPlanPage = () => {
     setError("");
 
     try {
-      const { data, error: fnError } = await supabase.functions.invoke("wellness-plan", {
+      const { data, error: fnError } = await aiInvoke("wellness-plan", {
         body: { preferences: prefs, language: lang },
       });
     if (fnError && (await handleAiGateError(fnError, navigate))) return;
