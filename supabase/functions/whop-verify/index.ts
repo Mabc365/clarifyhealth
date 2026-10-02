@@ -34,6 +34,7 @@ Deno.serve(async (req) => {
       if (!r.ok) { console.error("Whop list error", r.status, await r.text().catch(() => "")); return json({ error: "WHOP_ERROR" }, 502); }
       const body = await r.json().catch(() => ({}));
       const list: Record<string, unknown>[] = Array.isArray(body) ? body : body.data ?? [];
+      console.log("Whop list", planId, "count", list.length, "sample", JSON.stringify(list[0] ?? null).slice(0, 800));
       matched = list.find((m) => {
         const e = String((m.user as Record<string, unknown> | undefined)?.email ?? m.email ?? "").toLowerCase();
         return e === email;
