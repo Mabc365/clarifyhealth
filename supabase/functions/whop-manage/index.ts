@@ -16,7 +16,7 @@ Deno.serve(async (req) => {
     if (!user) return json({ error: "UNAUTHORIZED" }, 401);
 
     const { action } = await req.json().catch(() => ({}));
-    if (!["get", "cancel", "resume"].includes(action)) return json({ error: "BAD_ACTION" }, 400);
+    if (!["get", "cancel", "resume", "payments"].includes(action)) return json({ error: "BAD_ACTION" }, 400);
 
     const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     const { data: sub } = await admin.from("subscriptions").select("whop_membership_id, tier, status").eq("user_id", user.id).maybeSingle();
@@ -25,6 +25,22 @@ Deno.serve(async (req) => {
 
     const base = `https://api.whop.com/api/v1/memberships/${id}`;
     const headers = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
+    if (action === "payments") {
+      const mr = await fetch(base, { headers });
+      const mem = await mr.json().catch(() => ({}));
+      const company = mem?.company?.id ?? mem?.company_id;
+      const q = new URLSearchParams({ query: id, first: "12", direction: "desc" });
+      if (company) q.set("company_id", company);
+      const pr = await fetch(`https://api.whop.com/api/v1/payments?${q}`, { headers });
+      const pj = await pr.json().catch(() => ({}));
+      if (!pr.ok) { console.error("Whop payments error", pr.status, pj); return json({ payments: [], limited: true }); }
+      const payments = (pj.data ?? []).filter((p: any) => !p.membership?.id || p.membership.id === id).map((p: any) => ({
+        id: p.id, created_at: p.created_at ?? p.paid_at, amount: p.total ?? p.subtotal ?? p.usd_total ?? null,
+        currency: p.currency ?? "usd", status: p.substatus ?? p.status ?? null,
+        card: p.card_last4 ? `${p.card_brand ?? "Card"} •••• ${p.card_last4}` : null,
+      }));
+      return json({ payments });
+    }
     let r: Response;
     if (action === "cancel") r = await fetch(`${base}/cancel`, { method: "POST", headers, body: JSON.stringify({ cancellation_mode: "at_period_end" }) });
     else if (action === "resume") r = await fetch(`${base}/uncancel`, { method: "POST", headers });
