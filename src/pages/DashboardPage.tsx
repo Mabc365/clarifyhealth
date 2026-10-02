@@ -24,7 +24,14 @@ const DashboardPage = () => {
     if (!user) return;
     const start = new Date(); start.setDate(1); start.setHours(0, 0, 0, 0);
     supabase.from("subscriptions").select("tier,status").eq("user_id", user.id).maybeSingle()
-      .then(({ data }) => setTier(data?.status === "active" ? data.tier : "free"));
+      .then(async ({ data }) => {
+        if (data?.status === "active") { setTier(data.tier); return; }
+        // Webhooks are off — recover missed purchases by checking Whop directly.
+        const { error } = await supabase.functions.invoke("whop-verify").catch(() => ({ error: true }));
+        if (error) return;
+        const { data: sub } = await supabase.from("subscriptions").select("tier,status").eq("user_id", user.id).maybeSingle();
+        if (sub?.status === "active") setTier(sub.tier);
+      });
     supabase.from("ai_usage").select("id", { count: "exact", head: true }).eq("user_id", user.id).gte("created_at", start.toISOString())
       .then(({ count }) => setUsed(count ?? 0));
   }, [user]);
