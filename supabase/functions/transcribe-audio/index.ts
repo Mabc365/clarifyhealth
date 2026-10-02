@@ -23,19 +23,6 @@ serve(async (req) => {
   { const blocked = await requireAiUse(req, "transcribe-audio"); if (blocked) return blocked; }
 
   try {
-    const authHeader = req.headers.get("Authorization");
-    if (!authHeader?.startsWith("Bearer ")) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
-    const sb = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_ANON_KEY")!);
-    const { data: u } = await sb.auth.getUser(authHeader.replace("Bearer ", ""));
-    if (!u?.user) {
-      return new Response(JSON.stringify({ error: "Unauthorized" }), {
-        status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
-    }
     const { audioBase64, mimeType, language } = await req.json();
 
     if (!audioBase64 || typeof audioBase64 !== "string") {
