@@ -97,7 +97,7 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd, ogType = "we
       if (s) s.remove();
       document.querySelectorAll('link[data-hreflang]').forEach((el) => el.remove());
     };
-  }, [title, description, canonical, ogImage, jsonLd, lang]);
+  }, [title, description, canonical, ogImage, jsonLd, lang, ogType]);
 
   return null;
 };
