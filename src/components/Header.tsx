@@ -31,7 +31,7 @@ const LanguageDropdown = ({ mobile = false }: { mobile?: boolean }) => {
 
   return (
     <div ref={ref} className="relative">
-      <button onClick={() => setOpen((value) => !value)} aria-haspopup="listbox" aria-expanded={open} aria-label="Change language" className={`inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground ${mobile ? "py-2 text-[14px]" : "text-[11px]"}`}>
+      <button onClick={() => setOpen((value) => !value)} aria-haspopup="listbox" aria-expanded={open} aria-label="Change language" className={`inline-flex items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground ${mobile ? "py-2 text-[15px]" : "text-[13px]"}`}>
         <span aria-hidden="true">{current.flag}</span><span>{current.name}</span><ChevronDown className={`h-3 w-3 transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && (
@@ -137,27 +137,27 @@ const Header = () => {
     <>
       <header className="pointer-events-none fixed inset-x-0 top-2 z-50 px-2 md:top-4 md:px-3" role="banner">
         <div
-          className={`header-panel pointer-events-auto relative mx-auto max-w-[680px] overflow-visible rounded-xl border border-border/60 bg-background/85 shadow-soft backdrop-blur-2xl transition-[background-color,border-radius,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]`}
+          className={`header-panel pointer-events-auto relative mx-auto max-w-[920px] overflow-visible rounded-xl border border-border/60 bg-background/85 shadow-soft backdrop-blur-2xl transition-[background-color,border-radius,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]`}
           onMouseLeave={scheduleClose} onMouseEnter={() => window.clearTimeout(closeTimer.current)}
         >
-          <div className="grid h-[54px] grid-cols-[1fr_auto_1fr] items-center px-4">
-            <Link to="/" aria-label="Clarify Health — home" className="flex w-fit items-center gap-2.5 text-foreground">
-              <img src={logoUrl} alt="" className="h-8 w-8 object-contain dark:invert" />
-              <span className="block text-[14px] font-semibold leading-[1.05] md:hidden">Clarify<br />Health</span>
+          <div className="grid h-[62px] grid-cols-[1fr_auto_1fr] items-center px-5">
+            <Link to="/" aria-label="Clarify Health — home" className="flex w-fit items-center gap-3 text-foreground">
+              <img src={logoUrl} alt="" className="h-9 w-9 object-contain dark:invert" />
+              <span className="block text-[16px] font-semibold leading-[1.1] md:hidden">Clarify<br />Health</span>
             </Link>
-            <Link to="/" className="hidden text-[14px] font-medium text-foreground md:block">Clarify Health</Link>
-            <div className="hidden items-center justify-end gap-4 md:flex">
+            <Link to="/" className="hidden text-[16px] font-medium text-foreground md:block">Clarify Health</Link>
+            <div className="hidden items-center justify-end gap-5 md:flex">
               <LanguageDropdown />
-              {user ? <UserMenu /> : <Button asChild className="h-9 rounded-full px-5 text-[11px] font-bold uppercase"><Link to="/login">{t("auth.login")}</Link></Button>}
+              {user ? <UserMenu /> : <Button asChild className="h-10 rounded-[10px] px-6 text-[11px] font-bold uppercase tracking-wide"><Link to="/login">{t("auth.login")}</Link></Button>}
             </div>
             <div className="flex items-center justify-end gap-2 md:hidden">
-              {user ? <UserMenu /> : <Button asChild size="sm" className="rounded-full px-4 text-[12px]"><Link to="/login">{t("auth.login")}</Link></Button>}
+              {user ? <UserMenu /> : <Button asChild size="sm" className="rounded-[10px] px-4 text-[12px]"><Link to="/login">{t("auth.login")}</Link></Button>}
               <button onClick={() => setMobileOpen((value) => !value)} className="flex h-10 w-10 items-center justify-center text-foreground" aria-label="Toggle menu" aria-expanded={mobileOpen}>
                 {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
           </div>
-          <nav className="hidden h-[40px] grid-cols-3 border-t border-border/60 px-3 md:grid" aria-label="Main">
+          <nav className="hidden h-[50px] grid-cols-3 border-t border-border/60 px-2 md:grid" aria-label="Main">
             {navLinks.map((link, index) =>
                 <Link
                   key={link.to}
@@ -166,7 +166,7 @@ const Header = () => {
                   onPointerEnter={(event) => { if (event.pointerType !== "touch") openPreview(index); }}
                   onFocus={() => openPreview(index)}
                   aria-expanded={!user ? activePreview === index : undefined}
-                  className={`flex h-full items-center justify-center border-r border-border/60 text-[12px] font-medium transition-colors first:border-l hover:bg-muted/70 focus-visible:bg-muted ${activePreview === index || location.pathname.startsWith(link.to) ? "bg-muted/70 text-foreground" : "text-foreground"}`}
+                  className={`flex h-full items-center justify-center border-r border-border/60 text-[15px] font-medium transition-colors first:border-l hover:bg-muted/70 focus-visible:bg-muted ${activePreview === index || location.pathname.startsWith(link.to) ? "bg-muted/70 text-foreground" : "text-foreground"}`}
                 >
                   {link.label}
                 </Link>
@@ -181,15 +181,15 @@ const Header = () => {
               <div
                 className={`grid grid-cols-[1.08fr_.92fr] border-t border-border/60 transition-[opacity,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${activePreview === null ? "pointer-events-none -translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}
               >
-            <div key={lastPreview} className="flex flex-col justify-center px-7 py-7 animate-[fade-in_0.35s_ease-out]">
+            <div key={lastPreview} className="flex flex-col justify-center px-9 py-8 animate-[fade-in_0.35s_ease-out]">
               <span className="micro-label text-accent">{navLinks[lastPreview].eyebrow}</span>
-              <h2 className="mt-3 max-w-[500px] text-[25px] font-medium leading-[1.1] text-foreground">{navLinks[lastPreview].title}</h2>
-              <p className="mt-4 max-w-[540px] text-[13px] leading-[1.55] text-muted-foreground">{navLinks[lastPreview].description}</p>
-              <Link to={navLinks[lastPreview].to} onClick={() => setActivePreview(null)} className="mt-6 inline-flex w-fit items-center gap-2 text-[11px] font-bold uppercase text-accent underline-offset-4 hover:underline">
+              <h2 className="mt-3 max-w-[520px] text-[28px] font-medium leading-[1.1] text-foreground">{navLinks[lastPreview].title}</h2>
+              <p className="mt-4 max-w-[560px] text-[15px] leading-[1.55] text-muted-foreground">{navLinks[lastPreview].description}</p>
+              <Link to={navLinks[lastPreview].to} onClick={() => setActivePreview(null)} className="mt-6 inline-flex w-fit items-center gap-2 text-[12px] font-bold uppercase tracking-wide text-accent underline-offset-4 hover:underline">
                 {navLinks[lastPreview].label}
               </Link>
             </div>
-            <div key={`v${lastPreview}`} className="m-4 ml-0 min-h-[200px] overflow-hidden rounded-lg bg-secondary animate-[fade-in_0.35s_ease-out]">
+            <div key={`v${lastPreview}`} className="m-5 ml-0 min-h-[230px] overflow-hidden rounded-lg bg-secondary animate-[fade-in_0.35s_ease-out]">
               {navLinks[lastPreview].kind === "topics" && (
                 <div className="flex h-full flex-col justify-between p-7">
                   <BookOpen className="h-8 w-8 text-primary" />
