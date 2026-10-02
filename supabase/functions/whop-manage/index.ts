@@ -19,7 +19,7 @@ Deno.serve(async (req) => {
     if (!["get", "cancel", "resume"].includes(action)) return json({ error: "BAD_ACTION" }, 400);
 
     const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-    const { data: sub } = await admin.from("subscriptions").select("whop_membership_id").eq("user_id", user.id).maybeSingle();
+    const { data: sub } = await admin.from("subscriptions").select("whop_membership_id, tier, status").eq("user_id", user.id).maybeSingle();
     const id = sub?.whop_membership_id;
     if (!id) return json({ error: "NO_MEMBERSHIP" }, 404);
 
@@ -30,7 +30,21 @@ Deno.serve(async (req) => {
     else if (action === "resume") r = await fetch(`${base}/uncancel`, { method: "POST", headers });
     else r = await fetch(base, { headers });
     const m = await r.json().catch(() => ({}));
-    if (!r.ok) { console.error("Whop API error", r.status, m); return json({ error: "WHOP_ERROR" }, 502); }
+    if (!r.ok) {
+      console.error("Whop API error", r.status, m);
+      if (action === "get") {
+        const planMap: Record<string, string> = { tier1: "plan_fmrUm4OGpaGSD", tier2: "plan_nHSGuYgKRbIQR" };
+        return json({
+          status: sub?.status ?? null,
+          plan: planMap[sub?.tier ?? ""] ?? null,
+          renewal_period_end: null,
+          cancel_at_period_end: false,
+          manage_url: "https://whop.com/orders",
+          limited: true,
+        });
+      }
+      return json({ error: "WHOP_ERROR" }, 502);
+    }
 
     return json({
       status: m.status ?? null,
