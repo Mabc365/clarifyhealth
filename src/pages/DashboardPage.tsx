@@ -50,7 +50,12 @@ const DashboardPage = () => {
           <p className="micro-label text-muted-foreground">{plan}</p>
           <p className="mt-2 text-[22px] font-medium text-foreground">{limit ? `${used} / ${limit} AI uses this month` : "AI tools need a Plus plan"}</p>
         </div>
-        {tier !== "tier2" && <Button asChild className="rounded-lg"><Link to="/checkout">{limit ? "Upgrade" : "Get Plus"} <ArrowUpRight className="h-4 w-4" /></Link></Button>}
+        <div className="flex flex-wrap items-center gap-4">
+          {limit > 0 && (
+            <a href="https://whop.com/orders" target="_blank" rel="noopener noreferrer" className="text-[13px] font-medium text-foreground underline underline-offset-4 hover:text-accent">Manage plan</a>
+          )}
+          {tier !== "tier2" && <Button asChild className="rounded-lg"><Link to="/checkout">{limit ? "Upgrade" : "Get Plus"} <ArrowUpRight className="h-4 w-4" /></Link></Button>}
+        </div>
       </section>
 
       <ul className="directory-grid" aria-label="Your tools">
