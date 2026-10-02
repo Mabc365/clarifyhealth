@@ -1,6 +1,7 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.45.0";
 
 const PLAN_TIERS: Record<string, string> = {
+  plan_kZEv2e9b2AKZI: "tier1",
   plan_fmrUm4OGpaGSD: "tier1",
   plan_nHSGuYgKRbIQR: "tier2",
 };

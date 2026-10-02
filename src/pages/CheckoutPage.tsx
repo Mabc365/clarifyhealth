@@ -6,7 +6,7 @@ import PageMeta from "@/components/PageMeta";
 import { useAuth } from "@/hooks/useAuth";
 
 const PLANS = {
-  tier1: { id: "plan_fmrUm4OGpaGSD", name: "Plus", price: "$10/mo", uses: "25 AI uses per month" },
+  tier1: { id: "plan_kZEv2e9b2AKZI", name: "Plus", price: "$10/mo", uses: "25 AI uses per month" },
   tier2: { id: "plan_nHSGuYgKRbIQR", name: "Plus Pro", price: "$20/mo", uses: "50 AI uses per month" },
 } as const;
 

@@ -10,7 +10,7 @@ type Info = { status: string | null; plan: string | null; renewal_period_end: nu
 
 type Payment = { id: string; created_at: string | number | null; amount: number | null; currency: string; status: string | null; card: string | null };
 
-const PLAN_NAMES: Record<string, string> = { plan_fmrUm4OGpaGSD: "Plus · 25 AI uses/month", plan_nHSGuYgKRbIQR: "Plus Pro · 50 AI uses/month" };
+const PLAN_NAMES: Record<string, string> = { plan_kZEv2e9b2AKZI: "Plus · 25 AI uses/month", plan_fmrUm4OGpaGSD: "Plus · 25 AI uses/month", plan_nHSGuYgKRbIQR: "Plus Pro · 50 AI uses/month" };
 
 const fmtDate = (v: Info["renewal_period_end"]) => {
   if (!v) return "—";

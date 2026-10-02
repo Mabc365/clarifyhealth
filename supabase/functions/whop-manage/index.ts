@@ -49,7 +49,7 @@ Deno.serve(async (req) => {
     if (!r.ok) {
       console.error("Whop API error", r.status, m);
       if (action === "get") {
-        const planMap: Record<string, string> = { tier1: "plan_fmrUm4OGpaGSD", tier2: "plan_nHSGuYgKRbIQR" };
+        const planMap: Record<string, string> = { tier1: "plan_kZEv2e9b2AKZI", tier2: "plan_nHSGuYgKRbIQR" };
         return json({
           status: sub?.status ?? null,
           plan: planMap[sub?.tier ?? ""] ?? null,
