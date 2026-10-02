@@ -11,8 +11,9 @@ export async function requireAiUse(req: Request, feature: string): Promise<Respo
   const auth = req.headers.get("Authorization") ?? "";
   const token = auth.replace(/^Bearer\s+/i, "");
   if (!token) return json({ error: "LOGIN_REQUIRED" }, 401);
-  const url = Deno.env.get("EXTERNAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL")!;
-  const key = Deno.env.get("EXTERNAL_SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+  // Strip whitespace/zero-width characters that can sneak in with pasted secret values.
+  const url = (Deno.env.get("EXTERNAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL")!).replace(/[\s\u00AD\u2060-\u2064\uFEFF]/g, "");
+  const key = (Deno.env.get("EXTERNAL_SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!).replace(/[\s\u00AD\u2060-\u2064\uFEFF]/g, "");
   const admin = createClient(url, key, { auth: { persistSession: false } });
   const { data: u, error } = await admin.auth.getUser(token);
   if (error || !u?.user) return json({ error: "LOGIN_REQUIRED" }, 401);
