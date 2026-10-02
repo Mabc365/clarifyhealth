@@ -185,16 +185,16 @@ const Header = () => {
               <span className="micro-label text-accent">{navLinks[lastPreview].eyebrow}</span>
               <h2 className="mt-3 max-w-[500px] text-[25px] font-medium leading-[1.1] text-foreground">{navLinks[lastPreview].title}</h2>
               <p className="mt-4 max-w-[540px] text-[13px] leading-[1.55] text-muted-foreground">{navLinks[lastPreview].description}</p>
-              <Link to={navLinks[lastPreview].to} onClick={() => setActivePreview(null)} className="mt-6 inline-flex w-fit items-center gap-2 text-[10px] font-bold uppercase text-accent underline-offset-4 hover:underline">
-                {navLinks[lastPreview].label} <ArrowUpRight className="h-3.5 w-3.5" />
+              <Link to={navLinks[lastPreview].to} onClick={() => setActivePreview(null)} className="mt-6 inline-flex w-fit items-center gap-2 text-[11px] font-bold uppercase text-accent underline-offset-4 hover:underline">
+                {navLinks[lastPreview].label}
               </Link>
             </div>
-            <div key={`v${lastPreview}`} className="m-4 ml-0 min-h-[190px] overflow-hidden rounded-lg bg-secondary animate-[fade-in_0.35s_ease-out]">
+            <div key={`v${lastPreview}`} className="m-4 ml-0 min-h-[200px] overflow-hidden rounded-lg bg-secondary animate-[fade-in_0.35s_ease-out]">
               {navLinks[lastPreview].kind === "topics" && (
                 <div className="flex h-full flex-col justify-between p-7">
                   <BookOpen className="h-8 w-8 text-primary" />
                   <div className="space-y-3">
-                    {getTopics(lang).slice(0, 3).map((item, index) => <Link key={item.id} to={`/topics/${item.id}`} onClick={() => setActivePreview(null)} className="group flex items-center justify-between border-b border-primary/15 pb-3 text-[14px] font-medium transition-colors hover:text-accent"><span>0{index + 1}&nbsp;&nbsp; {item.title}</span><ArrowUpRight className="h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></Link>)}
+                    {getTopics(lang).slice(0, 3).map((item, index) => <Link key={item.id} to={`/topics/${item.id}`} onClick={() => setActivePreview(null)} className="flex items-center justify-between border-b border-primary/15 pb-3 text-[14px] font-medium transition-colors hover:text-accent"><span>0{index + 1}&nbsp;&nbsp; {item.title}</span></Link>)}
                   </div>
                 </div>
               )}
