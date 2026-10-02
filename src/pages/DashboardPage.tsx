@@ -52,7 +52,7 @@ const DashboardPage = () => {
         </div>
         <div className="flex flex-wrap items-center gap-4">
           {limit > 0 && (
-            <a href="https://whop.com/orders" target="_blank" rel="noopener noreferrer" className="text-[13px] font-medium text-foreground underline underline-offset-4 hover:text-accent">Manage plan</a>
+            <Link to="/manage-plan" className="text-[13px] font-medium text-foreground underline underline-offset-4 hover:text-accent">Manage plan</Link>
           )}
           {tier !== "tier2" && <Button asChild className="rounded-lg"><Link to="/checkout">{limit ? "Upgrade" : "Get Plus"} <ArrowUpRight className="h-4 w-4" /></Link></Button>}
         </div>

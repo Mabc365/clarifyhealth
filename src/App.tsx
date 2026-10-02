@@ -100,6 +100,7 @@ const App = () => (
               <Route path="/wellness-plan" element={<WellnessPlanPage />} />
               <Route path="/account" element={<AccountSettingsPage />} />
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/manage-plan" element={<ManagePlanPage />} />
               {/* Legal */}
               <Route path="/legal/privacy" element={<PrivacyPage />} />
               <Route path="/legal/terms" element={<TermsPage />} />
