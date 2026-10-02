@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { aiInvoke } from "@/lib/aiFunctions";
 import { useSearchParams } from "react-router-dom";
 import { Clock, ChevronDown, ChevronUp } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
