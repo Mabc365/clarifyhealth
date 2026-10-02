@@ -23,28 +23,41 @@ Deno.serve(async (req) => {
     if (!user || !user.email) return json({ error: "UNAUTHORIZED" }, 401);
     const email = user.email.toLowerCase();
 
+    const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     const headers = { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" };
-    // Look up this buyer's membership in Whop by scanning each plan we sell.
+
     let matched: Record<string, unknown> | null = null;
-    for (const planId of Object.keys(PLAN_TIERS)) {
-      const u = new URL("https://api.whop.com/api/v1/memberships");
-      u.searchParams.set("plan_id", planId);
-      u.searchParams.set("per_page", "100");
-      const r = await fetch(u, { headers });
-      if (!r.ok) { console.error("Whop list error", r.status, await r.text().catch(() => "")); return json({ error: "WHOP_ERROR" }, 502); }
-      const body = await r.json().catch(() => ({}));
-      const list: Record<string, unknown>[] = Array.isArray(body) ? body : body.data ?? [];
-      matched = list.find((m) => {
-        const e = String((m.user as Record<string, unknown> | undefined)?.email ?? m.email ?? "").toLowerCase();
-        return e === email;
-      }) ?? null;
-      if (matched) break;
+
+    // Fastest path: we already know this user's Whop membership id.
+    const { data: sub } = await admin.from("subscriptions").select("whop_membership_id").eq("user_id", user.id).maybeSingle();
+    const knownId = sub?.whop_membership_id ? String(sub.whop_membership_id) : null;
+    if (knownId) {
+      const r = await fetch(`https://api.whop.com/api/v1/memberships/${knownId}`, { headers });
+      if (r.ok) matched = await r.json().catch(() => null);
     }
 
-    const admin = createClient(url, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+    // Fallback: scan each plan's memberships and match by email (needs member:email:read on the key).
+    if (!matched) {
+      for (const planId of Object.keys(PLAN_TIERS)) {
+        const u = new URL("https://api.whop.com/api/v1/memberships");
+        u.searchParams.set("plan_id", planId);
+        u.searchParams.set("per_page", "100");
+        const r = await fetch(u, { headers });
+        if (!r.ok) { console.error("Whop list error", r.status, await r.text().catch(() => "")); continue; }
+        const body = await r.json().catch(() => ({}));
+        const list: Record<string, unknown>[] = Array.isArray(body) ? body : body.data ?? [];
+        matched = list.find((m) => {
+          const member = m.member as Record<string, unknown> | undefined;
+          const e = String(member?.email ?? (m.user as Record<string, unknown> | undefined)?.email ?? m.email ?? "").toLowerCase();
+          return e && e === email;
+        }) ?? null;
+        if (matched) break;
+      }
+    }
+
     if (!matched) return json({ synced: false, reason: "no_membership" });
 
-    const planId = String((matched.plan as Record<string, unknown> | undefined)?.id ?? matched.plan_id ?? "");
+    const planId = String(matched.plan_id ?? (matched.plan as Record<string, unknown> | undefined)?.id ?? "");
     const tier = PLAN_TIERS[planId];
     const status = String(matched.status ?? "");
     const isActive = ACTIVE_STATUSES.has(status);
@@ -65,7 +78,7 @@ Deno.serve(async (req) => {
       tier: isActive ? tier : "free",
       status: isActive ? "active" : "inactive",
       membership_id: matched.id ?? null,
-      renewal_period_end: matched.renewal_period_end ?? null,
+      renewal_period_end: matched.current_period_end ?? matched.renewal_period_end ?? null,
       cancel_at_period_end: !!matched.cancel_at_period_end,
     });
   } catch (e) {
