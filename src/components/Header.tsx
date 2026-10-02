@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { ArrowUpRight, BookOpen, ChevronDown, CreditCard, FileText, Leaf, LogOut, Menu, Settings, Stethoscope, X } from "lucide-react";
+import { BookOpen, ChevronDown, CreditCard, FileText, Leaf, LogOut, Menu, Settings, Stethoscope, X } from "lucide-react";
 import { useLanguage, type Language } from "@/contexts/LanguageContext";
 import { useAuth } from "@/hooks/useAuth";
 import { getTopics } from "@/data/topics";
