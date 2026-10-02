@@ -60,7 +60,11 @@ Deno.serve(async (req) => {
     const planId = String(matched.plan_id ?? (matched.plan as Record<string, unknown> | undefined)?.id ?? "");
     const tier = PLAN_TIERS[planId];
     const status = String(matched.status ?? "");
-    const isActive = ACTIVE_STATUSES.has(status);
+    // Canceled members keep access until their paid period ends.
+    const periodEndRaw = matched.current_period_end ?? matched.renewal_period_end ?? matched.valid_until ?? null;
+    const periodEnd = periodEndRaw ? new Date(typeof periodEndRaw === "number" ? periodEndRaw * 1000 : String(periodEndRaw)) : null;
+    const withinPaidPeriod = !!periodEnd && periodEnd.getTime() > Date.now();
+    const isActive = ACTIVE_STATUSES.has(status) || (status === "canceled" && withinPaidPeriod);
     if (!tier) return json({ synced: false, reason: "unknown_plan" });
 
     const { error } = await admin.from("subscriptions").upsert({
