@@ -137,27 +137,27 @@ const Header = () => {
     <>
       <header className="pointer-events-none fixed inset-x-0 top-2 z-50 px-2 md:top-4 md:px-3" role="banner">
         <div
-          className={`header-panel pointer-events-auto relative mx-auto max-w-[580px] overflow-visible rounded-xl border border-border/60 bg-background/85 shadow-soft backdrop-blur-2xl transition-[background-color,border-radius,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]`}
+          className={`header-panel pointer-events-auto relative mx-auto max-w-[680px] overflow-visible rounded-xl border border-border/60 bg-background/85 shadow-soft backdrop-blur-2xl transition-[background-color,border-radius,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]`}
           onMouseLeave={scheduleClose} onMouseEnter={() => window.clearTimeout(closeTimer.current)}
         >
-          <div className="grid h-[44px] grid-cols-[1fr_auto_1fr] items-center px-3">
+          <div className="grid h-[54px] grid-cols-[1fr_auto_1fr] items-center px-4">
             <Link to="/" aria-label="Clarify Health — home" className="flex w-fit items-center gap-2.5 text-foreground">
-              <img src={logoUrl} alt="" className="h-7 w-7 object-contain dark:invert" />
-              <span className="block text-[12px] font-semibold leading-[1.05] md:hidden">Clarify<br />Health</span>
+              <img src={logoUrl} alt="" className="h-8 w-8 object-contain dark:invert" />
+              <span className="block text-[14px] font-semibold leading-[1.05] md:hidden">Clarify<br />Health</span>
             </Link>
-            <Link to="/" className="hidden text-[12px] font-medium text-foreground md:block">Clarify Health</Link>
-            <div className="hidden items-center justify-end gap-3 md:flex">
+            <Link to="/" className="hidden text-[14px] font-medium text-foreground md:block">Clarify Health</Link>
+            <div className="hidden items-center justify-end gap-4 md:flex">
               <LanguageDropdown />
-              {user ? <UserMenu /> : <Button asChild className="h-7 rounded-md px-3 text-[9px] font-bold uppercase"><Link to="/login">{t("auth.login")} <ArrowUpRight className="h-3 w-3 stroke-[2.5]" /></Link></Button>}
+              {user ? <UserMenu /> : <Button asChild className="h-9 rounded-full px-5 text-[11px] font-bold uppercase"><Link to="/login">{t("auth.login")}</Link></Button>}
             </div>
             <div className="flex items-center justify-end gap-2 md:hidden">
-              {user ? <UserMenu /> : <Button asChild size="sm" className="rounded-lg px-3 text-[12px]"><Link to="/login">{t("auth.login")}</Link></Button>}
+              {user ? <UserMenu /> : <Button asChild size="sm" className="rounded-full px-4 text-[12px]"><Link to="/login">{t("auth.login")}</Link></Button>}
               <button onClick={() => setMobileOpen((value) => !value)} className="flex h-10 w-10 items-center justify-center text-foreground" aria-label="Toggle menu" aria-expanded={mobileOpen}>
                 {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
               </button>
             </div>
           </div>
-          <nav className="hidden h-[32px] grid-cols-3 border-t border-border/60 px-3 md:grid" aria-label="Main">
+          <nav className="hidden h-[40px] grid-cols-3 border-t border-border/60 px-3 md:grid" aria-label="Main">
             {navLinks.map((link, index) =>
                 <Link
                   key={link.to}
@@ -166,9 +166,9 @@ const Header = () => {
                   onPointerEnter={(event) => { if (event.pointerType !== "touch") openPreview(index); }}
                   onFocus={() => openPreview(index)}
                   aria-expanded={!user ? activePreview === index : undefined}
-                  className={`flex h-full items-center justify-center gap-1 border-r border-border/60 text-[10px] font-medium transition-colors first:border-l hover:bg-muted/70 focus-visible:bg-muted ${activePreview === index || location.pathname.startsWith(link.to) ? "bg-muted/70 text-foreground" : "text-foreground"}`}
+                  className={`flex h-full items-center justify-center border-r border-border/60 text-[12px] font-medium transition-colors first:border-l hover:bg-muted/70 focus-visible:bg-muted ${activePreview === index || location.pathname.startsWith(link.to) ? "bg-muted/70 text-foreground" : "text-foreground"}`}
                 >
-                  {link.label}{!user && <ChevronDown className={`h-3 w-3 text-muted-foreground transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${activePreview === index ? "rotate-180" : ""}`} />}
+                  {link.label}
                 </Link>
             )}
           </nav>
