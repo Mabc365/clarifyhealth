@@ -103,6 +103,21 @@ const LoginPage = () => {
             </Button>
           </form>
 
+          <div className="mt-7 flex items-center gap-4" role="separator" aria-label={t("auth.orEmail")}>
+            <span className="h-px flex-1 bg-border" />
+            <span className="text-[12px] uppercase tracking-wide text-muted-foreground">{t("auth.orEmail")}</span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
+
+          <Button
+            type="button"
+            onClick={handleGoogle}
+            variant="outline"
+            className="mt-5 w-full rounded-xl border-border bg-background text-[13px] font-medium text-foreground hover:bg-muted"
+          >
+            <GoogleIcon /> {t("auth.continueWithGoogle")}
+          </Button>
+
           <p className="mt-7 text-center text-[13px] text-muted-foreground">
             {t("auth.noAccount")}{" "}
             <Link to="/signup" className="text-primary hover:underline font-medium">
