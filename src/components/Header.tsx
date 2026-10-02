@@ -68,11 +68,8 @@ const UserMenu = () => {
       <button onClick={() => setOpen((value) => !value)} aria-haspopup="menu" aria-expanded={open} aria-label="Account menu" className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-[11px] font-bold text-primary-foreground">{initials}</button>
       {open && (
         <div className="absolute right-0 z-[70] mt-3 min-w-[190px] overflow-hidden rounded-lg border border-border bg-background py-1 shadow-soft animate-[fade-in_0.18s_ease-out]">
-          <Button variant="ghost" onClick={() => { navigate("/dashboard"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><BookOpen className="h-4 w-4" />Dashboard</Button>
           <Button variant="ghost" onClick={() => { navigate("/account"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><Settings className="h-4 w-4" />{t("auth.settings")}</Button>
-          <Button variant="ghost" onClick={() => { navigate("/my-notes"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><FileText className="h-4 w-4" />{t("auth.myNotes")}</Button>
-          <Button variant="ghost" onClick={() => { navigate("/wellness-plan"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><Leaf className="h-4 w-4" />{t("nav.wellnessPlan")}</Button>
-          <Button variant="ghost" onClick={() => { navigate("/checkout"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><CreditCard className="h-4 w-4" />Plus plans</Button>
+          <Button variant="ghost" onClick={() => { navigate("/manage-plan"); setOpen(false); }} className="h-auto w-full justify-start rounded-none px-4 py-3 text-[13px]"><CreditCard className="h-4 w-4" />Manage plan</Button>
           <Button variant="ghost" onClick={() => { signOut(); setOpen(false); }} className="h-auto w-full justify-start rounded-none border-t border-border px-4 py-3 text-[13px] text-muted-foreground"><LogOut className="h-4 w-4" />{t("auth.signOut")}</Button>
         </div>
       )}
@@ -89,7 +86,7 @@ const Header = () => {
   const { user } = useAuth();
   const closeTimer = useRef<number>();
   const isTouch = useMemo(() => typeof window !== "undefined" && window.matchMedia("(hover: none)").matches, []);
-  const openPreview = (i: number) => { if (isTouch) return; window.clearTimeout(closeTimer.current); setActivePreview(i); };
+  const openPreview = (i: number) => { if (isTouch || user) return; window.clearTimeout(closeTimer.current); setActivePreview(i); };
   const togglePreview = (i: number) => { window.clearTimeout(closeTimer.current); setActivePreview((current) => (current === i ? null : i)); };
   const scheduleClose = () => { if (isTouch) return; window.clearTimeout(closeTimer.current); closeTimer.current = window.setTimeout(() => setActivePreview(null), 180); };
 
@@ -97,7 +94,7 @@ const Header = () => {
     if (activePreview !== null) setLastPreview(activePreview);
   }, [activePreview]);
   useEffect(() => setActivePreview(null), [location.pathname]);
-  const navLinks = [
+  const guestLinks = [
     {
       to: "/topics",
       label: t("nav.topics"),
@@ -123,6 +120,14 @@ const Header = () => {
       kind: "about",
     },
   ];
+
+  const navLinks = user
+    ? [
+        { ...guestLinks[0], to: "/dashboard", label: "Dashboard", kind: "plain" },
+        { ...guestLinks[0], kind: "plain" },
+        { ...guestLinks[1], kind: "plain" },
+      ]
+    : guestLinks;
 
   useEffect(() => setMobileOpen(false), [location.pathname]);
   useEffect(() => {

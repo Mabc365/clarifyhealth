@@ -161,7 +161,7 @@ const AccountSettingsPage = () => {
           <section className="mt-10 border-t border-border pt-8 space-y-3">
             <h2 className="text-[18px] font-semibold text-foreground flex items-center gap-2"><CreditCard className="h-4 w-4" /> AI plan</h2>
             <p className="text-[14px] text-muted-foreground">Manage your monthly AI allowance through Clarify Health Plus.</p>
-            <Button asChild variant="outline"><Link to="/checkout">View plans</Link></Button>
+            <Button asChild variant="outline"><Link to="/manage-plan">Manage plan</Link></Button>
           </section>
 
           <section className="mt-10 border-t border-border pt-8 space-y-3">
