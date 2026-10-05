@@ -17,7 +17,7 @@ const Index = () => {
     <main className="bg-background">
       <PageMeta title={`Clarify Health — ${t("home.hero")}`} description={t("home.sub")} canonical="/" />
 
-      <section className="home-hero relative min-h-[100svh] overflow-hidden" aria-labelledby="home-title">
+      <section className="home-hero relative min-h-[92svh] overflow-hidden md:min-h-[100svh]" aria-labelledby="home-title">
         <img
           src={heroImage}
           alt="A patient and clinician calmly reviewing a health report together"
@@ -25,9 +25,9 @@ const Index = () => {
           height={1280}
           className="home-hero-image absolute inset-0 h-full w-full object-cover"
         />
-        <div className="relative z-10 mx-auto flex min-h-[100svh] max-w-[1240px] flex-col items-center justify-center px-5 pb-24 pt-32 text-center text-primary-foreground md:pb-12 md:pt-36">
+        <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-[1240px] flex-col items-start justify-end px-6 pb-14 pt-40 text-left text-primary-foreground md:min-h-[100svh] md:items-center md:justify-center md:pb-12 md:pt-36 md:text-center">
           <p className="micro-label mb-6 text-primary-foreground/75">Clear health information</p>
-          <h1 id="home-title" className="max-w-[1040px] text-[46px] font-medium leading-[1.02] md:text-[72px] lg:text-[82px]">
+          <h1 id="home-title" className="max-w-[1040px] text-[38px] font-medium leading-[1.08] sm:text-[46px] md:text-[72px] md:leading-[1.02] lg:text-[82px]">
             {t("home.hero")}
           </h1>
           <p className="mt-6 max-w-[610px] text-[16px] leading-[1.65] text-primary-foreground/85 md:text-[18px]">
@@ -39,19 +39,19 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="px-5 py-32 md:py-56" aria-label="Introducing Clarify Health">
+      <section className="px-6 py-20 md:py-56" aria-label="Introducing Clarify Health">
         <div className="mx-auto max-w-[820px] text-center">
           <p className="micro-label text-muted-foreground">{t("home.introLabel")}</p>
-          <h2 className="mt-7 text-[42px] font-medium leading-[1.04] text-foreground md:text-[68px]">
+          <h2 className="mt-7 text-[32px] font-medium leading-[1.12] text-foreground md:text-[68px]">
             {t("home.introTitle")}
           </h2>
           <p className="mt-7 text-[14px] text-muted-foreground">{t("home.introSub")}</p>
         </div>
       </section>
 
-      <section className="border-y border-border bg-background py-24 md:py-36" aria-labelledby="why-title">
+      <section className="border-y border-border bg-background py-20 md:py-36" aria-labelledby="why-title">
         <div className="mx-auto max-w-[1180px] px-5 md:px-8">
-          <h2 id="why-title" className="max-w-[900px] text-[38px] font-medium leading-[1.08] text-foreground md:text-[52px]">
+          <h2 id="why-title" className="max-w-[900px] text-[32px] font-medium leading-[1.12] text-foreground md:text-[52px]">
             {t("home.trustTitle")}
           </h2>
           <div className="mt-16 grid border-y border-border md:grid-cols-3">
@@ -66,11 +66,11 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="bg-background px-5 py-28 md:py-44" aria-labelledby="process-title">
+      <section className="bg-background px-6 py-20 md:py-44" aria-labelledby="process-title">
         <div className="mx-auto max-w-[1180px]">
           <div className="mx-auto max-w-[760px] text-center">
             <p className="micro-label text-accent">The process</p>
-            <h2 id="process-title" className="mt-7 text-[40px] font-medium leading-[1.06] text-foreground md:text-[58px]">{t("home.how")}</h2>
+            <h2 id="process-title" className="mt-7 text-[32px] font-medium leading-[1.12] text-foreground md:text-[58px]">{t("home.how")}</h2>
           </div>
 
           <div className="mt-16 overflow-hidden rounded-lg border border-border bg-card">
@@ -93,11 +93,11 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="bg-primary px-5 py-28 text-primary-foreground md:py-40" aria-labelledby="example-title">
+      <section className="bg-primary px-6 py-20 text-primary-foreground md:py-40" aria-labelledby="example-title">
         <div className="mx-auto max-w-[1100px]">
           <p className="micro-label text-accent">{t("home.exampleLabel")}</p>
           <div className="mt-12 grid items-end gap-12 md:grid-cols-[1fr_280px]">
-            <h2 id="example-title" className="max-w-[780px] text-[44px] font-medium leading-[1.04] md:text-[70px]">{t("home.exampleTitle")}</h2>
+            <h2 id="example-title" className="max-w-[780px] text-[34px] font-medium leading-[1.12] md:text-[70px]">{t("home.exampleTitle")}</h2>
             <div>
               <p className="text-[15px] leading-[1.7] text-primary-foreground/72">{t("home.exampleSub")}</p>
               <Link to="/topics/type-2-diabetes" className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase text-accent underline decoration-accent underline-offset-4">
@@ -108,12 +108,12 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="bg-secondary px-5 py-28 md:py-40" aria-labelledby="app-title">
+      <section className="bg-secondary px-6 py-20 md:py-40" aria-labelledby="app-title">
         <div className="mx-auto max-w-[1100px]">
           <div className="grid gap-16 md:grid-cols-[1fr_0.9fr] md:items-end">
             <div>
               <p className="micro-label flex items-center gap-2 text-accent"><Smartphone className="h-4 w-4" /> iOS app · June 30</p>
-              <h2 id="app-title" className="mt-8 max-w-[680px] text-[42px] font-medium leading-[1.05] text-foreground md:text-[62px]">Track your health. Understand what changed.</h2>
+              <h2 id="app-title" className="mt-8 max-w-[680px] text-[32px] font-medium leading-[1.12] text-foreground md:text-[62px]">Track your health. Understand what changed.</h2>
             </div>
             <div className="border-y border-border">
               {["Syncs with Apple Health and Android equivalents", "Explains trends, vitals, and changes clearly", "Keeps visit notes ready when you need them"].map((item, index) => (
@@ -126,9 +126,9 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="bg-background px-5 py-32 text-center md:py-52">
+      <section className="bg-background px-6 py-20 text-center md:py-52">
         <div className="mx-auto max-w-[880px]">
-          <h2 className="text-[46px] font-medium leading-[1.04] text-foreground md:text-[72px]">{t("home.finalH")}</h2>
+          <h2 className="text-[34px] font-medium leading-[1.12] text-foreground md:text-[72px]">{t("home.finalH")}</h2>
           <p className="mt-5 text-[14px] text-muted-foreground">{t("home.finalNote")}</p>
           <Link to="/topics" className="primary-action mt-8">{t("home.ctaTopics")} <ArrowUpRight className="h-4 w-4" /></Link>
         </div>

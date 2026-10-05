@@ -140,7 +140,7 @@ const Header = () => {
           className={`header-panel pointer-events-auto relative mx-auto max-w-[920px] overflow-visible rounded-xl border border-border/60 bg-background/85 shadow-soft backdrop-blur-2xl transition-[background-color,border-radius,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]`}
           onMouseLeave={scheduleClose} onMouseEnter={() => window.clearTimeout(closeTimer.current)}
         >
-          <div className="grid h-[62px] grid-cols-[1fr_auto_1fr] items-center px-5">
+          <div className="flex min-h-[62px] items-center justify-between gap-3 px-4 md:grid md:h-[62px] md:grid-cols-[1fr_auto_1fr] md:px-5">
             <Link to="/" aria-label="Clarify Health — home" className="flex w-fit items-center gap-3 text-foreground">
               <img src={logoUrl} alt="" className="h-9 w-9 object-contain dark:invert" />
               <span className="block text-[16px] font-semibold leading-[1.1] md:hidden">Clarify<br />Health</span>
@@ -150,13 +150,13 @@ const Header = () => {
               <LanguageDropdown />
               {user ? <UserMenu /> : <Button asChild className="h-10 rounded-[10px] px-6 text-[11px] font-bold uppercase tracking-wide"><Link to="/login">{t("auth.login")}</Link></Button>}
             </div>
-            <div className="flex items-center justify-end gap-2 md:hidden">
+            <div className="flex shrink-0 items-center justify-end md:hidden">
               {user ? <UserMenu /> : <Button asChild size="sm" className="rounded-[10px] px-4 text-[12px]"><Link to="/login">{t("auth.login")}</Link></Button>}
-              <button onClick={() => setMobileOpen((value) => !value)} className="flex h-10 w-10 items-center justify-center text-foreground" aria-label="Toggle menu" aria-expanded={mobileOpen}>
-                {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </button>
             </div>
           </div>
+          <Button variant="ghost" onClick={() => setMobileOpen((value) => !value)} className="flex h-9 w-full rounded-none rounded-b-xl border-t border-border/60 text-muted-foreground md:hidden" aria-label="Toggle menu" aria-expanded={mobileOpen}>
+            {mobileOpen ? <X className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          </Button>
           <nav className="hidden h-[50px] grid-cols-3 border-t border-border/60 px-2 md:grid" aria-label="Main">
             {navLinks.map((link, index) =>
                 <Link
@@ -215,7 +215,7 @@ const Header = () => {
           </div>
 
           {mobileOpen && (
-            <div className="border-t border-border/70 px-4 pb-4 animate-[fade-in_0.2s_ease-out] md:hidden">
+            <div className="max-h-[calc(100dvh-130px)] overflow-y-auto border-t border-border/70 px-4 pb-4 animate-[fade-in_0.2s_ease-out] md:hidden">
               <nav className="flex flex-col" aria-label="Main">
                 {navLinks.map((link) => (
                   <Link key={link.to} to={link.to} className={`flex min-h-[58px] items-center justify-center border-b border-border/70 text-[16px] font-medium ${location.pathname.startsWith(link.to) ? "bg-muted text-foreground" : "text-foreground"}`}>
