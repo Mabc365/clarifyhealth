@@ -130,8 +130,8 @@ const strings: Record<Language, Record<string, string>> = {
     "about.p4": "Their answers decided what we build. A jargon translator, because no one should have to guess what a word means. Plain-language articles, because a diagnosis should not need a dictionary. Questions to bring to your doctor, because the hardest part is often knowing what to ask. Nothing here is decoration — every feature came from someone telling us what they actually needed.",
     "about.p5": "The goal is simple: make understanding your health easy. Not impressive. Not clever. Easy.",
     "about.disclaimer": "Clarify Health is an educational resource, not a substitute for professional medical advice. Always consult your doctor or a qualified healthcare provider.",
-    "about.meta.title": "About Clarify Health — Our Mission",
-    "about.meta.desc": "Built by a high school student in NJ to help people understand their health. Clear, honest information written so anyone can understand.",
+    "about.meta.title": "About Clarify Health — Our Story and Mission",
+    "about.meta.desc": "Clarify Health started after a mother's cancer diagnosis. Plain-language health information, shaped by patients, caregivers, and nurses.",
 
     // Holistic
     "holistic.scienceTitle": "What the Science Says",
