@@ -374,8 +374,8 @@ const strings: Record<Language, Record<string, string>> = {
     "about.p4": "Sus respuestas decidieron lo que construimos. Un traductor de términos médicos, porque nadie debería adivinar qué significa una palabra. Artículos en lenguaje claro, porque un diagnóstico no debería necesitar un diccionario. Preguntas para llevar al médico, porque lo más difícil suele ser saber qué preguntar. Nada aquí es adorno: cada función salió de alguien que nos dijo lo que realmente necesitaba.",
     "about.p5": "La meta es simple: que entender tu salud sea fácil. No impresionante. No complicado. Fácil.",
     "about.disclaimer": "Clarify Health es un recurso educativo, no un sustituto del consejo médico profesional. Siempre consulta a tu doctor o a un profesional de salud.",
-    "about.meta.title": "Acerca de Clarify Health — Nuestra misión",
-    "about.meta.desc": "Creado por un estudiante de secundaria en NJ para ayudar a las personas a entender su salud. Información clara y honesta escrita para que cualquiera la entienda.",
+    "about.meta.title": "Acerca de Clarify Health — Nuestra historia y misión",
+    "about.meta.desc": "Clarify Health nació después del diagnóstico de cáncer de una madre. Información de salud en lenguaje sencillo, creada con pacientes, cuidadores y enfermeras.",
 
     // Holistic
     "holistic.scienceTitle": "Lo que dice la ciencia",
@@ -614,8 +614,8 @@ const strings: Record<Language, Record<string, string>> = {
     "about.p4": "ان کے جوابوں نے طے کیا کہ ہم کیا بناتے ہیں۔ ایک طبی الفاظ کا ترجمہ کرنے والا، کیونکہ کسی کو یہ اندازہ نہیں لگانا چاہیے کہ کسی لفظ کا کیا مطلب ہے۔ آسان زبان میں مضامین، کیونکہ تشخیص کے لیے ڈکشنری نہیں چاہیے۔ ڈاکٹر سے پوچھنے کے سوالات، کیونکہ سب سے مشکل یہ ہوتا ہے کہ کیا پوچھنا ہے۔ یہاں کوئی چیز سجاول کے لیے نہیں — ہر فیچر اس بات سے آیا کہ کسی نے ہمیں بتایا کہ اسے واقعی کیا چاہیے تھا۔",
     "about.p5": "مقصد سادہ ہے: اپنی صحت کو سمجھنا آسان ہو۔ نہ پُرجوش، نہ پیچیدہ۔ آسان۔",
     "about.disclaimer": "Clarify Health ایک تعلیمی وسیلہ ہے، پیشہ ورانہ طبی مشورے کا متبادل نہیں۔ ہمیشہ اپنے ڈاکٹر سے مشورہ کریں۔",
-    "about.meta.title": "Clarify Health کے بارے میں — ہمارا مشن",
-    "about.meta.desc": "NJ کے ایک ہائی اسکول طالب علم نے لوگوں کو ان کی صحت سمجھنے میں مدد کے لیے بنایا۔ واضح، ایماندارانہ معلومات جو کوئی بھی سمجھ سکے۔",
+    "about.meta.title": "Clarify Health کے بارے میں — ہماری کہانی اور مشن",
+    "about.meta.desc": "Clarify Health امّی کے کینسر کا پتہ چلنے کے بعد شروع ہوا۔ آسان زبان میں صحت کی معلومات، مریضوں، خیال رکھنے والوں اور نرسوں کے تجربات سے بنی۔",
 
     // 404
     "404.title": "404",
@@ -1081,8 +1081,8 @@ const strings: Record<Language, Record<string, string>> = {
     "about.p4": "إجابتهم هي التي قرّرت ما نبنيه. مترجم للمصطلحات الطبية، لأن أحدًا لا ينبغي أن يخمّن معنى كلمة. مقالات بلغة بسيطة، لأن التشخيص لا يحتاج إلى قاموس. أسئلة تأخذها إلى الطبيب، لأن أصعب شيء غالبًا أن تعرف ماذا تسأل. لا شيء هنا للزينة — كل ميزة جاءت من شخص أخبرنا بما يحتاجه فعلًا.",
     "about.p5": "الهدف بسيط: أن تفهم صحتك بسهولة. ليس بشكل مبهر. ولا بشكل معقّد. بسهولة.",
     "about.disclaimer": "Clarify Health مصدر تعليمي وليس بديلاً عن الاستشارة الطبية المتخصصة. استشر طبيبك دائماً.",
-    "about.meta.title": "عن Clarify Health — مهمتنا",
-    "about.meta.desc": "أنشأه طالب ثانوي في NJ لمساعدة الناس على فهم صحتهم. معلومات واضحة وصادقة مكتوبة ليفهمها الجميع.",
+    "about.meta.title": "عن Clarify Health — قصتنا ومهمتنا",
+    "about.meta.desc": "بدأ Clarify Health بعد تشخيص والدتي بالسرطان. معلومات صحية بلغة بسيطة، صاغها مرضى ومَن يعتنون بهم وممرضون.",
 
     // 404
     "404.title": "404",
