@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowRight, Check, Copy } from "lucide-react";
+import { ArrowRight, Check, Copy, Stethoscope, Footprints, TrendingUp, CalendarCheck } from "lucide-react";
 import { getTopics } from "@/data/topics";
 import { getPathway } from "@/data/treatment-pathways";
+import { getCategory, categoryLabel } from "@/data/topic-categories";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
 import { trackTopicView } from "@/lib/analytics";
@@ -13,6 +14,8 @@ const TopicPage = () => {
   const topics = getTopics(lang);
   const topic = topics.find((tp) => tp.id === id);
   const pathway = id ? getPathway(lang, id) : undefined;
+  const category = id ? getCategory(id) : undefined;
+  const related = category ? topics.filter((tp) => tp.id !== id && getCategory(tp.id)?.id === category.id).slice(0, 4) : [];
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -137,16 +140,42 @@ const TopicPage = () => {
               <section className="mt-16" aria-labelledby="pathway-title">
                 <span className="micro-label text-accent">{t("pathway.label")}</span>
                 <h2 id="pathway-title" className="mt-3 text-[26px] font-medium leading-tight text-foreground md:text-[28px]">{t("pathway.title")}</h2>
-                <ol className="mt-8 border-t border-border">
-                  {pathway.map((step, i) => (
-                    <li key={i} className="grid grid-cols-[44px_1fr] gap-2 border-b border-border py-5 md:grid-cols-[44px_200px_1fr]">
-                      <span className="micro-label pt-1 text-accent">0{i + 1}</span>
-                      <span className="text-[15px] font-medium text-foreground">{t(`pathway.s${i + 1}`)}</span>
-                      <p className="col-start-2 text-[15px] leading-[1.65] text-muted-foreground md:col-start-3">{step}</p>
+                <ol className="relative mt-8">
+                  {pathway.map((step, i) => {
+                    const Icon = [Stethoscope, Footprints, TrendingUp, CalendarCheck][i] ?? CalendarCheck;
+                    const last = i === pathway.length - 1;
+                    return (
+                      <li key={i} className="relative flex gap-5 pb-8 last:pb-0">
+                        {!last && <span aria-hidden className="absolute left-[21px] top-11 bottom-0 w-px bg-primary/30" />}
+                        <span className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-primary">
+                          <Icon className="h-5 w-5" />
+                        </span>
+                        <div className="flex-1 rounded-xl border border-border bg-card p-5">
+                          <p className="micro-label text-accent">{lang === "es" ? "Paso" : "Step"} {i + 1}</p>
+                          <h3 className="mt-1 text-[18px] font-medium text-foreground">{t(`pathway.s${i + 1}`)}</h3>
+                          <p className="mt-2 text-[15px] leading-[1.65] text-muted-foreground">{step}</p>
+                        </div>
+                      </li>
+                    );
+                  })}
+                </ol>
+                <p className="mt-6 text-[13px] text-muted-foreground">{t("pathway.note")}</p>
+              </section>
+            )}
+
+            {related.length > 0 && category && (
+              <section className="mt-16">
+                <span className="micro-label inline-flex items-center gap-1.5 text-accent"><category.icon className="h-3.5 w-3.5" />{categoryLabel(category, lang)}</span>
+                <h2 className="mt-3 text-[22px] font-medium text-foreground">{lang === "es" ? "Temas relacionados" : "Related topics"}</h2>
+                <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+                  {related.map((r) => (
+                    <li key={r.id}>
+                      <Link to={`/topics/${r.id}`} className="flex items-center justify-between rounded-xl border border-border bg-card p-4 text-[15px] text-foreground hover:border-primary">
+                        {r.title} <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                      </Link>
                     </li>
                   ))}
-                </ol>
-                <p className="mt-4 text-[13px] text-muted-foreground">{t("pathway.note")}</p>
+                </ul>
               </section>
             )}
 
