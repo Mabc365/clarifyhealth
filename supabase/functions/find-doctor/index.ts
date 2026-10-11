@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { requireAiUse } from "../_shared/gate.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -27,6 +28,9 @@ serve(async (req) => {
   }
 
   try {
+    const blocked = await requireAiUse(req, "find-doctor");
+    if (blocked) return blocked;
+
     const { symptoms, zipCode } = await req.json();
 
     if (!symptoms || typeof symptoms !== "string" || symptoms.trim().length < 3) {
