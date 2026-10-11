@@ -18,7 +18,10 @@ const SearchResultsPage = () => {
   useEffect(() => {
     if (!q.trim()) { setHits([]); return; }
     setLoading(true);
-    supabase.from("articles").select("slug,title,summary").eq("language", "en").or(`title.ilike.%${q}%,summary.ilike.%${q}%`).limit(30)
+    // Strip PostgREST filter-syntax characters so user input is treated as data, not filter structure.
+    const safeQ = q.replace(/[(),."%\\]/g, " ").replace(/\s+/g, " ").trim().slice(0, 100);
+    if (!safeQ) { setHits([]); setLoading(false); return; }
+    supabase.from("articles").select("slug,title,summary").eq("language", "en").or(`title.ilike.%${safeQ}%,summary.ilike.%${safeQ}%`).limit(30)
       .then(({ data }) => { setHits((data as Hit[]) ?? []); setLoading(false); });
   }, [q]);
 
