@@ -247,7 +247,7 @@ const AskPage = () => {
           description: t("ask.meta.desc"),
           potentialAction: {
             "@type": "AskAction",
-            target: "https://clarifyhealth.lovable.app/ask",
+            target: "https://clarifyhealth.co/ask",
           },
         }}
       />
