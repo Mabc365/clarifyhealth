@@ -25,7 +25,7 @@ const TopicsIndex = () => {
 
   return (
     <main className="page-shell">
-      <PageMeta title={t("topics.meta.title")} description={t("topics.meta.desc")} canonical="/topics" jsonLd={{ "@type": "CollectionPage", name: t("topics.title"), description: t("topics.meta.desc"), mainEntity: { "@type": "ItemList", numberOfItems: topics.length, itemListElement: topics.map((topic, index) => ({ "@type": "ListItem", position: index + 1, name: topic.title, url: `https://clarifyhealth.lovable.app/topics/${topic.id}` })) } }} />
+      <PageMeta title={t("topics.meta.title")} description={t("topics.meta.desc")} canonical="/topics" jsonLd={{ "@type": "CollectionPage", name: t("topics.title"), description: t("topics.meta.desc"), mainEntity: { "@type": "ItemList", numberOfItems: topics.length, itemListElement: topics.map((topic, index) => ({ "@type": "ListItem", position: index + 1, name: topic.title, url: `https://clarifyhealth.co/topics/${topic.id}` })) } }} />
       <header className="page-intro">
         <p className="micro-label text-accent">Plain-English library</p>
         <h1>{t("topics.title")}</h1>
