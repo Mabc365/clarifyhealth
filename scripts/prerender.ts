@@ -55,7 +55,7 @@ async function fetchArticles(): Promise<Page[]> {
       console.warn(`[prerender] articles fetch failed (${r.status})`);
       return [];
     }
-    const rows = await r.json();
+    const rows = (await r.json()) as any[];
     return rows.map((a: any) => {
       const title = `${a.title} — Clarify Health`;
       const description = (a.summary || `${a.title}: a plain-English explainer from Clarify Health.`).slice(0, 300);
