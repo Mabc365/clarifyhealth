@@ -113,6 +113,7 @@ function inject(shellHtml: string, page: Page): string {
   if (page.jsonLd) {
     extras.push(`<script type="application/ld+json">${JSON.stringify(page.jsonLd).replace(/</g, "\\u003c")}</script>`);
   }
+  if (page.noindex) html = html.replace(/<meta name="robots"[^>]*>\s*/i, "");
   if (page.noindex) extras.push(`<meta name="robots" content="noindex, nofollow">`);
   html = html.replace(/<link rel="canonical"[^>]*>\s*/i, "").replace(/<meta property="og:url"[^>]*>\s*/i, "");
   html = html.replace(/<\/head>/i, `  ${extras.join("\n  ")}\n</head>`);
