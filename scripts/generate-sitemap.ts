@@ -10,9 +10,7 @@ const SUPABASE_KEY = process.env.VITE_SUPABASE_PUBLISHABLE_KEY || "eyJhbGciOiJIU
 const staticEntries = [
   { path: "/", changefreq: "weekly", priority: "1.0" },
   { path: "/topics", changefreq: "weekly", priority: "0.9" },
-  { path: "/ask", changefreq: "monthly", priority: "0.8" },
   { path: "/translate", changefreq: "monthly", priority: "0.8" },
-  { path: "/symptoms", changefreq: "monthly", priority: "0.8" },
   { path: "/glossary", changefreq: "weekly", priority: "0.8" },
   { path: "/find-a-doctor", changefreq: "monthly", priority: "0.7" },
   { path: "/wellness-plan", changefreq: "monthly", priority: "0.7" },
@@ -27,9 +25,6 @@ const staticEntries = [
   { path: "/legal/cookies", changefreq: "yearly", priority: "0.3" },
   { path: "/legal/do-not-sell", changefreq: "yearly", priority: "0.3" },
   { path: "/tools", changefreq: "monthly", priority: "0.6" },
-  { path: "/login", changefreq: "yearly", priority: "0.3" },
-  { path: "/signup", changefreq: "yearly", priority: "0.4" },
-  { path: "/my-notes", changefreq: "monthly", priority: "0.4" },
 ];
 
 type Entry = { path: string; lastmod?: string; changefreq?: string; priority?: string };
