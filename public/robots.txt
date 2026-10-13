@@ -14,6 +14,11 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /account
+Disallow: /dashboard
+Disallow: /manage-plan
+Disallow: /my-notes
+Disallow: /checkout
+Disallow: /search
 Disallow: /embed/
 
 Sitemap: https://clarifyhealth.co/sitemap.xml

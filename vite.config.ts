@@ -2,6 +2,7 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+import { prerender } from "./scripts/prerender";
 
 const FALLBACK_SUPABASE_PROJECT_ID = "dojcuaoydegwqrzldtmp";
 const FALLBACK_SUPABASE_URL = `https://${FALLBACK_SUPABASE_PROJECT_ID}.supabase.co`;
@@ -22,7 +23,7 @@ export default defineConfig(({ mode }) => {
         overlay: false,
       },
     },
-    plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+    plugins: [react(), mode === "development" && componentTagger(), mode !== "development" && { name: "seo-prerender", apply: "build" as const, closeBundle: { order: "post" as const, sequential: true, handler: async () => { try { await prerender(); } catch (e) { console.warn("[prerender] failed", e); } } } }].filter(Boolean),
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),

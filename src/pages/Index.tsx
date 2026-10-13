@@ -15,7 +15,7 @@ const Index = () => {
 
   return (
     <main className="bg-background">
-      <PageMeta title={`Clarify Health — ${t("home.hero")}`} description={t("home.sub")} canonical="/" />
+      <PageMeta title="Clarify Health | AI Health & Wellness Companion" description="Clarify Health helps you understand your health with AI-powered explanations, personalized wellness insights, and simple health tracking. Your health, in plain English." canonical="/" />
 
       <section className="home-hero relative min-h-[92svh] overflow-hidden md:min-h-[100svh]" aria-labelledby="home-title">
         <img
@@ -23,11 +23,14 @@ const Index = () => {
           alt="A patient and clinician calmly reviewing a health report together"
           width={1920}
           height={1280}
+          fetchPriority="high"
+          decoding="async"
           className="home-hero-image absolute inset-0 h-full w-full object-cover"
         />
         <div className="relative z-10 mx-auto flex min-h-[92svh] max-w-[1240px] flex-col items-start justify-end px-6 pb-14 pt-40 text-left text-primary-foreground md:min-h-[100svh] md:items-center md:justify-center md:pb-12 md:pt-36 md:text-center">
           <p className="micro-label mb-6 text-primary-foreground/75">Clear health information</p>
           <h1 id="home-title" className="max-w-[1040px] text-[38px] font-medium leading-[1.08] sm:text-[46px] md:text-[72px] md:leading-[1.02] lg:text-[82px]">
+            <span className="sr-only">Clarify Health: AI health and wellness companion. </span>
             {t("home.hero")}
           </h1>
           <p className="mt-6 max-w-[610px] text-[16px] leading-[1.65] text-primary-foreground/85 md:text-[18px]">
