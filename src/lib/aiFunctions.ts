@@ -32,7 +32,7 @@ export async function aiInvoke<T = any>(
 
   const { data: sessionData } = await supabase.auth.getSession();
   const token = sessionData?.session?.access_token;
-  const url = `${AI_FUNCTIONS_URL}/${name}`;
+  const url = name === 'analyze-visit' || name === 'transcribe-audio' ? '/api/medical' : `${AI_FUNCTIONS_URL}/${name}`;
 
   const isFormData = typeof FormData !== 'undefined' && body instanceof FormData;
   let res: Response;
@@ -45,7 +45,7 @@ export async function aiInvoke<T = any>(
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...headers,
       },
-      body: isFormData ? body : body !== undefined ? JSON.stringify(body) : undefined,
+      body: isFormData ? body : body !== undefined ? JSON.stringify((name === 'analyze-visit' ? { ...body, mode: body?.pdfBase64 ? 'pdf' : 'text' } : name === 'transcribe-audio' ? { ...body, mode: 'audio' } : body)) : undefined,
     });
   } catch {
     return { data: null, error: { message: 'Network error. Please try again.' } };
