@@ -73,6 +73,7 @@ const MyNotesPage = () => {
   const [visitDate, setVisitDate] = useState<Date>(new Date());
   const [specialty, setSpecialty] = useState("");
   const [rawNotes, setRawNotes] = useState("");
+  const [documentName, setDocumentName] = useState("");
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioDuration, setAudioDuration] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -158,7 +159,27 @@ const MyNotesPage = () => {
 
   const resetForm = () => {
     setDoctorName(""); setVisitDate(new Date()); setSpecialty("");
-    setRawNotes(""); setAudioFile(null); setAudioDuration(0);
+    setRawNotes(""); setDocumentName(""); setAudioFile(null); setAudioDuration(0);
+  };
+
+  const handleDocumentUpload = async (file?: File) => {
+    if (!file) return;
+    if (!/\.(txt|md|csv)$/i.test(file.name)) {
+      toast({ title: "Unsupported document", description: "Text, Markdown, and CSV are supported here. PDF extraction is not yet enabled; paste text from the PDF instead.", variant: "destructive" });
+      return;
+    }
+    if (file.size > 200000) {
+      toast({ title: "File too large", description: "Upload text under 200 KB.", variant: "destructive" });
+      return;
+    }
+    try {
+      const content = await file.text();
+      if (!content.trim()) throw new Error("Document contains no text");
+      setRawNotes(content);
+      setDocumentName(file.name);
+    } catch {
+      toast({ title: "Could not read document", variant: "destructive" });
+    }
   };
 
   const handleSubmit = async () => {
@@ -197,7 +218,7 @@ const MyNotesPage = () => {
       raw_notes: rawNotes || null,
       recording_url: recordingUrl,
       duration_seconds: audioDuration || null,
-      processing_status: audioBase64 || rawNotes ? "transcribing" : null,
+      processing_status: audioBase64 ? "transcribing" : rawNotes.trim() ? "analyzing" : null,
       language: lang,
     }).select().single();
 
@@ -222,6 +243,9 @@ const MyNotesPage = () => {
       const raw = data?.answer;
       let parsed: any = {};
       try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw; } catch { parsed = { summary: String(raw || "") }; }
+      if (typeof parsed.summary !== "string" || !parsed.summary.trim()) {
+        throw new Error("Transcription returned no summary");
+      }
       await supabase.from("visit_notes").update({
         ai_summary: (parsed.summary || "").slice(0, 300),
         ai_plain_english: parsed.summary || null,
@@ -245,8 +269,11 @@ const MyNotesPage = () => {
       });
     if (error && (await handleAiGateError(error, navigate))) return;
       if (error) throw error;
+      if (!data || typeof data.summary !== "string" || !data.summary.trim()) {
+        throw new Error("Analysis returned no summary");
+      }
       await supabase.from("visit_notes").update({
-        ai_summary: (data?.summary || "").slice(0, 300),
+        ai_summary: (data.summary || "").slice(0, 300),
         ai_plain_english: data?.summary || null,
         ai_structured: data?.structured || null,
         ai_follow_up_questions: data?.follow_up_questions || [],
@@ -256,7 +283,7 @@ const MyNotesPage = () => {
     } catch (err) {
       console.error("processText error:", err);
       await supabase.from("visit_notes").update({ processing_status: "failed" }).eq("id", id);
-      toast({ title: "Analysis failed", description: "Please try again.", variant: "destructive" });
+      toast({ title: "Analysis failed", description: err instanceof Error ? err.message : "Please try again.", variant: "destructive" });
     }
     fetchNotes();
   };
@@ -409,7 +436,12 @@ const MyNotesPage = () => {
                   </div>
                   <div>
                     <Label className="text-[13px]">{t("notes.notesLabel")}</Label>
-                    <Textarea value={rawNotes} onChange={(e) => setRawNotes(e.target.value)} placeholder={t("notes.notesPlaceholder")} className="mt-1 min-h-[100px]" />
+                    <Textarea value={rawNotes} onChange={(e) => setRawNotes(e.target.value)} placeholder={t("notes.notesPlaceholder")} className="mt-1 min-h-[180px] text-[15px] leading-7" />
+                    <div className="mt-3">
+                      <Label htmlFor="medical-notes-upload" className="text-[13px]">Upload text notes (.txt, .md, .csv)</Label>
+                      <Input id="medical-notes-upload" type="file" accept=".txt,.md,.csv,text/plain,text/markdown,text/csv" className="mt-1" onChange={(e) => void handleDocumentUpload(e.target.files?.[0])} />
+                      {documentName && <p className="text-[12px] text-muted-foreground mt-1">Loaded: {documentName}</p>}
+                    </div>
                   </div>
                   <div>
                     <Label className="text-[13px] mb-1.5 block">{t("notes.recording")}</Label>
@@ -576,6 +608,14 @@ function NoteCard({
                 </div>
               )}
               <StructuredBreakdown data={note.ai_structured} />
+              {!!note.ai_follow_up_questions?.length && (
+                <section className="rounded-lg border border-border/70 bg-card px-5 py-5 sm:px-6">
+                  <h4 className="text-[16px] font-semibold mb-3">Questions to bring to your doctor</h4>
+                  <ol className="list-decimal pl-5 space-y-2 text-[15px] leading-7">
+                    {note.ai_follow_up_questions.map((question, i) => <li key={i}>{question}</li>)}
+                  </ol>
+                </section>
+              )
               {processing && !note.ai_plain_english && (
                 <div className="flex items-center gap-2 text-[13px] text-muted-foreground">
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />Working on it…

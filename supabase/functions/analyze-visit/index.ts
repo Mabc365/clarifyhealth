@@ -58,8 +58,8 @@ Respond ONLY with a single JSON object (no prose, no code fences) in this exact 
   "key_terms": [ { "term": "", "definition": "plain-English" } ]
 }
 
-Write the summary TO the patient using "you" and "your", not "the patient" or third-person charting language. Use natural, reassuring but medically precise 8th-grade English. Under each Markdown heading, write 1-2 short paragraphs or helpful - bullets. Explain the diagnosis and medical jargon in plain language, what the findings mean in everyday life, and the actual next steps; keep it informative but not excessively long (usually 140-250 words). Only describe effects or prognosis supported by the source; do not call a condition harmless or promise outcomes without justification. Ask 2-3 relevant patient-friendly questions in the optional questions subsection, without duplicating the separate follow_up_questions list excessively. Do not fabricate references or URLs.
-Do not change, round, or guess lab measurements, units, medications, or timings. Distinguish a proposed prescription from one already prescribed, and a follow-up recommendation from an actual scheduled appointment. Include only explicitly ordered tests in tests_ordered; put suggested evaluations in follow_ups. red_flags should be warning symptoms or changes to seek care for, NOT existing abnormal lab results; do not invent symptoms or red flags. Preserve the JSON structure and existing sections exactly. Never invent details. Return [] or "" for anything you cannot fill. Output must be valid JSON.`;
+Write the summary TO the patient using "you" and "your", not "the patient" or third-person charting language. Use natural, reassuring but medically precise 8th-grade English. Under each Markdown heading, write 1-2 short paragraphs or helpful - bullets. Explain the diagnosis and medical jargon in plain language, what the findings mean in everyday life, and the actual next steps; keep it informative but not excessively long (usually 140-250 words). Only describe effects or prognosis supported by the source; do not call a condition harmless or promise outcomes without justification. Always produce three specific, patient-friendly questions in follow_up_questions when clinically meaningful source information is present. Questions must not be omitted. Do not repeat the questions inside the summary; the frontend renders them separately. Do not fabricate references or URLs.
+The summary MUST contain all three Markdown headings **What your doctor found**, **What this means for your daily life**, and **What happens next** on their own lines. Do not produce a chart-style third-person overview. Never omit source-documented major treatments or follow-up dates. Do not change, round, or guess lab measurements, units, medications, or timings. Distinguish a proposed prescription from one already prescribed, and a follow-up recommendation from an actual scheduled appointment. Include only explicitly ordered tests in tests_ordered; put suggested evaluations in follow_ups. red_flags should be warning symptoms or changes to seek care for, NOT existing abnormal lab results; do not invent symptoms or red flags. Preserve the JSON structure and existing sections exactly. Never invent details. Return [] or "" for anything you cannot fill. Output must be valid JSON.`;
 
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
@@ -92,8 +92,19 @@ Do not change, round, or guess lab measurements, units, medications, or timings.
 
     const data = await aiResponse.json();
     const raw = data.choices?.[0]?.message?.content ?? "{}";
-    let parsed: unknown = {};
-    try { parsed = JSON.parse(raw); } catch { parsed = { summary: raw }; }
+    let parsed: any;
+    try { parsed = JSON.parse(raw); } catch {
+      throw new Error("AI returned invalid JSON");
+    }
+    if (!parsed || typeof parsed.summary !== "string" ||
+      !["What your doctor found", "What this means for your daily life", "What happens next"].every(h => parsed.summary.includes(h)) ||
+      !Array.isArray(parsed.follow_up_questions) || parsed.follow_up_questions.length < 2 ||
+      !parsed.structured || typeof parsed.structured !== "object") {
+      console.error("AI analysis missing mandatory patient-friendly sections");
+      return new Response(JSON.stringify({ error: "Analysis was incomplete. Please retry." }), {
+        status: 502, headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
     return new Response(JSON.stringify(parsed), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
