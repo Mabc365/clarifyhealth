@@ -35,7 +35,7 @@ export default async function handler(req:any,res:any){
   res.setHeader("Cache-Control","no-store");
   if(req.method!=="POST")return err(res,405,"Method not allowed");
   try{
-    const {mode="text",text="",pdfBase64,filename="document.pdf",audioBase64,mimeType="audio/webm",language="en"}=req.body||{};
+    const {mode="text",text="",pdfBase64,filename="document.pdf",audioBase64,recordingPath,mimeType="audio/webm",language="en"}=req.body||{};
     if(!["text","pdf","audio"].includes(mode))return err(res,400,"Unsupported input type");
     const auth=(req.headers.authorization||"").replace(/^Bearer\s+/i,"");
     if(!auth)return err(res,401,"LOGIN_REQUIRED");
@@ -43,13 +43,24 @@ export default async function handler(req:any,res:any){
     const {data:userData,error:userError}=await db.auth.getUser(auth);
     if(userError||!userData.user)return err(res,401,"LOGIN_REQUIRED");
     const key=getConfig("OPENAI_API_KEY");
+    const {data:use,error:usageError}=await db.rpc("consume_ai_use",{_user_id:userData.user.id,_feature:"medical-"+mode});
+    if(usageError)return err(res,500,"Unable to check usage");
+    if(!use?.allowed)return err(res,403,"LIMIT_REACHED");
     let source="";
     let transcript:any[]=[];
     if(mode==="text"){
       if(typeof text!=="string"||!text.trim()||text.length>40000)return err(res,400,"Enter valid notes under 40,000 characters");
       source=text;
     }else if(mode==="audio"){
-      const bytes=bufferFromBase64(audioBase64);
+      let bytes: Buffer;
+      if(recordingPath){
+        const path=String(recordingPath);
+        if(!path.startsWith(userData.user.id+"/") || path.includes(".."))return err(res,403,"Invalid recording");
+        const {data:stored,error:storageError}=await db.storage.from("recordings").download(path);
+        if(storageError||!stored)return err(res,404,"Recording unavailable");
+        bytes=Buffer.from(await stored.arrayBuffer());
+        if(bytes.length>18*1024*1024)return err(res,413,"Recording too large");
+      }else bytes=bufferFromBase64(audioBase64,2*1024*1024);
       const allowed=["audio/mpeg","audio/mp3","audio/mp4","audio/x-m4a","audio/m4a","audio/wav","audio/x-wav","audio/webm","audio/ogg","audio/flac"];
       const mt=String(mimeType).split(";")[0].toLowerCase();
       if(!allowed.includes(mt))return err(res,400,"Unsupported audio format");
@@ -62,7 +73,7 @@ export default async function handler(req:any,res:any){
       transcript=[{speaker:"Speaker 1",text:source,start:0}];
     }else{
       if(typeof pdfBase64!=="string"||!pdfBase64.length)return err(res,400,"PDF required");
-      bufferFromBase64(pdfBase64,12*1024*1024);
+      bufferFromBase64(pdfBase64,2*1024*1024);
     }
     const lang=({en:"English",es:"Spanish",ar:"Arabic",hi:"Hindi",ur:"Urdu"} as Record<string,string>)[language]||"English";
     const parts:any[]=[{type:"input_text",text:"Analyze these medical notes or document in "+lang+". "+(source||"Read the attached medical PDF carefully.")}];
@@ -77,9 +88,6 @@ export default async function handler(req:any,res:any){
       !["What your doctor found","What this means for your daily life","What happens next"].every(x=>parsed.summary.includes(x))){
       return err(res,502,"Medical analysis was incomplete. Please retry.");
     }
-    const {data:use,error:usageError}=await db.rpc("consume_ai_use",{_user_id:userData.user.id,_feature:"medical-"+mode});
-    if(usageError)return err(res,500,"Unable to record usage");
-    if(!use?.allowed)return err(res,403,"LIMIT_REACHED");
     return res.status(200).json({...parsed,transcript});
   }catch(e){console.error("Medical analysis request failed",e instanceof Error?e.name:"unknown");return err(res,500,"Unable to process this medical information");}
 }
