@@ -46,7 +46,7 @@ serve(async (req) => {
 Respond ONLY with a single JSON object (no prose, no code fences) in this exact shape, written in ${langName}:
 
 {
-  "summary": "2-4 plain-English sentences at an 8th-grade reading level.",
+  "summary": "Markdown-formatted patient explanation with **What your doctor found**, **What this means for your daily life**, and **What happens next** headings. Add **Questions to bring to your doctor** when helpful.",
   "structured": {
     "diagnosis": "string or empty",
     "medications": [ { "name": "", "dose": "", "frequency": "", "purpose": "" } ],
@@ -58,7 +58,8 @@ Respond ONLY with a single JSON object (no prose, no code fences) in this exact 
   "key_terms": [ { "term": "", "definition": "plain-English" } ]
 }
 
-Never invent details. Return [] or "" for anything you cannot fill. Output must be valid JSON.`;
+Write the summary TO the patient using "you" and "your", not "the patient" or third-person charting language. Use natural, reassuring but medically precise 8th-grade English. Under each Markdown heading, write 1-2 short paragraphs or helpful - bullets. Explain the diagnosis and medical jargon in plain language, what the findings mean in everyday life, and the actual next steps; keep it informative but not excessively long (usually 140-250 words). Only describe effects or prognosis supported by the source; do not call a condition harmless or promise outcomes without justification. Ask 2-3 relevant patient-friendly questions in the optional questions subsection, without duplicating the separate follow_up_questions list excessively. Do not fabricate references or URLs.
+Do not change, round, or guess lab measurements, units, medications, or timings. Distinguish a proposed prescription from one already prescribed, and a follow-up recommendation from an actual scheduled appointment. Include only explicitly ordered tests in tests_ordered; put suggested evaluations in follow_ups. red_flags should be warning symptoms or changes to seek care for, NOT existing abnormal lab results; do not invent symptoms or red flags. Preserve the JSON structure and existing sections exactly. Never invent details. Return [] or "" for anything you cannot fill. Output must be valid JSON.`;
 
     const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
