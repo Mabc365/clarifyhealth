@@ -19,10 +19,10 @@ export default function StructuredBreakdown({ data }: { data: Structured | null 
   if (!hasAny) return <p className="text-[13px] text-muted-foreground">No structured details extracted.</p>;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       {data.diagnosis && (
         <Section icon={<Stethoscope className="h-3.5 w-3.5" />} label="Diagnosis">
-          <p className="text-[14px]">{data.diagnosis}</p>
+          <p className="text-[15px]">{data.diagnosis}</p>
         </Section>
       )}
 
@@ -30,12 +30,12 @@ export default function StructuredBreakdown({ data }: { data: Structured | null 
         <Section icon={<Pill className="h-3.5 w-3.5" />} label="Medications">
           <ul className="space-y-1.5">
             {data.medications.map((m, i) => (
-              <li key={i} className="text-[14px]">
+              <li key={i} className="text-[15px]">
                 <span className="font-medium">{m.name || "—"}</span>
                 {(m.dose || m.frequency) && (
                   <span className="text-muted-foreground"> · {[m.dose, m.frequency].filter(Boolean).join(" · ")}</span>
                 )}
-                {m.purpose && <div className="text-[12px] text-muted-foreground">For: {m.purpose}</div>}
+                {m.purpose && <div className="text-[13px] text-muted-foreground">For: {m.purpose}</div>}
               </li>
             ))}
           </ul>
@@ -44,7 +44,7 @@ export default function StructuredBreakdown({ data }: { data: Structured | null 
 
       {!!data.tests_ordered?.length && (
         <Section icon={<ClipboardList className="h-3.5 w-3.5" />} label="Tests ordered">
-          <ul className="list-disc pl-5 space-y-1 text-[14px]">
+          <ul className="list-disc pl-5 space-y-1 text-[15px]">
             {data.tests_ordered.map((t, i) => <li key={i}>{t}</li>)}
           </ul>
         </Section>
@@ -52,7 +52,7 @@ export default function StructuredBreakdown({ data }: { data: Structured | null 
 
       {!!data.follow_ups?.length && (
         <Section icon={<CalendarClock className="h-3.5 w-3.5" />} label="Follow-ups">
-          <ul className="space-y-1 text-[14px]">
+          <ul className="space-y-1 text-[15px]">
             {data.follow_ups.map((f, i) => (
               <li key={i}>
                 {f.what}
@@ -65,7 +65,7 @@ export default function StructuredBreakdown({ data }: { data: Structured | null 
 
       {!!data.red_flags?.length && (
         <Section icon={<AlertTriangle className="h-3.5 w-3.5 text-amber-600" />} label="Watch for">
-          <ul className="list-disc pl-5 space-y-1 text-[14px]">
+          <ul className="list-disc pl-5 space-y-1 text-[15px]">
             {data.red_flags.map((r, i) => <li key={i}>{r}</li>)}
           </ul>
         </Section>
@@ -76,8 +76,8 @@ export default function StructuredBreakdown({ data }: { data: Structured | null 
 
 function Section({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
   return (
-    <div>
-      <div className="flex items-center gap-1.5 text-[11px] uppercase tracking-[1.2px] text-muted-foreground mb-1.5">
+    <div className="rounded-lg border border-border/70 bg-card px-5 py-4 sm:px-6">
+      <div className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[1px] text-muted-foreground mb-2">
         {icon}<span>{label}</span>
       </div>
       {children}

@@ -54,7 +54,7 @@ Respond ONLY with a single JSON object (no prose, no code fences) in this exact 
   "transcript": [
     { "speaker": "Doctor" | "Patient" | "Speaker 1" | "Speaker 2", "text": "...", "start": <seconds, number, may be 0> }
   ],
-  "summary": "2-4 plain-English sentences at an 8th-grade reading level.",
+  "summary": "Markdown-formatted patient explanation with **What your doctor found**, **What this means for your daily life**, and **What happens next** headings. Add **Questions to bring to your doctor** when helpful.",
   "structured": {
     "diagnosis": "string or empty",
     "medications": [ { "name": "", "dose": "", "frequency": "", "purpose": "" } ],
@@ -66,6 +66,8 @@ Respond ONLY with a single JSON object (no prose, no code fences) in this exact 
   "key_terms": [ { "term": "", "definition": "plain-English" } ]
 }
 
+Write the summary directly TO the patient using "you" and "your", never third-person charting language. Use short, clear paragraphs and - bullets under Markdown **heading** lines. Explain what the clinician found, what the diagnosis means in everyday life, and the actual next steps, usually 140-250 words. Add 2-3 relevant patient questions under an optional **Questions to bring to your doctor** heading. Be calm and empathetic, but do not promise harmlessness or outcomes unsupported by the recording.
+Preserve exact medical numbers, units, names, dose and timing from the audio: do not round or guess. Mark unclear words or measurements as uncertain rather than inventing them. Separate recommendations from completed orders, prescriptions, or booked appointments. Only put explicitly ordered tests in tests_ordered; put recommended evaluations in follow_ups. red_flags means potential urgent warning signs mentioned by clinician, not abnormal labs already found. Do not invent references or URLs. Keep all other structured sections and JSON keys unchanged.
 Return [] for any list you cannot fill. Return "" for any string you cannot fill. Output must be valid JSON.`;
 
     const mt = (mimeType || "audio/mpeg").toLowerCase();

@@ -53,7 +53,7 @@ const MarkdownAnswer = ({ text, className = "" }: Props) => {
           return (
             <h4
               key={i}
-              className="mt-5 mb-2 text-[15px] font-semibold text-foreground first:mt-0"
+              className="mt-6 mb-3 text-[17px] leading-7 font-semibold text-foreground first:mt-0"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               {trimmed.replace(/\*\*/g, "")}
@@ -64,7 +64,7 @@ const MarkdownAnswer = ({ text, className = "" }: Props) => {
         // Bullet point
         if (/^[-•]\s/.test(trimmed)) {
           return (
-            <div key={i} className="my-1 flex gap-2 text-[14px] leading-[1.7] text-foreground/85">
+            <div key={i} className="my-2 flex gap-2.5 text-[15px] leading-[1.8] text-foreground/85">
               <span className="text-primary mt-0.5">•</span>
               <span className="flex-1">{renderInline(trimmed.replace(/^[-•]\s/, ""))}</span>
             </div>
@@ -83,7 +83,7 @@ const MarkdownAnswer = ({ text, className = "" }: Props) => {
         if (!trimmed) return <div key={i} className="h-2" />;
 
         return (
-          <p key={i} className="my-1.5 text-[14px] leading-[1.7] text-foreground/85">
+          <p key={i} className="my-2 text-[15px] leading-[1.85] text-foreground/85">
             {renderInline(line)}
           </p>
         );

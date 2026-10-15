@@ -562,7 +562,7 @@ function NoteCard({
               <TabsTrigger value="glossary" disabled={!note.ai_transcript?.key_terms?.length}>Glossary</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="summary" className="mt-4 space-y-4">
+            <TabsContent value="summary" className="mt-5 space-y-6">
               {note.raw_notes && (
                 <div>
                   <p className="text-[11px] uppercase tracking-[1.2px] text-muted-foreground mb-1">Your notes</p>
@@ -570,9 +570,9 @@ function NoteCard({
                 </div>
               )}
               {note.ai_plain_english && (
-                <div className="p-4 rounded-md" style={{ background: "hsl(var(--section-bg))" }}>
-                  <p className="text-[11px] uppercase tracking-[1.2px] text-muted-foreground mb-1.5">Plain-English summary</p>
-                  <MarkdownAnswer text={note.ai_plain_english} />
+                <div className="rounded-lg px-5 py-6 sm:px-7 sm:py-7" style={{ background: "hsl(var(--section-bg))" }}>
+                  <p className="text-[11px] uppercase tracking-[1.2px] text-muted-foreground mb-4">Plain-English summary</p>
+                  <MarkdownAnswer text={note.ai_plain_english} className="visit-summary-markdown" />
                 </div>
               )}
               <StructuredBreakdown data={note.ai_structured} />
