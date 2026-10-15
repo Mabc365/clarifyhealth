@@ -74,6 +74,7 @@ const MyNotesPage = () => {
   const [specialty, setSpecialty] = useState("");
   const [rawNotes, setRawNotes] = useState("");
   const [documentName, setDocumentName] = useState("");
+  const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [audioFile, setAudioFile] = useState<File | null>(null);
   const [audioDuration, setAudioDuration] = useState(0);
   const [submitting, setSubmitting] = useState(false);
@@ -159,20 +160,22 @@ const MyNotesPage = () => {
 
   const resetForm = () => {
     setDoctorName(""); setVisitDate(new Date()); setSpecialty("");
-    setRawNotes(""); setDocumentName(""); setAudioFile(null); setAudioDuration(0);
+    setRawNotes(""); setDocumentName(""); setPdfFile(null); setAudioFile(null); setAudioDuration(0);
   };
 
   const handleDocumentUpload = async (file?: File) => {
     if (!file) return;
-    if (!/\.(txt|md|csv)$/i.test(file.name)) {
-      toast({ title: "Unsupported document", description: "Text, Markdown, and CSV are supported here. PDF extraction is not yet enabled; paste text from the PDF instead.", variant: "destructive" });
+    if (!/\.(txt|md|csv|pdf)$/i.test(file.name)) {
+      toast({ title: "Unsupported document", description: "Upload TXT, MD, CSV or PDF.", variant: "destructive" });
       return;
     }
-    if (file.size > 200000) {
+    if (file.size > (file.name.toLowerCase().endsWith(".pdf") ? 8_000_000 : 200_000)) {
       toast({ title: "File too large", description: "Upload text under 200 KB.", variant: "destructive" });
       return;
     }
     try {
+      if (file.name.toLowerCase().endsWith(".pdf")) { setPdfFile(file); setDocumentName(file.name); return; }
+      setPdfFile(null);
       const content = await file.text();
       if (!content.trim()) throw new Error("Document contains no text");
       setRawNotes(content);
@@ -218,7 +221,7 @@ const MyNotesPage = () => {
       raw_notes: rawNotes || null,
       recording_url: recordingUrl,
       duration_seconds: audioDuration || null,
-      processing_status: audioBase64 ? "transcribing" : rawNotes.trim() ? "analyzing" : null,
+      processing_status: audioBase64 ? "transcribing" : rawNotes.trim() || pdfFile ? "analyzing" : null,
       language: lang,
     }).select().single();
 
@@ -229,7 +232,7 @@ const MyNotesPage = () => {
 
     if (inserted?.id) {
       if (audioBase64) processAudio(inserted.id, audioBase64, audioMimeType || "audio/webm");
-      else if (rawNotes.trim()) processText(inserted.id, rawNotes.trim());
+      else if (rawNotes.trim() || pdfFile) processText(inserted.id, rawNotes.trim(), pdfFile);
     }
   };
 
@@ -240,9 +243,7 @@ const MyNotesPage = () => {
       });
     if (error && (await handleAiGateError(error, navigate))) return;
       if (error) throw error;
-      const raw = data?.answer;
-      let parsed: any = {};
-      try { parsed = typeof raw === "string" ? JSON.parse(raw) : raw; } catch { parsed = { summary: String(raw || "") }; }
+      const parsed: any = data;
       if (typeof parsed.summary !== "string" || !parsed.summary.trim()) {
         throw new Error("Transcription returned no summary");
       }
@@ -262,10 +263,17 @@ const MyNotesPage = () => {
     fetchNotes();
   };
 
-  const processText = async (id: string, text: string) => {
+  const processText = async (id: string, text: string, document?: File | null) => {
     try {
+      let pdfBase64: string | undefined;
+      if (document) {
+        const bytes = new Uint8Array(await document.arrayBuffer());
+        let binary = ""; const CHUNK = 8192;
+        for (let i = 0; i < bytes.length; i += CHUNK) binary += String.fromCharCode(...bytes.subarray(i, i + CHUNK));
+        pdfBase64 = btoa(binary);
+      }
       const { data, error } = await aiInvoke("analyze-visit", {
-        body: { text, language: lang },
+        body: { text, language: lang, pdfBase64, filename: document?.name },
       });
     if (error && (await handleAiGateError(error, navigate))) return;
       if (error) throw error;
@@ -438,8 +446,8 @@ const MyNotesPage = () => {
                     <Label className="text-[13px]">{t("notes.notesLabel")}</Label>
                     <Textarea value={rawNotes} onChange={(e) => setRawNotes(e.target.value)} placeholder={t("notes.notesPlaceholder")} className="mt-1 min-h-[180px] text-[15px] leading-7" />
                     <div className="mt-3">
-                      <Label htmlFor="medical-notes-upload" className="text-[13px]">Upload text notes (.txt, .md, .csv)</Label>
-                      <Input id="medical-notes-upload" type="file" accept=".txt,.md,.csv,text/plain,text/markdown,text/csv" className="mt-1" onChange={(e) => void handleDocumentUpload(e.target.files?.[0])} />
+                      <Label htmlFor="medical-notes-upload" className="text-[13px]">Upload medical document (.txt, .md, .csv, .pdf)</Label>
+                      <Input id="medical-notes-upload" type="file" accept=".txt,.md,.csv,.pdf,text/plain,text/markdown,text/csv,application/pdf" className="mt-1" onChange={(e) => void handleDocumentUpload(e.target.files?.[0])} />
                       {documentName && <p className="text-[12px] text-muted-foreground mt-1">Loaded: {documentName}</p>}
                     </div>
                   </div>
@@ -615,7 +623,7 @@ function NoteCard({
                     {note.ai_follow_up_questions.map((question, i) => <li key={i}>{question}</li>)}
                   </ol>
                 </section>
-              )
+              )}
               {processing && !note.ai_plain_english && (
                 <div className="flex items-center gap-2 text-[13px] text-muted-foreground">
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />Working on it…
