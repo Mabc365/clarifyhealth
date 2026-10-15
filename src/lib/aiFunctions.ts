@@ -19,29 +19,9 @@ const AI_FUNCTIONS = new Set([
   'analyze-visit',
 ]);
 
-// Staging opt-in: VITE_AI_BACKEND=vercel routes to same-origin /api/ai/{name}.
-// Default (unset) keeps every call on Lovable. transcribe-audio is limited by
-// Vercel's 4.5 MB body cap, so it only moves when listed in
-// VITE_AI_VERCEL_EXTRA (comma-separated).
-const VERCEL_DEFAULT = new Set(['ask', 'jargon-translate', 'symptom-explain', 'wellness-plan', 'tts-speak', 'eli5-rewrite', 'analyze-visit']);
-const VERCEL_EXTRA = new Set(
-  String(import.meta.env.VITE_AI_VERCEL_EXTRA ?? '').split(',').map((s) => s.trim()).filter(Boolean),
-);
-
-function endpointFor(name: string): { url: string; vercel: boolean } {
-  if (import.meta.env.VITE_AI_BACKEND === 'vercel' && (VERCEL_DEFAULT.has(name) || VERCEL_EXTRA.has(name))) {
-    return { url: `/api/ai/${encodeURIComponent(name)}`, vercel: true };
-  }
-  return { url: `${AI_FUNCTIONS_URL}/${name}`, vercel: false };
-}
-
 export type AiInvokeError = { message: string; status?: number };
 
-/**
- * Mirrors supabase.functions.invoke()'s { data, error } shape. Targets the
- * Lovable-hosted AI functions by default, or the Vercel staging endpoint when
- * opted in, and attaches the user's (self-hosted) access token for the gate check.
- */
+/** Calls the existing Lovable-backed AI functions until the Supabase/OpenAI migration is tested. */
 export async function aiInvoke<T = any>(
   name: string,
   { body, headers }: { body?: any; headers?: Record<string, string> } = {},
@@ -52,7 +32,7 @@ export async function aiInvoke<T = any>(
 
   const { data: sessionData } = await supabase.auth.getSession();
   const token = sessionData?.session?.access_token;
-  const { url, vercel } = endpointFor(name);
+  const url = `${AI_FUNCTIONS_URL}/${name}`;
 
   const isFormData = typeof FormData !== 'undefined' && body instanceof FormData;
   let res: Response;
@@ -61,7 +41,7 @@ export async function aiInvoke<T = any>(
       method: 'POST',
       headers: {
         ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-        ...(vercel ? {} : { apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? '' }),
+        apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? '',
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...headers,
       },
