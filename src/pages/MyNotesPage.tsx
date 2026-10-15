@@ -169,7 +169,7 @@ const MyNotesPage = () => {
       toast({ title: "Unsupported document", description: "Upload TXT, MD, CSV or PDF.", variant: "destructive" });
       return;
     }
-    if (file.size > (file.name.toLowerCase().endsWith(".pdf") ? 8_000_000 : 200_000)) {
+    if (file.size > (file.name.toLowerCase().endsWith(".pdf") ? 2_000_000 : 200_000)) {
       toast({ title: "File too large", description: "Upload text under 200 KB.", variant: "destructive" });
       return;
     }
@@ -197,6 +197,7 @@ const MyNotesPage = () => {
       const ext = audioFile.name.split(".").pop() || "webm";
       const path = `${user.id}/${crypto.randomUUID()}.${ext}`;
       const { error: uploadError } = await supabase.storage.from("recordings").upload(path, audioFile);
+      if (uploadError) { toast({ title: "Could not upload recording", description: uploadError.message, variant: "destructive" }); setSubmitting(false); return; }
       if (!uploadError) {
         // Store the path; we generate short-lived signed URLs at read time
         recordingUrl = path;
@@ -231,15 +232,15 @@ const MyNotesPage = () => {
     setModalOpen(false); resetForm(); fetchNotes();
 
     if (inserted?.id) {
-      if (audioBase64) processAudio(inserted.id, audioBase64, audioMimeType || "audio/webm");
+      if (recordingUrl) processAudio(inserted.id, audioBase64 || "", audioMimeType || "audio/webm", recordingUrl);
       else if (rawNotes.trim() || pdfFile) processText(inserted.id, rawNotes.trim(), pdfFile);
     }
   };
 
-  const processAudio = async (id: string, audioBase64: string, mimeType: string) => {
+  const processAudio = async (id: string, audioBase64: string, mimeType: string, recordingPath?: string) => {
     try {
       const { data, error } = await aiInvoke("transcribe-audio", {
-        body: { audioBase64, mimeType, language: lang },
+        body: { ...(recordingPath ? { recordingPath } : {audioBase64}), mimeType, language: lang },
       });
     if (error && (await handleAiGateError(error, navigate))) return;
       if (error) throw error;
@@ -313,7 +314,7 @@ const MyNotesPage = () => {
         }
         const b64 = btoa(bin);
         const mime = blob.type || "audio/webm";
-        processAudio(note.id, b64, mime);
+        processAudio(note.id, b64, mime, extractRecordingPath(note.recording_url) || undefined);
       } catch (err) {
         console.error("reprocess audio fetch error:", err);
         await supabase.from("visit_notes").update({ processing_status: "failed" }).eq("id", note.id);
