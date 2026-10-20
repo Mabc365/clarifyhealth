@@ -48,6 +48,8 @@ const HolisticTopicPage = () => {
           description: topic.definition,
           audience: { "@type": "PeopleAudience", audienceType: "Patient" },
           lastReviewed: "2026-03-01",
+          author: { "@type": "Person", name: "Mustafa Asif", url: "https://clarifyhealth.co/about" },
+          publisher: { "@type": "Organization", name: "Clarify Health", url: "https://clarifyhealth.co" },
         }}
       />
       <div className="mx-auto max-w-[1100px]">
@@ -83,6 +85,7 @@ const HolisticTopicPage = () => {
           <h1 className="text-[44px] font-semibold leading-[1.1] text-foreground md:text-[56px]" style={{ letterSpacing: "-1px" }}>
             {topic.title}
           </h1>
+          <p className="mt-3 text-[14px] text-muted-foreground" style={{ fontFamily: "'DM Sans', sans-serif" }}>By <Link to="/about" className="font-medium text-primary hover:underline">Mustafa Asif</Link></p>
           <p className="mt-5 max-w-[680px] text-[18px] leading-relaxed text-muted-foreground md:text-[20px]" style={{ fontFamily: "'DM Sans', sans-serif" }}>
             {topic.definition}
           </p>
