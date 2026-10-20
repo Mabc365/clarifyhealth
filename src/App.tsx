@@ -13,6 +13,7 @@ import Index from "./pages/Index";
 const TopicsIndex = lazy(() => import("./pages/TopicsIndex"));
 const TopicPage = lazy(() => import("./pages/TopicPage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
+const AuthorPage = lazy(() => import("./pages/AuthorPage"));
 const HolisticTopicPage = lazy(() => import("./pages/HolisticTopicPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const SignupPage = lazy(() => import("./pages/SignupPage"));
@@ -93,6 +94,7 @@ const App = () => (
               <Route path="/topics/:id" element={<TopicPage />} />
               <Route path="/ask" element={<Navigate to="/topics" replace />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/author/mustafa-asif" element={<AuthorPage />} />
               <Route path="/holistic/:id" element={<HolisticTopicPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
