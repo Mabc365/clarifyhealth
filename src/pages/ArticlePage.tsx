@@ -110,7 +110,8 @@ const ArticlePage = () => {
           description: article.summary ?? article.tldr?.[0] ?? "",
           datePublished: article.last_reviewed,
           dateModified: article.last_reviewed,
-          author: { "@type": "Organization", name: "Clarify Health" },
+          author: { "@type": "Person", name: "Mustafa Asif", url: "https://clarifyhealth.co/about" },
+          publisher: { "@type": "Organization", name: "Clarify Health", url: "https://clarifyhealth.co" },
           reviewedBy: { "@type": "Person", name: article.reviewer_name, jobTitle: article.reviewer_credentials },
           lastReviewed: article.last_reviewed,
           mainContentOfPage: { "@type": "WebPageElement" },
@@ -132,6 +133,8 @@ const ArticlePage = () => {
         <header className="mb-6">
           <h1 className="text-4xl md:text-5xl font-semibold mb-4 leading-tight" style={{ fontFamily: "Fraunces, serif" }}>{article.title}</h1>
           <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+            <span>By Mustafa Asif</span>
+            <span>·</span>
             <span>📖 {article.read_time_min} min read</span>
             <span>·</span>
             <span>Grade {article.reading_grade} reading level</span>
