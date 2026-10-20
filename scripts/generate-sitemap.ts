@@ -15,6 +15,7 @@ const staticEntries = [
   { path: "/find-a-doctor", changefreq: "monthly", priority: "0.7" },
   { path: "/wellness-plan", changefreq: "monthly", priority: "0.7" },
   { path: "/about", changefreq: "monthly", priority: "0.5" },
+  { path: "/author/mustafa-asif", changefreq: "monthly", priority: "0.7" },
   { path: "/editorial-standards", changefreq: "monthly", priority: "0.6" },
   { path: "/reviewers", changefreq: "monthly", priority: "0.5" },
   { path: "/contact", changefreq: "yearly", priority: "0.4" },
