@@ -74,7 +74,8 @@ async function fetchArticles(): Promise<Page[]> {
           inLanguage: "en",
           datePublished: a.last_reviewed,
           dateModified: a.last_reviewed,
-          author: { "@type": "Person", name: a.reviewer_name || "Clarify Health Editorial" },
+          author: { "@type": "Person", name: "Mustafa Asif", url: `${BASE_URL}/about` },
+          reviewedBy: { "@type": "Person", name: a.reviewer_name || "Clarify Health Editorial" },
           publisher: { "@type": "Organization", name: "Clarify Health", url: BASE_URL },
         },
       };
