@@ -127,7 +127,12 @@ function builtInTopics(): Page[] {
 }
 
 function staticPagesWithAuthor(articles: Page[]): Page[] {
-  return STATIC_PAGES.map(page => page.path !== "/author/mustafa-asif" ? page : {
+  return STATIC_PAGES.map(page => {
+    if (page.path === "/") return {
+      ...page,
+      bodyHtml: '<main class="page-shell"><h1>Clarify Health — Health information in plain English</h1><p>Clarify Health helps patients and families understand confusing health information with approachable educational articles and AI-assisted explanations.</p><p>Founded by <a href="/author/mustafa-asif">Mustafa Asif</a>.</p><p><a href="/topics">Explore health topics</a> · <a href="/about">About Clarify Health</a></p><p>For education only; not medical advice.</p></main>',
+    };
+    return page.path !== "/author/mustafa-asif" ? page : {
     ...page, authored: true,
     bodyHtml: '<main class="page-shell"><h1>Mustafa Asif — Founder of Clarify Health</h1><p>Mustafa Asif founded Clarify Health to help patients and families understand medical information in plain language. He writes accessible health articles and develops educational tools for understanding complex medical information.</p><p>His academic interests include molecular biology, cancer research, and patient education.</p><p><a href="/topics">Health articles</a> | <a href="/about">About Clarify Health</a></p>' +
     '<section><h2>Health articles by Mustafa Asif</h2><ul>' +
