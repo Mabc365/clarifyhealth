@@ -46,7 +46,7 @@ const TopicPage = () => {
   return (
     <main className="pt-28 pb-0 px-6">
       <PageMeta ogType="article"
-        title={`${topic.title} ${lang === "es" ? "Explicado" : "Explained Simply"} | Clarify Health`}
+        title={`${topic.title} — Mustafa Asif | Clarify Health`}
         description={lang === "es"
           ? `Aprende qué significa ${topic.title.toLowerCase()} en español sencillo. Sin jerga médica. Incluye preguntas para tu doctor.`
           : `Learn what ${topic.title.toLowerCase()} means in plain English. No medical jargon. Includes questions to ask your doctor.`}

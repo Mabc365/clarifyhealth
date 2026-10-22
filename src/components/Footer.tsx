@@ -20,7 +20,7 @@ const Footer = () => {
         </div>
         <div className="grid grid-cols-2 gap-10 py-14 md:grid-cols-3">
           <FooterCol title="Site" links={[{ to: "/topics", label: "Topics" }, { to: "/tools", label: "Tools" }, { to: "/ask", label: "Ask" }, { to: "/about", label: "About" }]} />
-          <FooterCol title="Resources" links={[{ to: "/editorial-standards", label: "Editorial standards" }, { to: "/reviewers", label: "Reviewers" }, { to: "/contact", label: "Contact" }]} />
+          <FooterCol title="Resources" links={[{ to: "/editorial-standards", label: "Editorial standards" }, { to: "/reviewers", label: "Reviewers" }, { to: "/author/mustafa-asif", label: "Founder: Mustafa Asif" }, { to: "/contact", label: "Contact" }]} />
           <FooterCol title="Legal" links={[{ to: "/legal/privacy", label: "Privacy" }, { to: "/legal/terms", label: "Terms" }, { to: "/legal/ai-disclaimer", label: "AI disclaimer" }, { to: "/legal/cookies", label: "Cookies" }, { to: "/accessibility", label: "Accessibility" }]} />
         </div>
         <div className="border-t border-primary-foreground/20 pt-7 text-[11px] text-primary-foreground/50">{t("footer.copyright")} · Educational only — not medical advice.</div>
