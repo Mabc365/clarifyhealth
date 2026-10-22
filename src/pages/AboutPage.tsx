@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
 import mustafaPhoto from "@/assets/mustafa.jpeg";
@@ -18,7 +19,7 @@ const AboutPage = () => {
           <h2>{t("about.who")}</h2>
           <figure className="grid gap-6 sm:grid-cols-[150px_1fr] sm:items-end">
             <img src={mustafaPhoto} alt="Mustafa Asif, founder of Clarify Health" loading="lazy" className="aspect-[4/5] w-[150px] rounded-lg object-cover grayscale" />
-            <figcaption><p className="micro-label text-accent">{t("about.founder")}</p><p className="mt-4 text-[26px] font-medium text-foreground">Mustafa Asif</p><p className="mt-2 text-[14px] text-muted-foreground">{t("about.school")}</p></figcaption>
+            <figcaption><p className="micro-label text-accent">{t("about.founder")}</p><p className="mt-4 text-[26px] font-medium text-foreground"><Link to="/author/mustafa-asif" className="hover:underline">Mustafa Asif</Link></p><p className="mt-2 text-[14px] text-muted-foreground">{t("about.school")}</p></figcaption>
           </figure>
         </section>
         <section className="editorial-row">
