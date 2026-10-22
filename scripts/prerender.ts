@@ -143,6 +143,7 @@ function staticPagesWithAuthor(articles: Page[]): Page[] {
       "@id": AUTHOR_URL + "#profile", url: AUTHOR_URL,
       mainEntity: { ...AUTHOR, description: "Founder and health education writer at Clarify Health.", worksFor: PUBLISHER },
     },
+    };
   });
 }
 
