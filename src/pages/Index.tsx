@@ -15,7 +15,7 @@ const Index = () => {
 
   return (
     <main className="bg-background">
-      <PageMeta title="Clarify Health | AI Health & Wellness Companion" description="Clarify Health helps you understand your health with AI-powered explanations, personalized wellness insights, and simple health tracking. Your health, in plain English." canonical="/" />
+      <PageMeta title="Clarify Health | AI Health & Wellness Companion" description="Clarify Health, founded by Mustafa Asif, explains health information in plain English with educational articles and AI-assisted health literacy tools. Not medical advice." canonical="/" />
 
       <section className="home-hero relative min-h-[92svh] overflow-hidden md:min-h-[100svh]" aria-labelledby="home-title">
         <img
