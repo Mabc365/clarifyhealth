@@ -126,10 +126,13 @@ function builtInTopics(): Page[] {
   return [...topics.map(topic => make(topic, "topics")), ...holisticTopics.map(topic => make(topic, "holistic"))];
 }
 
-function staticPagesWithAuthor(): Page[] {
+function staticPagesWithAuthor(articles: Page[]): Page[] {
   return STATIC_PAGES.map(page => page.path !== "/author/mustafa-asif" ? page : {
     ...page, authored: true,
-    bodyHtml: '<main class="page-shell"><h1>Mustafa Asif — Founder of Clarify Health</h1><p>Mustafa Asif founded Clarify Health to help patients and families understand medical information in plain language. He writes accessible health articles and develops educational tools for understanding complex medical information.</p><p>His academic interests include molecular biology, cancer research, and patient education.</p><p><a href="/topics">Health articles</a> | <a href="/about">About Clarify Health</a></p></main>',
+    bodyHtml: '<main class="page-shell"><h1>Mustafa Asif — Founder of Clarify Health</h1><p>Mustafa Asif founded Clarify Health to help patients and families understand medical information in plain language. He writes accessible health articles and develops educational tools for understanding complex medical information.</p><p>His academic interests include molecular biology, cancer research, and patient education.</p><p><a href="/topics">Health articles</a> | <a href="/about">About Clarify Health</a></p>' +
+    '<section><h2>Health articles by Mustafa Asif</h2><ul>' +
+    articles.map(article => '<li><a href="' + esc(article.path) + '">' + esc(article.title.replace(" — Mustafa Asif | Clarify Health", "")) + '</a></li>').join("") +
+    '</ul></section></main>',
     jsonLd: {
       "@context": "https://schema.org", "@type": "ProfilePage",
       "@id": AUTHOR_URL + "#profile", url: AUTHOR_URL,
@@ -192,7 +195,7 @@ export async function prerender() {
   const shell = readFileSync(SHELL_PATH, "utf-8");
   const articles = await fetchArticles();
   const privatePages: Page[] = PRIVATE_PATHS.map((path) => ({ path, title: "Clarify Health", description: "Clarify Health account area.", noindex: true }));
-  const all = [...staticPagesWithAuthor(), ...builtInTopics(), ...articles, ...privatePages];
+  const all = [...staticPagesWithAuthor(articles), ...builtInTopics(), ...articles, ...privatePages];
   for (const page of all) {
     const html = inject(shell, page);
     writeRoute(page.path, html);
