@@ -177,7 +177,10 @@ function inject(shellHtml: string, page: Page): string {
   html = html.replace(/<link rel="canonical"[^>]*>\s*/i, "").replace(/<meta property="og:url"[^>]*>\s*/i, "");
   html = html.replace(/<\/head>/i, `  ${extras.join("\n  ")}\n</head>`);
 
-  if (page.bodyHtml) html = html.replace('<div id="root"></div>', '<div id="root">' + page.bodyHtml + '</div>');
+  // Postbuild may run more than once. Always replace the entire prerendered root,
+  // rather than only replacing an initially empty root, to avoid content leaking
+  // from the homepage into unrelated page snapshots.
+  html = html.replace(/<div id="root">[\s\S]*?<\/div>(?=\s*<noscript>)/i, '<div id="root">' + (page.bodyHtml ?? "") + '</div>');
   return html;
 }
 
