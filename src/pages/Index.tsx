@@ -49,6 +49,7 @@ const Index = () => {
             {t("home.introTitle")}
           </h2>
           <p className="mt-7 text-[14px] text-muted-foreground">{t("home.introSub")}</p>
+          <p className="mt-5 text-[13px] text-muted-foreground">Founded by <Link to="/author/mustafa-asif" className="font-medium text-primary hover:underline">Mustafa Asif</Link>.</p>
         </div>
       </section>
 
