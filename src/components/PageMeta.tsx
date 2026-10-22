@@ -55,27 +55,7 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd, ogType = "we
     }
     link.setAttribute("href", `${BASE_URL}${canonical}`);
 
-    // hreflang tags
-    const hreflangs = [
-      { lang: "en", href: `${BASE_URL}${canonical}` },
-      { lang: "es", href: `${BASE_URL}${canonical}` },
-      { lang: "ur", href: `${BASE_URL}${canonical}` },
-      { lang: "hi", href: `${BASE_URL}${canonical}` },
-      { lang: "ar", href: `${BASE_URL}${canonical}` },
-      { lang: "x-default", href: `${BASE_URL}${canonical}` },
-    ];
-
-    // Remove old hreflang tags
-    document.querySelectorAll('link[data-hreflang]').forEach((el) => el.remove());
-
-    for (const hl of hreflangs) {
-      const hlLink = document.createElement("link");
-      hlLink.setAttribute("rel", "alternate");
-      hlLink.setAttribute("hreflang", hl.lang);
-      hlLink.setAttribute("href", hl.href);
-      hlLink.setAttribute("data-hreflang", "true");
-      document.head.appendChild(hlLink);
-    }
+    // Localized content shares one URL. Do not generate false hreflang alternatives.
 
     // JSON-LD
     const existingScript = document.querySelector('script[data-page-jsonld]');
@@ -95,7 +75,6 @@ const PageMeta = ({ title, description, canonical, ogImage, jsonLd, ogType = "we
     return () => {
       const s = document.querySelector('script[data-page-jsonld]');
       if (s) s.remove();
-      document.querySelectorAll('link[data-hreflang]').forEach((el) => el.remove());
     };
   }, [title, description, canonical, ogImage, jsonLd, lang, ogType]);
 
