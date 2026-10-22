@@ -1,6 +1,39 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { supabase } from "@/lib/supabase";
 import PageMeta from "@/components/PageMeta";
 import mustafaPhoto from "@/assets/mustafa.jpeg";
+
+
+type ArticleLink = { slug: string; title: string };
+
+const WrittenArticles = () => {
+  const [articles, setArticles] = useState<ArticleLink[]>([]);
+  useEffect(() => {
+    let active = true;
+    supabase.from("articles").select("slug,title").eq("language", "en").order("title")
+      .then(({ data, error }) => {
+        if (active && !error && data) setArticles(data.filter(a => a.slug && a.title));
+      });
+    return () => { active = false; };
+  }, []);
+  if (!articles.length) return null;
+  return (
+    <section className="editorial-row">
+      <h2>Health articles by Mustafa Asif</h2>
+      <p>Educational articles written for Clarify Health. Content is informational, not individualized medical advice.</p>
+      <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+        {articles.map(article => (
+          <li key={article.slug}>
+            <Link className="text-primary hover:underline" to={"/article/" + article.slug}>
+              {article.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+};
 
 const AuthorPage = () => (
   <main className="page-shell">
@@ -37,6 +70,7 @@ const AuthorPage = () => (
           </div>
         </div>
       </section>
+      <WrittenArticles />
       <section className="editorial-row">
         <h2>Editorial approach</h2>
         <p>Clarify Health's educational content helps readers prepare informed questions for healthcare professionals. <Link to="/editorial-standards" className="text-primary hover:underline">Read the editorial standards</Link>.</p>
