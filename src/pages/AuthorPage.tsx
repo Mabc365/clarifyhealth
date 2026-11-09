@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/lib/supabase";
 import PageMeta from "@/components/PageMeta";
-import mustafaPhoto from "@/assets/mustafa.jpeg";
+import mustafaPhoto from "@/assets/mustafa-clarify-health.webp";
 
 
 type ArticleLink = { slug: string; title: string };
