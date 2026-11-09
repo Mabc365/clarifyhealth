@@ -61,7 +61,7 @@ const AuthorPage = () => (
       <section className="editorial-row">
         <h2>About the author</h2>
         <div className="grid gap-6 sm:grid-cols-[150px_1fr] sm:items-start">
-          <img src={mustafaPhoto} alt="Mustafa Asif, founder of Clarify Health" className="w-[150px] aspect-[4/5] rounded-lg object-cover grayscale" />
+          <img src={mustafaPhoto} alt="Mustafa Asif, founder of Clarify Health" className="w-[150px] aspect-[4/5] rounded-lg object-cover" />
           <div className="space-y-4">
             <p>Mustafa Asif founded Clarify Health to help patients and families understand medical information in plain language. He writes accessible health articles and helps develop patient-facing educational tools.</p>
             <p>His interest in health communication grew from his family's experience navigating cancer treatment and the complexity of medical terminology and treatment options.</p>
