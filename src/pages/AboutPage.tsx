@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLanguage } from "@/contexts/LanguageContext";
 import PageMeta from "@/components/PageMeta";
-import mustafaPhoto from "@/assets/mustafa.jpeg";
+import mustafaPhoto from "@/assets/mustafa-clarify-health.webp";
 
 const AboutPage = () => {
   const { t } = useLanguage();
